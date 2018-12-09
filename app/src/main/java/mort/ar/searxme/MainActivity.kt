@@ -67,7 +67,8 @@ class MainActivity : AppCompatActivity(),
                         doSearch(searchBoxToolbar.text.toString())
                         return@setOnEditorActionListener false
                     } else {
-                        Toast.makeText(this, "Searchin' for nuthin is cool, but...", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, getString(R.string.activity_main_message_empty_search), Toast.LENGTH_LONG)
+                            .show()
                         return@setOnEditorActionListener true
                     }
                 }
@@ -97,7 +98,7 @@ class MainActivity : AppCompatActivity(),
     private fun replaceFragment(fragment: Fragment) {
         mActiveFragment = fragment
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
+            .replace(R.id.fragmentContainer, fragment)
             .commit()
     }
 
@@ -144,4 +145,8 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mCompositeDisposable.clear()
+    }
 }

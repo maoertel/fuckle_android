@@ -5,26 +5,15 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent">
 
-    <ProgressBar
-            android:id="@+id/indeterminateBar"
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:indeterminate="true"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:visibility="gone"
-            style="?android:attr/progressBarStyleHorizontal"/>
-
     <ImageView
             android:id="@+id/fuckleLogo"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:src="@drawable/ic_fuckle_logo_kurven"
-            android:layout_marginTop="64dp"
-            android:layout_marginBottom="64dp"
-            android:layout_marginStart="64dp"
-            android:layout_marginEnd="80dp"
+            android:src="@drawable/ic_fuckle_logo"
+            android:layout_marginTop="@dimen/fragment_start_margin_logo"
+            android:layout_marginBottom="@dimen/fragment_start_margin_logo"
+            android:layout_marginStart="@dimen/fragment_start_margin_logo"
+            android:layout_marginEnd="@dimen/fragment_start_margin_logo"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

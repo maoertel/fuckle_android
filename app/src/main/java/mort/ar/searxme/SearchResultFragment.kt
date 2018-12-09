@@ -54,7 +54,7 @@ class SearchResultFragment : Fragment() {
         if (context is OnSearchResultFragmentInteractionListener) {
             mListener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnListFragmentInteractionListener")
+            throw RuntimeException(context.toString() + " must implement OnSearchResultFragmentInteractionListener")
         }
     }
 

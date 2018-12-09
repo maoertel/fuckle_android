@@ -6,12 +6,10 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_web_view.*
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-
-
+import kotlinx.android.synthetic.main.fragment_web_view.*
 
 
 private const val URL = "url"
@@ -47,22 +45,23 @@ class WebViewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        webview.webViewClient = object : WebViewClient() {
+        webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
                 view.loadUrl(request.url.toString())
                 return false
             }
         }
 
-        val webSettings = webview.settings
+        val webSettings = webView.settings
         webSettings.setSupportZoom(true)
-        webSettings.builtInZoomControls = false
+        webSettings.builtInZoomControls = true
         webSettings.javaScriptEnabled = true
         webSettings.domStorageEnabled = true
         webSettings.loadWithOverviewMode = true
         webSettings.useWideViewPort = true
+        webSettings.setAppCacheEnabled(false)
 
-        webview.loadUrl(url)
+        webView.loadUrl(url)
     }
 
     override fun onAttach(context: Context) {
@@ -79,14 +78,13 @@ class WebViewFragment : Fragment() {
         listener = null
     }
 
-
     fun onButtonPressed() {
         listener?.onWebViewFragmentInteraction()
     }
 
     fun onBackPressed(): Boolean {
-        if (webview.canGoBack()) {
-            webview.goBack()
+        if (webView.canGoBack()) {
+            webView.goBack()
             return true
         }
 

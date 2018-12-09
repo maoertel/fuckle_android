@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import kotlinx.android.synthetic.main.fragment_searchresultentry.view.*
+import kotlinx.android.synthetic.main.fragment_searchresult_entry.view.*
 import mort.ar.searxme.SearchResultFragment.OnSearchResultFragmentInteractionListener
 import mort.ar.searxme.model.SearxResponse
 import mort.ar.searxme.model.SearxResult
@@ -29,14 +29,14 @@ class SearchResultAdapter(
     }
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val text: TextView = mView.result_title
-        val description: TextView = mView.result_description
-        val url: TextView = mView.result_url
+        val text: TextView = mView.resultTitle
+        val description: TextView = mView.resultDescription
+        val url: TextView = mView.resultUrl
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_searchresultentry, parent, false)
+            .inflate(R.layout.fragment_searchresult_entry, parent, false)
 
         return ViewHolder(view)
     }

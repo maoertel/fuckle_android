@@ -14,7 +14,7 @@
     <ProgressBar
             android:id="@+id/indeterminateBar"
             android:layout_width="match_parent"
-            android:layout_height="14dp"
+            android:layout_height="@dimen/activity_main_progressbar_search_height"
             android:indeterminate="true"
             android:layout_marginTop="-6dp"
             android:indeterminateTint="@color/colorAccent"
@@ -22,7 +22,7 @@
             android:visibility="gone"/>
 
     <FrameLayout
-            android:id="@+id/fragment_container"
+            android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 

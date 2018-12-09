@@ -17,29 +17,29 @@
                 android:hint="@string/fragment_start_searchbox_hint"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:textSize="13sp"
+                android:textSize="@dimen/toolbar_main_textsize_searchbar"
                 android:textStyle="bold"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
+                android:paddingStart="@dimen/toolbar_main_searchbox_padding_start_end"
+                android:paddingEnd="@dimen/toolbar_main_searchbox_padding_start_end"
                 android:background="@drawable/edittext_background"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/iconGroup"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginEnd="@dimen/toolbar_main_searchbox_margin_end"
+                android:layout_marginTop="@dimen/toolbar_main_searchbox_margin_top_bottom"
+                android:layout_marginBottom="@dimen/toolbar_main_searchbox_margin_top_bottom"
                 android:singleLine="true"
                 android:imeOptions="actionDone"/>
 
         <Button
                 android:id="@+id/searchBoxClearButton"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/toolbar_main_button_clear_height_width"
+                android:layout_height="@dimen/toolbar_main_button_clear_height_width"
                 android:background="@drawable/ic_baseline_close_24px"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginTop="@dimen/toolbar_main_button_clear_margin_top_bottom_end"
+                android:layout_marginBottom="@dimen/toolbar_main_button_clear_margin_top_bottom_end"
+                android:layout_marginEnd="@dimen/toolbar_main_button_clear_margin_top_bottom_end"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/searchBoxToolbar"
@@ -53,30 +53,30 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp">
+                android:layout_marginTop="@dimen/toolbar_main_button_group_margin_top_bottom_end"
+                android:layout_marginBottom="@dimen/toolbar_main_button_group_margin_top_bottom_end"
+                android:layout_marginEnd="@dimen/toolbar_main_button_group_margin_top_bottom_end">
 
             <ImageButton
                     android:id="@+id/toolbarHome"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="@dimen/toolbar_main_button_width"
+                    android:layout_height="@dimen/toolbar_main_button_height"
                     android:backgroundTint="@color/colorPrimary"
                     android:tint="@color/toolbar_icons"
                     android:src="@drawable/ic_baseline_home_24px"/>
 
             <ImageButton
                     android:id="@+id/toolbarTabs"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="@dimen/toolbar_main_button_width"
+                    android:layout_height="@dimen/toolbar_main_button_height"
                     android:backgroundTint="@color/colorPrimary"
                     android:tint="@color/toolbar_icons"
                     android:src="@drawable/ic_baseline_tab_24px"/>
 
             <ImageButton
                     android:id="@+id/toolbarOptions"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="@dimen/toolbar_main_button_width"
+                    android:layout_height="@dimen/toolbar_main_button_height"
                     android:backgroundTint="@color/colorPrimary"
                     android:tint="@color/toolbar_icons"
                     android:src="@drawable/ic_baseline_more_vert_24px"/>
