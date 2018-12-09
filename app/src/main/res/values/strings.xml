@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">fuckle</string>
+    <string name="fragment_start_button_searchsearch">Fire</string>
+    <string name="fragment_start_searchbox_hint">Was suchst du?</string>
+</resources>

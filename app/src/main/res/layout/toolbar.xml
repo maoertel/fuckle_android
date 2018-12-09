@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:theme="@style/AppTheme">
+
+    <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <EditText
+                android:id="@+id/searchBoxToolbar"
+                android:hint="@string/fragment_start_searchbox_hint"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:background="@drawable/edittext_background"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/iconGroup"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:singleLine="true"
+                android:imeOptions="actionDone"/>
+
+        <Button
+                android:id="@+id/searchBoxClearButton"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/ic_baseline_close_24px"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/searchBoxToolbar"
+                android:visibility="gone"/>
+
+        <LinearLayout
+                android:id="@+id/iconGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp">
+
+            <ImageButton
+                    android:id="@+id/toolbarHome"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:tint="@color/toolbar_icons"
+                    android:src="@drawable/ic_baseline_home_24px"/>
+
+            <ImageButton
+                    android:id="@+id/toolbarTabs"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:tint="@color/toolbar_icons"
+                    android:src="@drawable/ic_baseline_tab_24px"/>
+
+            <ImageButton
+                    android:id="@+id/toolbarOptions"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:tint="@color/toolbar_icons"
+                    android:src="@drawable/ic_baseline_more_vert_24px"/>
+
+        </LinearLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.widget.Toolbar>
