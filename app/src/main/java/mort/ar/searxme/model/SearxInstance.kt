@@ -4,6 +4,7 @@ import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 
+
 @Entity(tableName = "searx_instances")
 data class SearxInstance(
 
@@ -15,11 +16,11 @@ data class SearxInstance(
     val url: String,
 
     @ColumnInfo
-    val priority: Int,
+    val priority: Int = 0,
 
     @ColumnInfo
-    val primary: Boolean,
+    val favorite: Boolean = false,
 
     @ColumnInfo(name = "times_failed")
-    val timesFailed: Long
+    val timesFailed: Long = 0
 )

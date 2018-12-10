@@ -2,11 +2,14 @@ package mort.ar.searxme.manager
 
 import android.content.Context
 import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.plusAssign
 import mort.ar.searxme.access.SearxAccess
 import mort.ar.searxme.model.SearxResponse
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
+
 
 class SearchManager {
 
@@ -16,6 +19,9 @@ class SearchManager {
 
     private lateinit var mRetrofitService: SearxAccess
 
+    private val mCompositeDisposable: CompositeDisposable = CompositeDisposable()
+
+
     constructor(context: Context) {
         mContext = context
         mSearchParameterManager = SearchParameterManager(mContext)
@@ -24,14 +30,17 @@ class SearchManager {
     }
 
     private fun initRetrofitService() {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(mSearxInstanceManager.getFirstInstance())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(MoshiConverterFactory.create())
-            // .addCallAdapterFactory(CoroutineCallAdapterFactory())
-            .build()
+        mCompositeDisposable += mSearxInstanceManager.getFirstInstance()
+            .subscribe { searxInstance ->
+                val retrofit = Retrofit.Builder()
+                    .baseUrl(searxInstance.url)
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .addConverterFactory(MoshiConverterFactory.create())
+                    // .addCallAdapterFactory(CoroutineCallAdapterFactory())
+                    .build()
 
-        mRetrofitService = retrofit.create<SearxAccess>(SearxAccess::class.java)
+                mRetrofitService = retrofit.create<SearxAccess>(SearxAccess::class.java)
+            }
     }
 
     fun getSearchResults(query: String): Observable<SearxResponse> {
