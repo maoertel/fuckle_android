@@ -2,15 +2,16 @@ package mort.ar.searxme.manager
 
 import android.content.Context
 import android.content.SharedPreferences
+import mort.ar.searxme.access.SearxDatabase
 
 val backupInstance = "https://anonyk.com/"
 
-class SearxInstanceManager(mContext: Context) {
+class SearxInstanceManager(context: Context) {
 
-    private val mInstances: SharedPreferences =
-        mContext.getSharedPreferences("Instances", Context.MODE_PRIVATE)
+    private val mInstances: SharedPreferences = context.getSharedPreferences("Instances", Context.MODE_PRIVATE)
+    private val mDatabase: SearxDatabase = SearxDatabase.getInstance(context)!!
 
-    val instances = mutableMapOf<String, String>()
+    private val instances = mutableMapOf<String, String>()
 
     init {
         val allInstances = mInstances.all

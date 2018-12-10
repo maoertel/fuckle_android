@@ -5,6 +5,7 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import io.reactivex.Observable
 
+
 class SearchParameterManager(mContext: Context) {
 
     private val mSharedSearchPreferences: SharedPreferences =
@@ -67,7 +68,7 @@ class SearchParams(private val sharedPreferences: SharedPreferences) {
                 .apply()
         }
 
-    var format: String? = sharedPreferences.getString("format", null)
+    var format: String? = sharedPreferences.getString("format", "json")
         set(value) {
             field = value
             sharedPreferences
