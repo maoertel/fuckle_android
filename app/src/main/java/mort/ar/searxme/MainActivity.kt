@@ -24,6 +24,9 @@ import mort.ar.searxme.model.SearxResult
 import javax.inject.Inject
 
 
+/**
+ * Activity that works as the apps entry point.
+ */
 class MainActivity : AppCompatActivity(),
     SearchResultFragment.OnSearchResultFragmentInteractionListener,
     WebViewFragment.OnWebViewFragmentInteractionListener {
@@ -31,25 +34,12 @@ class MainActivity : AppCompatActivity(),
     @Inject
     lateinit var mSearchManager: SearchManager
 
+    @Inject
+    lateinit var mTextWatcher: TextWatchObservable
+
     private val mStartFragment = StartFragment()
     private var mSearchResultFragment: Fragment? = null
     private var mActiveFragment: Fragment = mStartFragment
-
-    private lateinit var mSearchboxTextEmptyObservable: Observable<Boolean>
-    private val mTextWatcher = object : TextWatcher {
-        private lateinit var mEmitter: ObservableEmitter<Boolean>
-
-        init {
-            mSearchboxTextEmptyObservable = Observable.create { mEmitter = it }
-        }
-
-        override fun onTextChanged(searchText: CharSequence?, start: Int, before: Int, count: Int) {
-            mEmitter.onNext(TextUtils.isEmpty(searchText))
-        }
-
-        override fun afterTextChanged(searchText: Editable?) {}
-        override fun beforeTextChanged(searchText: CharSequence?, start: Int, count: Int, after: Int) {}
-    }
 
     private var mBackPressForQuit = false
 
@@ -59,6 +49,7 @@ class MainActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
 
         setActionBar(toolbar as Toolbar)
@@ -67,14 +58,14 @@ class MainActivity : AppCompatActivity(),
                 EditorInfo.IME_ACTION_DONE -> {
                     if (!TextUtils.isEmpty(searchBoxToolbar.text.toString())) {
                         doSearch(searchBoxToolbar.text.toString())
-                        return@setOnEditorActionListener false
+                        false
                     } else {
                         Toast.makeText(this, getString(R.string.activity_main_message_empty_search), Toast.LENGTH_LONG)
                             .show()
-                        return@setOnEditorActionListener true
+                        true
                     }
                 }
-                else -> return@setOnEditorActionListener false
+                else -> false
             }
         }
         searchBoxToolbar.addTextChangedListener(mTextWatcher)
@@ -87,7 +78,7 @@ class MainActivity : AppCompatActivity(),
             mSearchResultFragment = null
         }
 
-        mCompositeDisposable += mSearchboxTextEmptyObservable
+        mCompositeDisposable += mTextWatcher.mTextEmptyObservable
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe { isEmpty ->
@@ -99,6 +90,7 @@ class MainActivity : AppCompatActivity(),
 
     private fun replaceFragment(fragment: Fragment) {
         mActiveFragment = fragment
+        mBackPressForQuit = false
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragment)
             .commit()
@@ -151,4 +143,25 @@ class MainActivity : AppCompatActivity(),
         super.onDestroy()
         mCompositeDisposable.clear()
     }
+
+}
+
+/**
+ * Class that wraps a TextWatcher listener in an Observable to observe the search box input text
+ */
+class TextWatchObservable : TextWatcher {
+
+    private lateinit var mEmitter: ObservableEmitter<Boolean>
+    val mTextEmptyObservable: Observable<Boolean>
+
+    init {
+        mTextEmptyObservable = Observable.create { mEmitter = it }
+    }
+
+    override fun onTextChanged(searchText: CharSequence?, start: Int, before: Int, count: Int) =
+        mEmitter.onNext(TextUtils.isEmpty(searchText))
+
+    override fun afterTextChanged(searchText: Editable?) {}
+    override fun beforeTextChanged(searchText: CharSequence?, start: Int, count: Int, after: Int) {}
+
 }

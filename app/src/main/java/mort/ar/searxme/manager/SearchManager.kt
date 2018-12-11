@@ -1,6 +1,5 @@
 package mort.ar.searxme.manager
 
-import android.content.Context
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
@@ -14,11 +13,8 @@ import javax.inject.Inject
 
 class SearchManager {
 
-
     private val mSearchParameterManager: SearchParameterManager
     private val mSearxInstanceManager: SearxInstanceManager
-
-    private val mContext: Context
 
     private lateinit var mRetrofitService: SearxAccess
 
@@ -26,14 +22,10 @@ class SearchManager {
 
     @Inject
     constructor(
-        context: Context,
         searchParameterManager: SearchParameterManager,
         searxInstanceManager: SearxInstanceManager
     ) {
-        mContext = context
-//        mSearchParameterManager = SearchParameterManager(mContext)
         mSearchParameterManager = searchParameterManager
-//        mSearxInstanceManager = SearxInstanceManager(mContext)
         mSearxInstanceManager = searxInstanceManager
         initRetrofitService()
     }

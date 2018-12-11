@@ -1,16 +1,11 @@
 package mort.ar.searxme.manager
 
-import android.content.Context
-import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import io.reactivex.Observable
 import javax.inject.Inject
 
 
-class SearchParameterManager @Inject constructor(mContext: Context) {
-
-    private val mSharedSearchPreferences: SharedPreferences =
-        mContext.getSharedPreferences("SearchParameter", MODE_PRIVATE)
+class SearchParameterManager @Inject constructor(private val mSharedSearchPreferences: SharedPreferences) {
 
     private val mSharedPreferencesObservable: Observable<String> =
         Observable.create { emitter ->
@@ -19,10 +14,9 @@ class SearchParameterManager @Inject constructor(mContext: Context) {
         }
 
     val mSearchParams: SearchParams = SearchParams(mSharedSearchPreferences)
-
 }
 
-class SearchParams(private val sharedPreferences: SharedPreferences) {
+class SearchParams @Inject constructor(private val sharedPreferences: SharedPreferences) {
 
     var categories: String? = sharedPreferences.getString("categories", null)
         set(value) {
