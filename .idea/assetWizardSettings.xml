@@ -67,11 +67,11 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="height" value="283" />
-                            <entry key="outputName" value="ic_fuckle_logo_kurven" />
+                            <entry key="height" value="267" />
+                            <entry key="outputName" value="ic_bing_logo" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="$PROJECT_DIR$/../Fuckle/Logo/fuckle_logo_kurven_sub_fu.psd" />
-                            <entry key="width" value="678" />
+                            <entry key="sourceFile" value="$PROJECT_DIR$/../Fuckle/Logo/ic_bing_logo.svg" />
+                            <entry key="width" value="267" />
                           </map>
                         </option>
                       </PersistentState>

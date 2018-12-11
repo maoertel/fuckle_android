@@ -3,21 +3,21 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="92dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="4dp">
+        android:layout_marginTop="8dp">
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#ffffff"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
         <LinearLayout
                 android:id="@+id/titleDescriptionBlock"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="65"
                 android:background="?attr/selectableItemBackground"
                 android:orientation="vertical"
@@ -34,7 +34,7 @@
                     android:maxLines="1"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    tools:text="Title"/>
+                    tools:text=""/>
 
             <TextView
                     android:id="@+id/resultDescription"
@@ -44,14 +44,15 @@
                     android:layout_marginTop="8dp"
                     android:ellipsize="end"
                     android:textColor="#000000"
-                    android:maxLines="1"
+                    android:maxLines="2"
                     android:textSize="13sp"
-                    tools:text="Description"/>
+                    tools:text=""/>
 
             <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
+                    android:layout_marginBottom="8dp"
                     android:orientation="horizontal">
 
                 <ImageView
@@ -59,7 +60,7 @@
                         android:layout_gravity="center"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="1dp"
-                        android:src="@drawable/al_ic_web"/>
+                        android:src="@drawable/ic_baseline_link_16px"/>
 
                 <TextView
                         android:id="@+id/resultUrl"
@@ -78,18 +79,67 @@
 
         </LinearLayout>
 
-        <!-- more menu dots -->
-        <!--<ImageButton-->
-        <!--android:id="@+id/actionlist_dialog_content_card_button_options_menu"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center_vertical|end"-->
-        <!--android:layout_marginEnd="@dimen/a2m_actionlist_content_card_button_margin_start"-->
-        <!--android:layout_marginStart="@dimen/a2m_actionlist_content_card_button_margin_start"-->
-        <!--android:layout_weight="13"-->
-        <!--android:background="?android:selectableItemBackground"-->
-        <!--android:src="@drawable/a2m_ic_more"/>-->
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="16dp"
+                android:background="#e4e4e4"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:textSize="12sp"
+                    android:text="Gefunden bei:"/>
+
+            <ImageView
+                    android:id="@+id/iconGoogle"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_googl_logo"
+                    android:visibility="gone"/>
+
+            <ImageView
+                    android:id="@+id/iconDuckDuckGo"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_ddg_logo"
+                    android:visibility="gone"/>
+
+            <ImageView
+                    android:id="@+id/iconBing"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_bing_logo"
+                    android:visibility="gone"/>
+
+            <ImageView
+                    android:id="@+id/iconWikipedia"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_wikipedia_logo"
+                    android:visibility="gone"/>
+
+            <ImageView
+                    android:id="@+id/iconAmazon"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_amazon_logo"
+                    android:visibility="gone"/>
+
+
+        </LinearLayout>
 
     </LinearLayout>
+
 
 </android.support.v7.widget.CardView>

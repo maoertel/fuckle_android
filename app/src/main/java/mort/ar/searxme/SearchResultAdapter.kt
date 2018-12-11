@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import kotlinx.android.synthetic.main.fragment_searchresult_entry.view.*
 import mort.ar.searxme.SearchResultFragment.OnSearchResultFragmentInteractionListener
@@ -32,6 +33,11 @@ class SearchResultAdapter(
         val text: TextView = mView.resultTitle
         val description: TextView = mView.resultDescription
         val url: TextView = mView.resultUrl
+        val iconGoogle: ImageView = mView.iconGoogle
+        val iconDuckDuckGo: ImageView = mView.iconDuckDuckGo
+        val iconBing: ImageView = mView.iconBing
+        val iconWikipedia: ImageView = mView.iconWikipedia
+        val iconAmazon: ImageView = mView.iconAmazon
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -46,6 +52,12 @@ class SearchResultAdapter(
         holder.text.text = item.title
         holder.description.text = item.content
         holder.url.text = item.url
+
+        if (item.engines.contains("google")) holder.iconGoogle.visibility = View.VISIBLE
+        if (item.engines.contains("duckduckgo")) holder.iconDuckDuckGo.visibility = View.VISIBLE
+        if (item.engines.contains("bing")) holder.iconBing.visibility = View.VISIBLE
+        if (item.engines.contains("wikipedia")) holder.iconWikipedia.visibility = View.VISIBLE
+        if (item.engines.contains("amazon")) holder.iconAmazon.visibility = View.VISIBLE
 
         with(holder.mView) {
             tag = item
