@@ -4,9 +4,10 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import io.reactivex.Observable
+import javax.inject.Inject
 
 
-class SearchParameterManager(mContext: Context) {
+class SearchParameterManager @Inject constructor(mContext: Context) {
 
     private val mSharedSearchPreferences: SharedPreferences =
         mContext.getSharedPreferences("SearchParameter", MODE_PRIVATE)

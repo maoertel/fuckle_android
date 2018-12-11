@@ -9,23 +9,32 @@ import mort.ar.searxme.model.SearxResponse
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
+import javax.inject.Inject
 
 
 class SearchManager {
 
-    private val mContext: Context
+
     private val mSearchParameterManager: SearchParameterManager
     private val mSearxInstanceManager: SearxInstanceManager
+
+    private val mContext: Context
 
     private lateinit var mRetrofitService: SearxAccess
 
     private val mCompositeDisposable: CompositeDisposable = CompositeDisposable()
 
-
-    constructor(context: Context) {
+    @Inject
+    constructor(
+        context: Context,
+        searchParameterManager: SearchParameterManager,
+        searxInstanceManager: SearxInstanceManager
+    ) {
         mContext = context
-        mSearchParameterManager = SearchParameterManager(mContext)
-        mSearxInstanceManager = SearxInstanceManager(mContext)
+//        mSearchParameterManager = SearchParameterManager(mContext)
+        mSearchParameterManager = searchParameterManager
+//        mSearxInstanceManager = SearxInstanceManager(mContext)
+        mSearxInstanceManager = searxInstanceManager
         initRetrofitService()
     }
 

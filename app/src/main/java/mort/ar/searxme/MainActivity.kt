@@ -10,6 +10,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import android.widget.Toolbar
+import dagger.android.AndroidInjection
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -20,11 +21,15 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import mort.ar.searxme.manager.SearchManager
 import mort.ar.searxme.model.SearxResult
+import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity(),
     SearchResultFragment.OnSearchResultFragmentInteractionListener,
     WebViewFragment.OnWebViewFragmentInteractionListener {
+
+    @Inject
+    lateinit var mSearchManager: SearchManager
 
     private val mStartFragment = StartFragment()
     private var mSearchResultFragment: Fragment? = null
@@ -48,16 +53,13 @@ class MainActivity : AppCompatActivity(),
 
     private var mBackPressForQuit = false
 
-    private lateinit var mSearchManager: SearchManager
-
     private val mCompositeDisposable: CompositeDisposable = CompositeDisposable()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        mSearchManager = SearchManager(application)
 
         setActionBar(toolbar as Toolbar)
         searchBoxToolbar.setOnEditorActionListener { _, actionId, _ ->
