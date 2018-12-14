@@ -17,6 +17,7 @@
             android:layout_height="@dimen/activity_main_progressbar_search_height"
             android:indeterminate="true"
             android:layout_marginTop="-6dp"
+            android:layout_marginBottom="-6dp"
             android:indeterminateTint="@color/colorAccent"
             style="?android:attr/progressBarStyleHorizontal"
             android:visibility="gone"/>
