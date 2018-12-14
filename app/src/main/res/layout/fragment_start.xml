@@ -10,7 +10,7 @@
             android:id="@+id/fuckleLogo"
             android:layout_width="0dp"
             android:layout_height="200dp"
-            android:tint="#ffffff"
+            android:tint="@color/fragment_start_logo_tint"
             android:src="@drawable/ic_fuckle_logo"
             android:layout_marginTop="@dimen/fragment_start_margin_logo"
             android:layout_marginBottom="@dimen/fragment_start_margin_logo"
