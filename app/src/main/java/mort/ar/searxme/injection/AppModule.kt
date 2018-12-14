@@ -25,17 +25,19 @@ internal class AppModule {
 
     @Singleton
     @Provides
-    fun provideDatabase(app: Application): SearxDatabase = Room
-        .databaseBuilder(
-            app,
-            SearxDatabase::class.java,
-            "searx.db"
-        )
-        .build()
+    fun provideDatabase(app: Application): SearxDatabase =
+        Room
+            .databaseBuilder(
+                app,
+                SearxDatabase::class.java,
+                "searx.db"
+            )
+            .build()
 
     @Singleton
     @Provides
-    fun provideSearxInstanceDao(database: SearxDatabase) = database.searxInstanceDao()
+    fun provideSearxInstanceDao(database: SearxDatabase) =
+        database.searxInstanceDao()
 
     @Singleton
     @Provides
@@ -57,10 +59,12 @@ internal class AppModule {
 
     @Singleton
     @Provides
-    fun provideSearchBoxTextWatcher() = TextWatchObservable()
+    fun provideSearchBoxTextWatcher() =
+        TextWatchObservable()
 
     @Singleton
     @Provides
-    fun provideSearchParams(app: Application) = SearchParams(provideSearchParameterSharedPreferences(app))
+    fun provideSearchParams(app: Application) =
+        SearchParams(provideSearchParameterSharedPreferences(app))
 
 }
