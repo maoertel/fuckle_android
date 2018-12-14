@@ -6,9 +6,12 @@ import mort.ar.searxme.MainActivity
 
 
 @Module
-abstract class ActivityModule {
+internal abstract class ActivityModule {
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [ActivityMainModule::class])
     internal abstract fun contributeMainActivity(): MainActivity
 
 }
+
+@Module
+internal class ActivityMainModule // not in use yet

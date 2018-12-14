@@ -5,6 +5,5 @@
     <string name="activity_main_message_empty_search">Searchin\' for nuthin is cool, but&#8230;</string>
 
     <!-- StartFragment -->
-    <string name="fragment_start_button_searchsearch">Fire</string>
     <string name="fragment_start_searchbox_hint">Was suchst du?</string>
 </resources>

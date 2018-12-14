@@ -5,7 +5,8 @@ import mort.ar.searxme.access.SearxInstanceDao
 import mort.ar.searxme.model.SearxInstance
 import javax.inject.Inject
 
-private val initialInstance = SearxInstance(name = "https://anonyk.com/", url = "https://anonyk.com/", favorite = true)
+private val initialInstance =
+    SearxInstance(name = "https://searx.0x1b.de/", url = "https://searx.0x1b.de/", favorite = true)
 
 
 class SearxInstanceManager @Inject constructor(private val mInstanceDao: SearxInstanceDao) {
