@@ -11,7 +11,7 @@ data class SearxResponse(
     @field:Json(name = "suggestions") val suggestions: Array<String>,
     @field:Json(name = "results") val results: Array<SearxResult>,
     @field:Json(name = "answers") val answers: Array<String>,
-    @field:Json(name = "unresponsive_engines") val unresponsiveEngines: Array<String>
+    @field:Json(name = "unresponsive_engines") val unresponsiveEngines: Array<Array<String>>
 ) : Serializable
 
 data class SearxResult(
@@ -25,7 +25,7 @@ data class SearxResult(
     @field:Json(name = "content") val content: String,
     @field:Json(name = "pretty_url") val prettyUrl: String,
     @field:Json(name = "score") val score: Double
-)
+) : Serializable
 
 data class InfoBox(
     @field:Json(name = "engine") val engine: String,
@@ -35,9 +35,9 @@ data class InfoBox(
     @field:Json(name = "urls") val urls: Array<SearxUrl>,
     @field:Json(name = "attributes") val attributes: Array<Map<String, String>>,
     @field:Json(name = "id") val id: String
-)
+) : Serializable
 
 data class SearxUrl(
     @field:Json(name = "url") val url: String,
     @field:Json(name = "title") val title: String
-)
+) : Serializable
