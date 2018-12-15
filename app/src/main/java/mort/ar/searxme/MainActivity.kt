@@ -1,5 +1,6 @@
 package mort.ar.searxme
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -10,6 +11,7 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.Menu
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -57,38 +59,6 @@ class MainActivity : AppCompatActivity(),
         setSupportActionBar(toolbar as Toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        /*searchBoxToolbar.setOnEditorActionListener { _, actionId, _ ->
-            when (actionId) {
-                EditorInfo.IME_ACTION_DONE -> {
-                    if (!TextUtils.isEmpty(searchBoxToolbar.text.toString())) {
-                        doSearch(searchBoxToolbar.text.toString())
-                        false
-                    } else {
-                        Toast.makeText(this, getString(R.string.activity_main_message_empty_search), Toast.LENGTH_LONG)
-                            .show()
-                        true
-                    }
-                }
-                else -> false
-            }
-        }
-        searchBoxToolbar.addTextChangedListener(mTextWatcher)
-
-        searchBoxClearButton.setOnClickListener { searchBoxToolbar.text.clear() }
-
-        toolbarHome.setOnClickListener {
-            replaceFragment(mStartFragment)
-            searchBoxToolbar.text.clear()
-            mSearchResultFragment = null
-        }
-
-        mCompositeDisposable += mTextWatcher.mTextEmptyObservable
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .subscribe { isEmpty ->
-                searchBoxClearButton.visibility = if (isEmpty) View.GONE else View.VISIBLE
-            }*/
-
         replaceFragment(mActiveFragment)
     }
 
@@ -97,9 +67,9 @@ class MainActivity : AppCompatActivity(),
 
         val search = menu?.findItem(R.id.action_search)
         val searchView = search?.actionView as SearchView
-
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
+                searchView.hideKeyboard()
                 doSearch(query)
                 return true
             }
@@ -108,39 +78,18 @@ class MainActivity : AppCompatActivity(),
                 return false
             }
         })
-
         setSearchViewStyle(searchView)
 
+        val home = menu?.findItem(R.id.action_home)
+        home?.setOnMenuItemClickListener {
+            mActiveFragment.view?.hideKeyboard()
+            searchView.setQuery("", false)
+            searchView.clearFocus()
+            replaceFragment(mStartFragment)
+            true
+        }
+
         return super.onCreateOptionsMenu(menu)
-    }
-
-    /**
-     * Initiates the styling of toolbars search box
-     */
-    private fun setSearchViewStyle(searchView: SearchView) {
-        searchView.setIconifiedByDefault(false)
-        searchView.isIconified = false
-        searchView.isSubmitButtonEnabled = false
-        searchView.queryHint = getString(R.string.fragment_start_searchbox_hint)
-
-        val searchPlate = searchView.findViewById(android.support.v7.appcompat.R.id.search_plate) as View
-        searchPlate.setBackgroundColor(resources.getColor(R.color.colorPrimary))
-
-        val searchIcon = searchView.findViewById(android.support.v7.appcompat.R.id.search_mag_icon) as ImageView
-        searchIcon.setColorFilter(getColor(R.color.toolbar_icons))
-        searchIcon.layoutParams = LinearLayout.LayoutParams(0, 0)
-
-        val closeButton = searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn) as ImageView
-        closeButton.setColorFilter(getColor(R.color.toolbar_icons))
-
-        val submitButton = searchView.findViewById(android.support.v7.appcompat.R.id.search_go_btn) as ImageView
-        submitButton.setColorFilter(getColor(R.color.toolbar_icons))
-
-        val submitButtonArea = searchView.findViewById(android.support.v7.appcompat.R.id.submit_area) as View
-        submitButtonArea.setBackgroundColor(resources.getColor(R.color.colorPrimary))
-
-        val searchEditText = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text) as EditText
-        searchEditText.background = getDrawable(R.drawable.edittext_background)
     }
 
     private fun replaceFragment(fragment: Fragment) {
@@ -199,6 +148,37 @@ class MainActivity : AppCompatActivity(),
         mCompositeDisposable.clear()
     }
 
+    /**
+     * Initiates the styling of toolbars search box
+     */
+    private fun setSearchViewStyle(searchView: SearchView) {
+        searchView.setIconifiedByDefault(false)
+        searchView.clearFocus()
+        searchView.isIconified = false
+        searchView.isSubmitButtonEnabled = false
+        searchView.queryHint = getString(R.string.fragment_start_searchbox_hint)
+
+        val searchPlate = searchView.findViewById(android.support.v7.appcompat.R.id.search_plate) as View
+        searchPlate.setBackgroundColor(resources.getColor(R.color.colorPrimary))
+
+        val searchIcon = searchView.findViewById(android.support.v7.appcompat.R.id.search_mag_icon) as ImageView
+        searchIcon.setColorFilter(getColor(R.color.toolbar_icons))
+        searchIcon.layoutParams = LinearLayout.LayoutParams(0, 0)
+
+        val closeButton = searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn) as ImageView
+        closeButton.setColorFilter(getColor(R.color.toolbar_icons))
+
+        val submitButton = searchView.findViewById(android.support.v7.appcompat.R.id.search_go_btn) as ImageView
+        submitButton.setColorFilter(getColor(R.color.toolbar_icons))
+
+        val submitButtonArea = searchView.findViewById(android.support.v7.appcompat.R.id.submit_area) as View
+        submitButtonArea.setBackgroundColor(resources.getColor(R.color.colorPrimary))
+
+        val searchEditText = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text) as EditText
+        searchEditText.background = getDrawable(R.drawable.edittext_background)
+        searchEditText.setTextAppearance(R.style.Searchbox)
+    }
+
 }
 
 /**
@@ -219,4 +199,9 @@ class TextWatchObservable : TextWatcher {
     override fun afterTextChanged(searchText: Editable?) {}
     override fun beforeTextChanged(searchText: CharSequence?, start: Int, count: Int, after: Int) {}
 
+}
+
+fun View.hideKeyboard() {
+    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(windowToken, 0)
 }

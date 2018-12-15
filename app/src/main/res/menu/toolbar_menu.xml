@@ -8,12 +8,24 @@
           app:actionViewClass="android.support.v7.widget.SearchView"
           app:showAsAction="always"/>
 
-    <item android:id="@+id/action_more"
-          android:icon="@drawable/ic_baseline_more_vert_24px"
-          android:title="@string/toolbar_menuitem_title_more"
-          app:showAsAction="always"
+    <item android:id="@+id/action_home"
+          android:title="@string/toolbar_menuitem_title_home"
           android:visible="true"
           android:enabled="true"
-          android:checkable="true"/>
+          android:checkable="true"
+          android:icon="@drawable/ic_baseline_home_24px"
+          android:iconTint="@color/toolbar_icons"
+          app:iconTint="@color/toolbar_icons"
+          app:showAsAction="always"/>
+
+    <item android:id="@+id/action_more"
+          android:title="@string/toolbar_menuitem_title_more"
+          android:visible="true"
+          android:enabled="true"
+          android:checkable="true"
+          android:icon="@drawable/ic_baseline_more_vert_24px"
+          android:iconTint="@color/toolbar_icons"
+          app:iconTint="@color/toolbar_icons"
+          app:showAsAction="always"/>
 
 </menu>

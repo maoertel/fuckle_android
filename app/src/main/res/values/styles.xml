@@ -1,8 +1,13 @@
 <resources>
 
     <!-- Base application theme. -->
-    <!--<style name="AppTheme" parent="android:Theme.Material.Light.DarkActionBar">-->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+    </style>
+
+    <style name="Searchbox">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">13sp</item>
     </style>
 
 </resources>
