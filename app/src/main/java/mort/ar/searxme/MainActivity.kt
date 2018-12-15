@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity(),
         mCompositeDisposable += mSearchBoxTextWatcher.mTextEmptyObservable
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
-            .subscribe { doSearch(it) }
+            .subscribe { executeSearch(it) }
 
         replaceFragment(mActiveFragment)
     }
@@ -72,19 +72,17 @@ class MainActivity : AppCompatActivity(),
         searchView.setOnQueryTextListener(mSearchBoxTextWatcher)
         setSearchViewStyle(searchView)
 
-        val home = menu?.findItem(R.id.action_home)
+        val home = menu.findItem(R.id.action_home)
         home?.setOnMenuItemClickListener { goHome(searchView) }
 
         return super.onCreateOptionsMenu(menu)
     }
 
     /**
-     * Initiates the styling of toolbars search box
+     * Initiates the styling of toolbars [searchView]
      */
     private fun setSearchViewStyle(searchView: SearchView) {
         searchView.setIconifiedByDefault(false)
-        searchView.clearFocus()
-        searchView.isIconified = false
         searchView.isSubmitButtonEnabled = false
         searchView.queryHint = getString(R.string.fragment_start_searchbox_hint)
 
@@ -107,12 +105,14 @@ class MainActivity : AppCompatActivity(),
         val searchEditText = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text) as EditText
         searchEditText.background = getDrawable(R.drawable.edittext_background)
         searchEditText.setTextAppearance(R.style.Searchbox)
+
+        searchView.clearFocus()
     }
 
     /**
      * Executes the search with the provided [searchTerm].
      */
-    private fun doSearch(searchTerm: String) {
+    private fun executeSearch(searchTerm: String) {
         mActiveFragment.view?.hideKeyboard()
         indeterminateBar.visibility = View.VISIBLE
 
@@ -132,20 +132,22 @@ class MainActivity : AppCompatActivity(),
     }
 
     /**
-     * Goes back to the home [StartFragment] and clears the search boxl.
+     * Goes back to the [StartFragment] and clears the [searchView].
      */
     private fun goHome(searchView: SearchView): Boolean {
         mActiveFragment.view?.hideKeyboard()
-        searchView.setQuery("", false)
-        searchView.clearFocus()
         replaceFragment(mStartFragment)
+        with(searchView) {
+            setQuery("", false)
+            clearFocus()
+        }
         return true
     }
 
     /**
      * Starts a new [WebViewFragment] with the provided [item].url
      */
-    override fun onListItemClick(item: SearxResult?) {
+    override fun onSearchResultListItemClick(item: SearxResult?) {
         if (item != null) replaceFragment(WebViewFragment.newInstance(item.url))
     }
 
@@ -191,7 +193,8 @@ class MainActivity : AppCompatActivity(),
 }
 
 /**
- * Class that wraps a TextWatcher listener in an Observable to observe the search box input text
+ * Class that wraps a [SearchView.OnQueryTextListener] in an Observable to observe
+ * submit events from search box query text.
  */
 class SearchBoxTextWatcher : SearchView.OnQueryTextListener {
 
@@ -211,6 +214,9 @@ class SearchBoxTextWatcher : SearchView.OnQueryTextListener {
 
 }
 
+/**
+ * Extension function to [View] to hide the keyboard.
+ */
 fun View.hideKeyboard() {
     val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(windowToken, 0)

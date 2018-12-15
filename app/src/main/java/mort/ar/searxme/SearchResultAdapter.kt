@@ -25,7 +25,7 @@ class SearchResultAdapter(
 
     init {
         mOnClickListener = View.OnClickListener { view ->
-            mListener?.onListItemClick(if (view.tag != null) view.tag as SearxResult else null)
+            mListener?.onSearchResultListItemClick(if (view.tag != null) view.tag as SearxResult else null)
         }
     }
 

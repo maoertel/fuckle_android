@@ -67,7 +67,7 @@ class SearchResultFragment : Fragment() {
      * Interface to interact with it's implementing class
      */
     interface OnSearchResultFragmentInteractionListener {
-        fun onListItemClick(item: SearxResult?)
+        fun onSearchResultListItemClick(item: SearxResult?)
     }
 
     companion object {
