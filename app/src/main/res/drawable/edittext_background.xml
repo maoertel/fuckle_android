@@ -7,4 +7,6 @@
 
     <corners android:radius="@dimen/searchbox_background_radius"/>
 
+    <size android:height="24dp"/>
+
 </shape>

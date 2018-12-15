@@ -6,4 +6,5 @@
 
     <!-- StartFragment -->
     <string name="fragment_start_searchbox_hint">Was suchst du?</string>
+    <string name="toolbar_menuitem_title_more">more menu</string>
 </resources>

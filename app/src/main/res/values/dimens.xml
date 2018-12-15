@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="text_margin">16dp</dimen>
-    <dimen name="searchbox_background_radius">16dp</dimen>
+    <dimen name="searchbox_background_radius">24dp</dimen>
     <dimen name="activity_main_progressbar_search_height">14dp</dimen>
     <dimen name="fragment_searchresults_margin_top">4dp</dimen>
     <dimen name="fragment_searchresults_margin_bottom">8dp</dimen>
