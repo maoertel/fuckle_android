@@ -6,9 +6,6 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.SearchView
 import android.support.v7.widget.Toolbar
-import android.text.Editable
-import android.text.TextUtils
-import android.text.TextWatcher
 import android.view.Menu
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -40,7 +37,7 @@ class MainActivity : AppCompatActivity(),
     lateinit var mSearchManager: SearchManager
 
     @Inject
-    lateinit var mTextWatcher: TextWatchObservable
+    lateinit var mSearchBoxTextWatcher: SearchBoxTextWatcher
 
     private val mStartFragment = StartFragment()
     private var mSearchResultFragment: Fragment? = null
@@ -59,6 +56,11 @@ class MainActivity : AppCompatActivity(),
         setSupportActionBar(toolbar as Toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
+        mCompositeDisposable += mSearchBoxTextWatcher.mTextEmptyObservable
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe { doSearch(it) }
+
         replaceFragment(mActiveFragment)
     }
 
@@ -67,85 +69,13 @@ class MainActivity : AppCompatActivity(),
 
         val search = menu?.findItem(R.id.action_search)
         val searchView = search?.actionView as SearchView
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                searchView.hideKeyboard()
-                doSearch(query)
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String): Boolean {
-                return false
-            }
-        })
+        searchView.setOnQueryTextListener(mSearchBoxTextWatcher)
         setSearchViewStyle(searchView)
 
         val home = menu?.findItem(R.id.action_home)
-        home?.setOnMenuItemClickListener {
-            mActiveFragment.view?.hideKeyboard()
-            searchView.setQuery("", false)
-            searchView.clearFocus()
-            replaceFragment(mStartFragment)
-            true
-        }
+        home?.setOnMenuItemClickListener { goHome(searchView) }
 
         return super.onCreateOptionsMenu(menu)
-    }
-
-    private fun replaceFragment(fragment: Fragment) {
-        mActiveFragment = fragment
-        mBackPressForQuit = false
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, fragment)
-            .commit()
-    }
-
-    override fun onListItemClick(item: SearxResult?) {
-        if (item != null) replaceFragment(WebViewFragment.newInstance(item.url))
-    }
-
-    override fun onWebViewFragmentInteraction() {}
-
-    private fun doSearch(searchTerm: String) {
-        indeterminateBar.visibility = View.VISIBLE
-        mCompositeDisposable += mSearchManager.getSearchResults(searchTerm)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .subscribe(
-                { response ->
-                    mSearchResultFragment = SearchResultFragment.newInstance(response)
-                    replaceFragment(mSearchResultFragment as Fragment)
-                    indeterminateBar.visibility = View.GONE
-                },
-                { error ->
-                    Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
-                    indeterminateBar.visibility = View.GONE
-                })
-    }
-
-    override fun onBackPressed() {
-        when (mActiveFragment) {
-            is StartFragment -> {
-                if (!mBackPressForQuit) {
-                    Toast.makeText(this, "Next click quits the app", Toast.LENGTH_LONG).show()
-                    mBackPressForQuit = !mBackPressForQuit
-                } else {
-                    finishAndRemoveTask()
-                }
-            }
-            is SearchResultFragment -> replaceFragment(mStartFragment)
-            is WebViewFragment -> {
-                if (!(mActiveFragment as WebViewFragment).onBackPressed()) {
-                    mSearchResultFragment?.let { replaceFragment(it) }
-                }
-            }
-            else -> super.onBackPressed()
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mCompositeDisposable.clear()
     }
 
     /**
@@ -179,25 +109,105 @@ class MainActivity : AppCompatActivity(),
         searchEditText.setTextAppearance(R.style.Searchbox)
     }
 
+    /**
+     * Executes the search with the provided [searchTerm].
+     */
+    private fun doSearch(searchTerm: String) {
+        mActiveFragment.view?.hideKeyboard()
+        indeterminateBar.visibility = View.VISIBLE
+
+        mCompositeDisposable += mSearchManager.getSearchResults(searchTerm)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe(
+                { response ->
+                    mSearchResultFragment = SearchResultFragment.newInstance(response)
+                    replaceFragment(mSearchResultFragment as Fragment)
+                    indeterminateBar.visibility = View.GONE
+                },
+                { error ->
+                    Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
+                    indeterminateBar.visibility = View.GONE
+                })
+    }
+
+    /**
+     * Goes back to the home [StartFragment] and clears the search boxl.
+     */
+    private fun goHome(searchView: SearchView): Boolean {
+        mActiveFragment.view?.hideKeyboard()
+        searchView.setQuery("", false)
+        searchView.clearFocus()
+        replaceFragment(mStartFragment)
+        return true
+    }
+
+    /**
+     * Starts a new [WebViewFragment] with the provided [item].url
+     */
+    override fun onListItemClick(item: SearxResult?) {
+        if (item != null) replaceFragment(WebViewFragment.newInstance(item.url))
+    }
+
+    override fun onWebViewFragmentInteraction() {}
+
+    /**
+     * Replaces the [mActiveFragment] with the provided [fragment]
+     * and sets [mBackPressForQuit] to false again
+     */
+    private fun replaceFragment(fragment: Fragment) {
+        mActiveFragment = fragment
+        mBackPressForQuit = false
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, fragment)
+            .commit()
+    }
+
+    override fun onBackPressed() {
+        when (mActiveFragment) {
+            is StartFragment -> {
+                if (!mBackPressForQuit) {
+                    Toast.makeText(this, "Next click quits the app", Toast.LENGTH_LONG).show()
+                    mBackPressForQuit = !mBackPressForQuit
+                } else {
+                    finishAndRemoveTask()
+                }
+            }
+            is SearchResultFragment -> replaceFragment(mStartFragment)
+            is WebViewFragment -> {
+                if (!(mActiveFragment as WebViewFragment).onBackPressed()) {
+                    mSearchResultFragment?.let { replaceFragment(it) }
+                }
+            }
+            else -> super.onBackPressed()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mCompositeDisposable.clear()
+    }
+
 }
 
 /**
  * Class that wraps a TextWatcher listener in an Observable to observe the search box input text
  */
-class TextWatchObservable : TextWatcher {
+class SearchBoxTextWatcher : SearchView.OnQueryTextListener {
 
-    private lateinit var mEmitter: ObservableEmitter<Boolean>
-    val mTextEmptyObservable: Observable<Boolean>
+    private lateinit var mEmitter: ObservableEmitter<String>
+    val mTextEmptyObservable: Observable<String>
 
     init {
         mTextEmptyObservable = Observable.create { mEmitter = it }
     }
 
-    override fun onTextChanged(searchText: CharSequence?, start: Int, before: Int, count: Int) =
-        mEmitter.onNext(TextUtils.isEmpty(searchText))
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        query?.let { mEmitter.onNext(it) }
+        return true
+    }
 
-    override fun afterTextChanged(searchText: Editable?) {}
-    override fun beforeTextChanged(searchText: CharSequence?, start: Int, count: Int, after: Int) {}
+    override fun onQueryTextChange(p0: String?): Boolean = false
 
 }
 
