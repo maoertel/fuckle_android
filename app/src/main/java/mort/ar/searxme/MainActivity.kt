@@ -63,7 +63,6 @@ class MainActivity : AppCompatActivity(),
 
         val searchBoxHandler = SearchBoxHandler(
             mSearchManager,
-            searchView,
             suggestionsList,
             this
         )
@@ -72,6 +71,12 @@ class MainActivity : AppCompatActivity(),
         mCompositeDisposable += searchBoxHandler.mQueryTextSubmitObservable
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { executeSearch(it) }
+
+        mCompositeDisposable += searchBoxHandler.mOnListItemClickObservable
+            .replay()
+            .autoConnect()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { searchView.setQuery(it, false) }
 
         setSearchViewStyle(searchView)
 

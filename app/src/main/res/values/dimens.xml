@@ -3,7 +3,8 @@
 
     <!-- MainActivity -->
     <dimen name="activity_main_progressbar_search_height">14dp</dimen>
-    <dimen name="activity_main_suggestions_listview_margin_start_end">8dp</dimen>
+    <dimen name="activity_main_search_suggestions_container_margin_start_end">8dp</dimen>
+    <dimen name="activity_main_search_suggestions_container_margin_top">8dp</dimen>
     <dimen name="activity_main_search_suggestions_card_margin_bottom">2dp</dimen>
     <dimen name="activity_main_search_suggestions_textview_padding_top_bottom">8dp</dimen>
     <dimen name="activity_main_search_suggestions_textview_padding_start_end">16dp</dimen>

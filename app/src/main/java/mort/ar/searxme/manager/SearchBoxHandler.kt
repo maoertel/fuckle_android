@@ -17,7 +17,6 @@ import mort.ar.searxme.SearchSuggestionsAdapter
  */
 class SearchBoxHandler(
     private val mSearchManager: SearchManager,
-    private val mSearchView: SearchView,
     suggestionsList: RecyclerView,
     context: Context
 ) : SearchView.OnQueryTextListener {
@@ -25,18 +24,18 @@ class SearchBoxHandler(
     private lateinit var mOnListItemClickEmitter: ObservableEmitter<String>
     private lateinit var mQueryTextSubmitEmitter: ObservableEmitter<String>
 
-    private val mOnListItemClickObservable: Observable<String>
+    val mOnListItemClickObservable: Observable<String>
     val mQueryTextSubmitObservable: Observable<String>
 
     private val mSearchSuggestionsAdapter: SearchSuggestionsAdapter
-    private var isListSubmit = false
+    private var mIsListSubmit = false
 
     private val mCompositeDisposable = CompositeDisposable()
 
 
     init {
-        mQueryTextSubmitObservable = Observable.create { mQueryTextSubmitEmitter = it }
         mOnListItemClickObservable = Observable.create { mOnListItemClickEmitter = it }
+        mQueryTextSubmitObservable = Observable.create { mQueryTextSubmitEmitter = it }
     }
 
     init {
@@ -44,8 +43,7 @@ class SearchBoxHandler(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { listItemQuery ->
-                isListSubmit = true
-                mSearchView.setQuery(listItemQuery, false)
+                mIsListSubmit = true
                 submitQuery(listItemQuery)
             }
     }
@@ -62,7 +60,7 @@ class SearchBoxHandler(
 
     override fun onQueryTextChange(query: String?): Boolean {
         when {
-            isListSubmit -> isListSubmit = !isListSubmit
+            mIsListSubmit -> mIsListSubmit = !mIsListSubmit
             else -> when {
                 query.isNullOrEmpty() -> {
                     mSearchSuggestionsAdapter.mSearchSuggestions = arrayOf()
