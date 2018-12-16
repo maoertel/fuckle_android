@@ -4,6 +4,9 @@
     <!-- MainActivity -->
     <dimen name="activity_main_progressbar_search_height">14dp</dimen>
     <dimen name="activity_main_suggestions_listview_margin_start_end">8dp</dimen>
+    <dimen name="activity_main_search_suggestions_card_margin_bottom">2dp</dimen>
+    <dimen name="activity_main_search_suggestions_textview_padding_top_bottom">8dp</dimen>
+    <dimen name="activity_main_search_suggestions_textview_padding_start_end">16dp</dimen>
 
     <!-- SearchBox -->
     <dimen name="searchbox_background_radius">24dp</dimen>
@@ -16,8 +19,8 @@
     <dimen name="fragment_start_logo_height">200dp</dimen>
 
     <!-- SearchResultFragment -->
-    <dimen name="fragment_searchresults_margin_top">4dp</dimen>
-    <dimen name="fragment_searchresults_margin_bottom">8dp</dimen>
+    <dimen name="fragment_searchresult_margin_top">4dp</dimen>
+    <dimen name="fragment_searchresult_margin_bottom">8dp</dimen>
     <dimen name="fragment_searchresult_card_margin_start_end">8dp</dimen>
     <dimen name="fragment_searchresult_card_margin_top">8dp</dimen>
     <dimen name="fragment_searchresult_card_description_block_padding_start_end">16dp</dimen>

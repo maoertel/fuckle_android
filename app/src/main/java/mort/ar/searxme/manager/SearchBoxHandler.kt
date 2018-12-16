@@ -1,12 +1,16 @@
 package mort.ar.searxme.manager
 
+import android.content.Context
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
-import android.widget.ArrayAdapter
-import android.widget.ListView
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
+import mort.ar.searxme.SearchSuggestionsAdapter
 
 /**
  * Class that handles interactions of the [SearchView] and acts as a pimped [SearchView.OnQueryTextListener].
@@ -14,23 +18,43 @@ import io.reactivex.schedulers.Schedulers
 class SearchBoxHandler(
     private val mSearchManager: SearchManager,
     private val mSearchView: SearchView,
-    private val mItemsAdapter: ArrayAdapter<String>,
-    mListView: ListView
+    suggestionsList: RecyclerView,
+    context: Context
 ) : SearchView.OnQueryTextListener {
 
+    private lateinit var mOnListItemClickEmitter: ObservableEmitter<String>
+    private lateinit var mQueryTextSubmitEmitter: ObservableEmitter<String>
+
+    private val mOnListItemClickObservable: Observable<String>
+    val mQueryTextSubmitObservable: Observable<String>
+
+    private val mSearchSuggestionsAdapter: SearchSuggestionsAdapter
     private var isListSubmit = false
 
-    private lateinit var mQueryTextSubmitEmitter: ObservableEmitter<String>
-    val mQueryTextSubmitObservable: Observable<String>
+    private val mCompositeDisposable = CompositeDisposable()
+
 
     init {
         mQueryTextSubmitObservable = Observable.create { mQueryTextSubmitEmitter = it }
-        mListView.adapter = mItemsAdapter
-        mListView.setOnItemClickListener { adapterView, _, position, _ ->
-            val query = adapterView.getItemAtPosition(position) as String
-            isListSubmit = true
-            mSearchView.setQuery(query, false)
-            submitQuery(query)
+        mOnListItemClickObservable = Observable.create { mOnListItemClickEmitter = it }
+    }
+
+    init {
+        mCompositeDisposable += mOnListItemClickObservable
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { listItemQuery ->
+                isListSubmit = true
+                mSearchView.setQuery(listItemQuery, false)
+                submitQuery(listItemQuery)
+            }
+    }
+
+    init {
+        mSearchSuggestionsAdapter = SearchSuggestionsAdapter(mOnListItemClickEmitter)
+        suggestionsList.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = mSearchSuggestionsAdapter
         }
     }
 
@@ -41,16 +65,15 @@ class SearchBoxHandler(
             isListSubmit -> isListSubmit = !isListSubmit
             else -> when {
                 query.isNullOrEmpty() -> {
-                    mItemsAdapter.clear()
-                    mItemsAdapter.notifyDataSetChanged()
+                    mSearchSuggestionsAdapter.mSearchSuggestions = arrayOf()
+                    mSearchSuggestionsAdapter.notifyDataSetChanged()
                 }
                 else -> mSearchManager.getSearchAutoComplete(query)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { suggestions ->
-                        mItemsAdapter.clear()
-                        suggestions.forEach { mItemsAdapter.add(it) }
-                        mItemsAdapter.notifyDataSetChanged()
+                        mSearchSuggestionsAdapter.mSearchSuggestions = suggestions
+                        mSearchSuggestionsAdapter.notifyDataSetChanged()
                     }
             }
         }
@@ -59,8 +82,8 @@ class SearchBoxHandler(
     }
 
     private fun submitQuery(query: String?): Boolean {
-        mItemsAdapter.clear()
-        mItemsAdapter.notifyDataSetChanged()
+        mSearchSuggestionsAdapter.mSearchSuggestions = arrayOf()
+        mSearchSuggestionsAdapter.notifyDataSetChanged()
         query?.let { mQueryTextSubmitEmitter.onNext(it) }
 
         return false

@@ -9,7 +9,10 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.Toast
 import dagger.android.AndroidInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -58,7 +61,12 @@ class MainActivity : AppCompatActivity(),
         val search = menu?.findItem(R.id.action_search)
         val searchView = search?.actionView as SearchView
 
-        val searchBoxHandler = getSearchBoxHandler(searchView)
+        val searchBoxHandler = SearchBoxHandler(
+            mSearchManager,
+            searchView,
+            suggestionsList,
+            this
+        )
         searchView.setOnQueryTextListener(searchBoxHandler)
 
         mCompositeDisposable += searchBoxHandler.mQueryTextSubmitObservable
@@ -102,19 +110,6 @@ class MainActivity : AppCompatActivity(),
         searchEditText.setTextAppearance(R.style.Searchbox)
 
         searchView.clearFocus()
-    }
-
-    /**
-     * Initiates the items [ArrayAdapter] for search suggestions and returns a [SearchBoxHandler] instance
-     */
-    private fun getSearchBoxHandler(searchView: SearchView): SearchBoxHandler {
-        val itemsAdapter = ArrayAdapter<String>(
-            this,
-            R.layout.search_suggestions_box,
-            mutableListOf<String>()
-        )
-
-        return SearchBoxHandler(mSearchManager, searchView, itemsAdapter, listView)
     }
 
     /**

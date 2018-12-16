@@ -7,6 +7,6 @@
         android:name="mort.ar.searxme.SearchResultFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="LinearLayoutManager"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         tools:context=".SearchResultFragment"
         tools:listitem="@layout/fragment_searchresult_entry"/>
