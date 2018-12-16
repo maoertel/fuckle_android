@@ -69,6 +69,7 @@ class MainActivity : AppCompatActivity(),
         searchView.setOnQueryTextListener(searchBoxHandler)
 
         mCompositeDisposable += searchBoxHandler.mQueryTextSubmitObservable
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 searchView.setQuery(it, false)
