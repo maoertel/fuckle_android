@@ -5,11 +5,14 @@
     <!-- MainActivity -->
     <string name="activity_main_message_empty_search">Searchin\' for nuthin is cool, but&#8230;</string>
 
-    <!-- StartFragment -->
-    <string name="fragment_start_searchbox_hint">Was suchst du?</string>
-
     <!-- Toolbar -->
     <string name="toolbar_menuitem_title_more">more menu</string>
     <string name="toolbar_menuitem_title_home">more home</string>
+
+    <!-- StartFragment -->
+    <string name="fragment_start_searchbox_hint">Was suchst du?</string>
+
+    <!-- SearchResultFragment -->
+    <string name="fragment_searchresult_card_engine_text">Gefunden bei:</string>
 
 </resources>

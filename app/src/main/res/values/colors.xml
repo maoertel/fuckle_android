@@ -5,6 +5,9 @@
     <color name="colorPrimaryDark">#404040</color>
     <color name="colorAccent">#D81B60</color>
 
+    <!-- MainActivity -->
+    <color name="activity_main_search_suggestions_textcolor">#000000</color>
+
     <!-- SearchBox -->
     <color name="searchbox_background">#ffffff</color>
     <color name="searchbox_background_dark">#ffffff</color>
@@ -12,10 +15,14 @@
     <!-- Toolbar -->
     <color name="toolbar_icons">#ffffff</color>
     <color name="toolbar_icons_dark">#ffffff</color>
-    <color name="toolbar_progressbar">#ffffff</color>
-    <color name="toolbar_progressbar_dark">#ffffff</color>
 
     <!-- StartFragment -->
     <color name="fragment_start_logo_tint">#ffffff</color>
+
+    <!-- SearchResultFragment -->
+    <color name="fragment_searchresult_card_background">#ffffff</color>
+    <color name="fragment_searchresult_card_title_textcolor">#000000</color>
+    <color name="fragment_searchresult_card_description_textcolor">#000000</color>
+    <color name="fragment_searchresult_card_engines_group_background">#e4e4e4</color>
 
 </resources>

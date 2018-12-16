@@ -4,14 +4,14 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp">
+        android:layout_marginStart="@dimen/fragment_searchresult_card_margin_start_end"
+        android:layout_marginEnd="@dimen/fragment_searchresult_card_margin_start_end"
+        android:layout_marginTop="@dimen/fragment_searchresult_card_margin_top">
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#ffffff"
+            android:background="@color/fragment_searchresult_card_background"
             android:orientation="vertical">
 
         <LinearLayout
@@ -21,18 +21,18 @@
                 android:layout_weight="65"
                 android:background="?attr/selectableItemBackground"
                 android:orientation="vertical"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="8dp">
+                android:paddingStart="@dimen/fragment_searchresult_card_description_block_padding_start_end"
+                android:paddingEnd="@dimen/fragment_searchresult_card_description_block_padding_start_end"
+                android:paddingTop="@dimen/fragment_searchresult_card_description_block_padding_start_top">
 
             <TextView
                     android:id="@+id/resultTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:textColor="#000000"
+                    android:textColor="@color/fragment_searchresult_card_title_textcolor"
                     android:maxLines="1"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/fragment_searchresult_card_title_textsize"
                     android:textStyle="bold"
                     tools:text=""/>
 
@@ -41,25 +41,25 @@
                     android:text=""
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="@dimen/fragment_searchresult_card_description_margin_top"
                     android:ellipsize="end"
-                    android:textColor="#000000"
+                    android:textColor="@color/fragment_searchresult_card_description_textcolor"
                     android:maxLines="2"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/fragment_searchresult_card_description_textsize"
                     tools:text=""/>
 
             <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="@dimen/fragment_searchresult_card_url_group_margin_top"
+                    android:layout_marginBottom="@dimen/fragment_searchresult_card_url_group_margin_bottom"
                     android:orientation="horizontal">
 
                 <ImageView
-                        android:layout_width="16dp"
+                        android:layout_width="@dimen/fragment_searchresult_card_url_icon_width"
                         android:layout_gravity="center"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="1dp"
+                        android:layout_marginTop="@dimen/fragment_searchresult_card_url_icon_margin_top"
                         android:src="@drawable/ic_baseline_link_16px"/>
 
                 <TextView
@@ -69,10 +69,10 @@
                         android:textColor="@color/colorAccent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
+                        android:layout_marginStart="@dimen/fragment_searchresult_card_url_margin_start"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/fragment_searchresult_card_url_textsize"
                         tools:text="URL"/>
 
             </LinearLayout>
@@ -83,56 +83,56 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="end"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
-                android:paddingStart="8dp"
-                android:paddingEnd="16dp"
-                android:background="#e4e4e4"
+                android:paddingTop="@dimen/fragment_searchresult_card_engines_group_padding_top"
+                android:paddingBottom="@dimen/fragment_searchresult_card_engines_group_padding_bottom"
+                android:paddingStart="@dimen/fragment_searchresult_card_engines_group_padding_start"
+                android:paddingEnd="@dimen/fragment_searchresult_card_engines_group_padding_end"
+                android:background="@color/fragment_searchresult_card_engines_group_background"
                 android:orientation="horizontal">
 
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
-                    android:textSize="12sp"
-                    android:text="Gefunden bei:"/>
+                    android:layout_marginEnd="@dimen/fragment_searchresult_card_engine_margin_end"
+                    android:textSize="@dimen/fragment_searchresult_card_engine_textsize"
+                    android:text="@string/fragment_searchresult_card_engine_text"/>
 
             <ImageView
                     android:id="@+id/iconGoogle"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_width="@dimen/fragment_searchresult_card_engine_icon_width_height"
+                    android:layout_height="@dimen/fragment_searchresult_card_engine_icon_width_height"
+                    android:layout_marginEnd="@dimen/fragment_searchresult_card_engine_icon_margin_end"
                     android:src="@drawable/ic_googl_logo"
                     android:visibility="gone"/>
 
             <ImageView
                     android:id="@+id/iconDuckDuckGo"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_width="@dimen/fragment_searchresult_card_engine_icon_width_height"
+                    android:layout_height="@dimen/fragment_searchresult_card_engine_icon_width_height"
+                    android:layout_marginEnd="@dimen/fragment_searchresult_card_engine_icon_margin_end"
                     android:src="@drawable/ic_ddg_logo"
                     android:visibility="gone"/>
 
             <ImageView
                     android:id="@+id/iconBing"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_width="@dimen/fragment_searchresult_card_engine_icon_width_height"
+                    android:layout_height="@dimen/fragment_searchresult_card_engine_icon_width_height"
+                    android:layout_marginEnd="@dimen/fragment_searchresult_card_engine_icon_margin_end"
                     android:src="@drawable/ic_bing_logo"
                     android:visibility="gone"/>
 
             <ImageView
                     android:id="@+id/iconWikipedia"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_width="@dimen/fragment_searchresult_card_engine_icon_width_height"
+                    android:layout_height="@dimen/fragment_searchresult_card_engine_icon_width_height"
+                    android:layout_marginEnd="@dimen/fragment_searchresult_card_engine_icon_margin_end"
                     android:src="@drawable/ic_wikipedia_logo"
                     android:visibility="gone"/>
 
             <ImageView
                     android:id="@+id/iconAmazon"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="@dimen/fragment_searchresult_card_engine_icon_width_height"
+                    android:layout_height="@dimen/fragment_searchresult_card_engine_icon_width_height"
                     android:src="@drawable/ic_amazon_logo"
                     android:visibility="gone"/>
 
