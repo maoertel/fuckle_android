@@ -1,6 +1,7 @@
 package mort.ar.searxme.manager
 
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import mort.ar.searxme.access.SearxAccess
@@ -58,6 +59,10 @@ class SearchManager {
             autoComplete = requestParams.autoComplete,
             safeSearch = requestParams.safeSearch
         )
+    }
+
+    fun getSearchAutoComplete(query: String): Single<Array<String>> {
+        return mRetrofitService.getSearchAutocomplete(query)
     }
 
     /*    private fun buildSearchRequest(query: String): SearchRequest {

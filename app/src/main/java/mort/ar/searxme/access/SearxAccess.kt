@@ -1,6 +1,7 @@
 package mort.ar.searxme.access
 
 import io.reactivex.Observable
+import io.reactivex.Single
 import mort.ar.searxme.model.SearxResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -23,6 +24,9 @@ interface SearxAccess {
     ): Observable<SearxResponse>
 
     @GET("/autocompleter")
-    fun getSearchAutocomplete(@Query("q") q: String? = ""): Observable<ArrayList<String>>
+    fun getSearchAutocomplete(
+        @Query("q") query: String? = "",
+        @Query("autocomplete") autoComplete: String? = "duckduckgo"
+    ): Single<Array<String>>
 
 }

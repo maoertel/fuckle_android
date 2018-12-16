@@ -6,7 +6,6 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
-import mort.ar.searxme.SearchBoxTextWatcher
 import mort.ar.searxme.access.SearxDatabase
 import mort.ar.searxme.manager.SearchManager
 import mort.ar.searxme.manager.SearchParameterManager
@@ -56,11 +55,6 @@ internal class AppModule {
     @Provides
     fun provideSearxInstanceManager(app: Application) =
         SearxInstanceManager(provideSearxInstanceDao(provideDatabase(app)))
-
-    @Singleton
-    @Provides
-    fun provideSearchBoxTextWatcher() =
-        SearchBoxTextWatcher()
 
     @Singleton
     @Provides
