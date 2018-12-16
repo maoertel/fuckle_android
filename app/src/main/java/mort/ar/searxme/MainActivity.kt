@@ -202,6 +202,10 @@ class MainActivity : AppCompatActivity(),
 
 }
 
+
+/**
+ * Class that handles interactions of the [SearchView] and acts as a pimped [SearchView.OnQueryTextListener].
+ */
 class SearchBoxHandler(
     private val mSearchManager: SearchManager,
     private val mSearchView: SearchView,

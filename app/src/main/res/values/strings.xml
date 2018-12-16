@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">fuckle</string>
 
     <!-- MainActivity -->
@@ -6,6 +7,9 @@
 
     <!-- StartFragment -->
     <string name="fragment_start_searchbox_hint">Was suchst du?</string>
+
+    <!-- Toolbar -->
     <string name="toolbar_menuitem_title_more">more menu</string>
-    <string name="toolbar_menuitem_title_home">more menu</string>
+    <string name="toolbar_menuitem_title_home">more home</string>
+
 </resources>
