@@ -70,13 +70,10 @@ class MainActivity : AppCompatActivity(),
 
         mCompositeDisposable += searchBoxHandler.mQueryTextSubmitObservable
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { executeSearch(it) }
-
-        mCompositeDisposable += searchBoxHandler.mOnListItemClickObservable
-            .replay()
-            .autoConnect()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { searchView.setQuery(it, false) }
+            .subscribe {
+                searchView.setQuery(it, false)
+                executeSearch(it)
+            }
 
         setSearchViewStyle(searchView)
 

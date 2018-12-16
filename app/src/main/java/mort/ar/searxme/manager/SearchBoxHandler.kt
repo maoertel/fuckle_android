@@ -24,7 +24,7 @@ class SearchBoxHandler(
     private lateinit var mOnListItemClickEmitter: ObservableEmitter<String>
     private lateinit var mQueryTextSubmitEmitter: ObservableEmitter<String>
 
-    val mOnListItemClickObservable: Observable<String>
+    private val mOnListItemClickObservable: Observable<String>
     val mQueryTextSubmitObservable: Observable<String>
 
     private val mSearchSuggestionsAdapter: SearchSuggestionsAdapter
