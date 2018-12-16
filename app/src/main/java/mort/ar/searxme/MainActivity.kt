@@ -11,13 +11,12 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import dagger.android.AndroidInjection
-import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
+import mort.ar.searxme.manager.SearchBoxHandler
 import mort.ar.searxme.manager.SearchManager
 import mort.ar.searxme.model.SearxResult
 import javax.inject.Inject
@@ -198,68 +197,6 @@ class MainActivity : AppCompatActivity(),
     override fun onDestroy() {
         super.onDestroy()
         mCompositeDisposable.clear()
-    }
-
-}
-
-
-/**
- * Class that handles interactions of the [SearchView] and acts as a pimped [SearchView.OnQueryTextListener].
- */
-class SearchBoxHandler(
-    private val mSearchManager: SearchManager,
-    private val mSearchView: SearchView,
-    private val mItemsAdapter: ArrayAdapter<String>,
-    mListView: ListView
-) : SearchView.OnQueryTextListener {
-
-    private var isListSubmit = false
-
-    private lateinit var mQueryTextSubmitEmitter: ObservableEmitter<String>
-    val mQueryTextSubmitObservable: Observable<String>
-
-    init {
-        mQueryTextSubmitObservable = Observable.create { mQueryTextSubmitEmitter = it }
-        mListView.adapter = mItemsAdapter
-        mListView.setOnItemClickListener { adapterView, _, position, _ ->
-            val query = adapterView.getItemAtPosition(position) as String
-            isListSubmit = true
-            mSearchView.setQuery(query, false)
-            submitQuery(query)
-        }
-    }
-
-    override fun onQueryTextSubmit(query: String?): Boolean = submitQuery(query)
-
-    override fun onQueryTextChange(query: String?): Boolean {
-        when {
-            isListSubmit -> isListSubmit = !isListSubmit
-
-            else -> when {
-                query.isNullOrEmpty() -> {
-                    mItemsAdapter.clear()
-                    mItemsAdapter.notifyDataSetChanged()
-                }
-                else -> mSearchManager.getSearchAutoComplete(query)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { suggestions ->
-                        mItemsAdapter.clear()
-                        suggestions.forEach { mItemsAdapter.add(it) }
-                        mItemsAdapter.notifyDataSetChanged()
-                    }
-            }
-        }
-
-        return false
-    }
-
-    private fun submitQuery(query: String?): Boolean {
-        mItemsAdapter.clear()
-        mItemsAdapter.notifyDataSetChanged()
-        query?.let { mQueryTextSubmitEmitter.onNext(it) }
-
-        return false
     }
 
 }
