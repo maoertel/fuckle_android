@@ -213,6 +213,8 @@ class SearchBoxHandler(
     mListView: ListView
 ) : SearchView.OnQueryTextListener {
 
+    private var isListSubmit = false
+
     private lateinit var mQueryTextSubmitEmitter: ObservableEmitter<String>
     val mQueryTextSubmitObservable: Observable<String>
 
@@ -221,6 +223,7 @@ class SearchBoxHandler(
         mListView.adapter = mItemsAdapter
         mListView.setOnItemClickListener { adapterView, _, position, _ ->
             val query = adapterView.getItemAtPosition(position) as String
+            isListSubmit = true
             mSearchView.setQuery(query, false)
             submitQuery(query)
         }
@@ -230,18 +233,22 @@ class SearchBoxHandler(
 
     override fun onQueryTextChange(query: String?): Boolean {
         when {
-            query.isNullOrEmpty() -> {
-                mItemsAdapter.clear()
-                mItemsAdapter.notifyDataSetChanged()
-            }
-            else -> mSearchManager.getSearchAutoComplete(query)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { suggestions ->
+            isListSubmit -> isListSubmit = !isListSubmit
+
+            else -> when {
+                query.isNullOrEmpty() -> {
                     mItemsAdapter.clear()
-                    suggestions.forEach { mItemsAdapter.add(it) }
                     mItemsAdapter.notifyDataSetChanged()
                 }
+                else -> mSearchManager.getSearchAutoComplete(query)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { suggestions ->
+                        mItemsAdapter.clear()
+                        suggestions.forEach { mItemsAdapter.add(it) }
+                        mItemsAdapter.notifyDataSetChanged()
+                    }
+            }
         }
 
         return false
