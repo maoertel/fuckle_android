@@ -61,7 +61,7 @@ class SearchManager {
         )
     }
 
-    fun getSearchAutoComplete(query: String): Single<Array<String>> {
+    fun requestSearchAutoComplete(query: String): Single<Array<String>> {
         return mRetrofitService.getSearchAutocomplete(query)
     }
 

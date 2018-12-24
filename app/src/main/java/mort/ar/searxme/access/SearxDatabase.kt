@@ -5,7 +5,7 @@ import android.arch.persistence.room.RoomDatabase
 import mort.ar.searxme.model.SearxInstance
 
 
-@Database(entities = arrayOf(SearxInstance::class), version = 1)
+@Database(entities = [SearxInstance::class], version = 1, exportSchema = false)
 abstract class SearxDatabase : RoomDatabase() {
 
     abstract fun searxInstanceDao(): SearxInstanceDao

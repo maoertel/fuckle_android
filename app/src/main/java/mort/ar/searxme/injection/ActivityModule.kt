@@ -1,17 +1,52 @@
 package mort.ar.searxme.injection
 
 import dagger.Module
+import dagger.Provides
 import dagger.android.ContributesAndroidInjector
-import mort.ar.searxme.MainActivity
+import mort.ar.searxme.manager.SearchManager
+import mort.ar.searxme.search.*
 
 
 @Module
 internal abstract class ActivityModule {
 
-    @ContributesAndroidInjector(modules = [ActivityMainModule::class])
-    internal abstract fun contributeMainActivity(): MainActivity
+    @ContributesAndroidInjector(modules = [ActivitySearchModule::class])
+    abstract fun contributeSearchActivity(): SearchActivity
 
 }
 
 @Module
-internal class ActivityMainModule // not in use yet
+internal class ActivitySearchModule {
+
+    @Provides
+    internal fun provideSearchActivity(
+        searchActivity: SearchActivity
+    ): SearchContract.SearchView = searchActivity
+
+    @Provides
+    internal fun provideSearchPresenter(
+        mainView: SearchContract.SearchView,
+        searchManager: SearchManager
+    ): SearchPresenter = SearchPresenter(mainView, searchManager)
+
+    @Provides
+    fun provideSearchContractPresenter(searchPresenter: SearchPresenter) =
+        searchPresenter as SearchContract.SearchPresenter
+
+    @Provides
+    fun provideSearchResultPresenter(searchPresenter: SearchPresenter) =
+        searchPresenter as SearchContract.SearchResultPresenter
+
+    @Provides
+    fun provideSearchSuggestionsPresenter(searchPresenter: SearchPresenter) =
+        searchPresenter as SearchContract.SearchSuggestionPresenter
+
+    @Provides
+    fun provideSearchSuggestionsAdapter(searchPresenter: SearchPresenter) =
+        SearchSuggestionsAdapter(searchPresenter)
+
+    @Provides
+    fun provideSearchResultAdapter(searchPresenter: SearchPresenter) =
+        SearchResultAdapter(searchPresenter)
+
+}

@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
 import mort.ar.searxme.access.SearxDatabase
+import mort.ar.searxme.access.SearxInstanceDao
 import mort.ar.searxme.manager.SearchManager
 import mort.ar.searxme.manager.SearchParameterManager
 import mort.ar.searxme.manager.SearchParams
@@ -40,25 +41,27 @@ internal class AppModule {
 
     @Singleton
     @Provides
-    fun provideSearchManager(app: Application) =
-        SearchManager(
-            provideSearchParameterManager(app),
-            provideSearxInstanceManager(app)
-        )
+    fun provideSearchManager(
+        searchParameterManager: SearchParameterManager,
+        searxInstanceManager: SearxInstanceManager
+    ) = SearchManager(
+        searchParameterManager,
+        searxInstanceManager
+    )
 
     @Singleton
     @Provides
-    fun provideSearchParameterManager(app: Application) =
-        SearchParameterManager(provideSearchParameterSharedPreferences(app))
+    fun provideSearchParameterManager(sharedPreferences: SharedPreferences) =
+        SearchParameterManager(sharedPreferences)
 
     @Singleton
     @Provides
-    fun provideSearxInstanceManager(app: Application) =
-        SearxInstanceManager(provideSearxInstanceDao(provideDatabase(app)))
+    fun provideSearxInstanceManager(searxInstanceDao: SearxInstanceDao) =
+        SearxInstanceManager(searxInstanceDao)
 
     @Singleton
     @Provides
-    fun provideSearchParams(app: Application) =
-        SearchParams(provideSearchParameterSharedPreferences(app))
+    fun provideSearchParams(sharedPreferences: SharedPreferences) =
+        SearchParams(sharedPreferences)
 
 }

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
+
+    <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar"/>
+
+    <ProgressBar
+            android:id="@+id/indeterminateBar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/activity_main_progressbar_search_height"
+            android:indeterminate="true"
+            android:layout_marginTop="-6dp"
+            android:layout_marginBottom="-6dp"
+            android:indeterminateTint="@color/colorAccent"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:visibility="gone"/>
+
+    <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <android.support.constraint.ConstraintLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:background="@color/colorPrimary">
+
+            <ImageView
+                    android:id="@+id/fuckleLogo"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/fragment_start_logo_height"
+                    android:tint="@color/fragment_start_logo_tint"
+                    android:src="@drawable/ic_fuckle_logo"
+                    android:layout_marginTop="@dimen/fragment_start_margin_logo"
+                    android:layout_marginBottom="@dimen/fragment_start_margin_logo"
+                    android:layout_marginStart="@dimen/fragment_start_margin_logo"
+                    android:layout_marginEnd="@dimen/fragment_start_margin_logo"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.v7.widget.RecyclerView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/searchResultList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                tools:context=".search.SearchActivity"
+                tools:listitem="@layout/searchresult_entry"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_main_search_suggestions_container_margin_start_end"
+                android:layout_marginEnd="@dimen/activity_main_search_suggestions_container_margin_start_end"
+                android:layout_marginTop="@dimen/activity_main_search_suggestions_container_margin_top"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+            <android.support.v7.widget.RecyclerView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/searchSuggestionsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:context=".search.SearchActivity"
+                    tools:listitem="@layout/suggestions_list_entry"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
+
+        </LinearLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>

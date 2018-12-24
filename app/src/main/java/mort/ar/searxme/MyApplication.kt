@@ -22,6 +22,7 @@ class MyApplication : Application(), HasActivityInjector {
             .application(this)
             .build()
             .inject(this)
+
     }
 
     override fun activityInjector(): AndroidInjector<Activity> = activityInjector

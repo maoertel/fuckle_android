@@ -15,14 +15,6 @@ import kotlinx.android.synthetic.main.fragment_web_view.*
 private const val URL = "url"
 
 
-/**
- * Fragment that handle the WebView interactions
- *
- * Activities must implement the [WebViewFragment.OnWebViewFragmentInteractionListener] interface
- * to handle interaction events.
- *
- * Use the [WebViewFragment.newInstance] factory method to create an instance of this fragment.
- */
 class WebViewFragment : Fragment() {
 
     private var url: String? = null
@@ -38,7 +30,6 @@ class WebViewFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_web_view, container, false)
     }
 
@@ -91,22 +82,12 @@ class WebViewFragment : Fragment() {
         return false
     }
 
-    /**
-     * This interface interacts with it's implementing activity
-     * and potentially other fragments contained in that activity.
-     */
     interface OnWebViewFragmentInteractionListener {
         fun onWebViewFragmentInteraction()
     }
 
     companion object {
-        /**
-         * Factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param url the URL to load.
-         * @return A new instance of fragment WebViewFragment.
-         */
+
         @JvmStatic
         fun newInstance(url: String) =
             WebViewFragment().apply {

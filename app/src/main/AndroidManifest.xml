@@ -17,7 +17,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             tools:ignore="GoogleAppIndexingWarning">
         <activity
-                android:name="mort.ar.searxme.MainActivity"
+                android:name="mort.ar.searxme.search.SearchActivity"
                 android:windowSoftInputMode="stateVisible|adjustResize">
 
             <intent-filter>
