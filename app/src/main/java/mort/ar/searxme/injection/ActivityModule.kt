@@ -1,8 +1,10 @@
 package mort.ar.searxme.injection
 
+import android.support.v7.widget.LinearLayoutManager
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
+import mort.ar.searxme.WebViewFragment
 import mort.ar.searxme.manager.Searcher
 import mort.ar.searxme.search.*
 
@@ -48,5 +50,13 @@ internal class ActivitySearchModule {
     @Provides
     fun provideSearchResultAdapter(searchPresenter: SearchPresenter) =
         SearchResultAdapter(searchPresenter)
+
+    @Provides
+    fun provideWebViewFragment() =
+        WebViewFragment()
+
+    @Provides
+    fun provideLinearLayoutManager(searchActivity: SearchActivity) =
+        LinearLayoutManager(searchActivity)
 
 }

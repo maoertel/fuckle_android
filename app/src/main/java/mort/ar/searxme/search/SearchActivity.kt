@@ -15,7 +15,9 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_search.*
+import kotlinx.android.synthetic.main.fragment_web_view.*
 import mort.ar.searxme.R
+import mort.ar.searxme.WebViewFragment
 import mort.ar.searxme.model.SearxResponse
 import javax.inject.Inject
 
@@ -31,6 +33,15 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
     @Inject
     lateinit var searchResultAdapter: SearchResultAdapter
 
+    @Inject
+    lateinit var webViewFragment: WebViewFragment
+
+    @Inject
+    lateinit var suggestionsLinearLayoutManager: LinearLayoutManager
+
+    @Inject
+    lateinit var searchResultLinearLayoutManager: LinearLayoutManager
+
     private lateinit var searchView: SearchView
 
 
@@ -42,17 +53,20 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
         setSupportActionBar(toolbar as Toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-//        val searchSuggestions = findViewById<RecyclerView>(R.id.searchSuggestionsList)
         with(searchSuggestionsList) {
-            layoutManager = LinearLayoutManager(this@SearchActivity)
+            layoutManager = suggestionsLinearLayoutManager
             adapter = searchSuggestionsAdapter
         }
 
-//        val searchResults = findViewById<RecyclerView>(R.id.searchResultList)
         with(searchResultList) {
-            layoutManager = LinearLayoutManager(this@SearchActivity)
+            layoutManager = searchResultLinearLayoutManager
             adapter = searchResultAdapter
         }
+
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.webViewFragmentContainer, webViewFragment)
+            .commit()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -127,6 +141,26 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
         searchSuggestionsAdapter.clearSuggestions()
     }
 
+    override fun loadUrl(url: String) {
+        webView.loadUrl(url)
+    }
+
+    override fun showWebView() {
+        webViewFragmentContainer.visibility = View.VISIBLE
+    }
+
+    override fun hideWebView() {
+        webViewFragmentContainer.visibility = View.INVISIBLE
+    }
+
+    override fun showProgress() {
+        indeterminateBar.visibility = View.VISIBLE
+    }
+
+    override fun hideProgress() {
+        indeterminateBar.visibility = View.GONE
+    }
+
     override fun showErrorMessage(message: String?) {
         Toast
             .makeText(this, message, Toast.LENGTH_LONG)
@@ -139,4 +173,8 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
         imm.hideSoftInputFromWindow(currentFocus.windowToken, 0)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        searchPresenter.stop()
+    }
 }

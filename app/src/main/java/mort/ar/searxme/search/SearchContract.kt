@@ -8,10 +8,20 @@ import mort.ar.searxme.presenter.BasePresenter
 interface SearchContract {
 
     interface BaseView {
+        fun showProgress()
+
+        fun hideProgress()
+
         fun showErrorMessage(message: String?)
+
+        fun hideKeyboard()
     }
 
-    interface SearchView : BaseView {
+    interface WebView {
+        fun loadUrl(url: String)
+    }
+
+    interface SearchView : BaseView, WebView {
         fun clearSearchView()
 
         fun updateSearchResults(response: SearxResponse)
@@ -22,7 +32,9 @@ interface SearchContract {
 
         fun hideSearchSuggestions()
 
-        fun hideKeyboard()
+        fun showWebView()
+
+        fun hideWebView()
     }
 
     interface SearchResultPresenter {

@@ -5,7 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".MainActivity">
+        tools:context=".search.SearchActivity">
 
     <include
             android:id="@+id/toolbar"
@@ -43,12 +43,23 @@
                     android:layout_marginBottom="@dimen/fragment_start_margin_logo"
                     android:layout_marginStart="@dimen/fragment_start_margin_logo"
                     android:layout_marginEnd="@dimen/fragment_start_margin_logo"
+                    android:contentDescription="@string/activity_search_logo_content_description"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
         </android.support.constraint.ConstraintLayout>
+
+        <FrameLayout
+                android:id="@+id/webViewFragmentContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
         <android.support.v7.widget.RecyclerView
                 xmlns:android="http://schemas.android.com/apk/res/android"

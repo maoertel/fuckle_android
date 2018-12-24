@@ -14,5 +14,6 @@
 
     <!-- SearchResultFragment -->
     <string name="fragment_searchresult_card_engine_text">Gefunden bei:</string>
+    <string name="activity_search_logo_content_description">Fuckle Logo</string>
 
 </resources>
