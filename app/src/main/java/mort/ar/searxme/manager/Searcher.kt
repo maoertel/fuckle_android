@@ -12,27 +12,21 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Inject
 
 
-class SearchManager {
+class Searcher @Inject constructor(
+    private val searchParameter: SearchParameter,
+    private val searxInstanceBucket: SearxInstanceBucket
+) {
 
-    private val mSearchParameterManager: SearchParameterManager
-    private val mSearxInstanceManager: SearxInstanceManager
+    private lateinit var retrofitService: SearxAccess
 
-    private lateinit var mRetrofitService: SearxAccess
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
-    private val mCompositeDisposable: CompositeDisposable = CompositeDisposable()
-
-    @Inject
-    constructor(
-        searchParameterManager: SearchParameterManager,
-        searxInstanceManager: SearxInstanceManager
-    ) {
-        mSearchParameterManager = searchParameterManager
-        mSearxInstanceManager = searxInstanceManager
+    init {
         initRetrofitService()
     }
 
     private fun initRetrofitService() {
-        mCompositeDisposable += mSearxInstanceManager.getFirstInstance()
+        compositeDisposable += searxInstanceBucket.getFirstInstance()
             .subscribe { searxInstance ->
                 val retrofit = Retrofit.Builder()
                     .baseUrl(searxInstance.url)
@@ -41,13 +35,13 @@ class SearchManager {
                     // .addCallAdapterFactory(CoroutineCallAdapterFactory())
                     .build()
 
-                mRetrofitService = retrofit.create<SearxAccess>(SearxAccess::class.java)
+                retrofitService = retrofit.create<SearxAccess>(SearxAccess::class.java)
             }
     }
 
     fun getSearchResults(query: String): Observable<SearxResponse> {
-        val requestParams = mSearchParameterManager.mSearchParams
-        return mRetrofitService.getSearchResults(
+        val requestParams = searchParameter.searchParams
+        return retrofitService.getSearchResults(
             query = query,
             categories = requestParams.categories,
             engines = requestParams.engines,
@@ -62,11 +56,11 @@ class SearchManager {
     }
 
     fun requestSearchAutoComplete(query: String): Single<Array<String>> {
-        return mRetrofitService.getSearchAutocomplete(query)
+        return retrofitService.getSearchAutocomplete(query)
     }
 
     /*    private fun buildSearchRequest(query: String): SearchRequest {
-        val searchParams = mSearchParameterManager.mSearchParams
+        val searchParams = searchParameter.searchParams
         return SearchRequest(
             query = query,
             categories = searchParams.categories,

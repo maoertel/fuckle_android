@@ -9,7 +9,7 @@ private val initialInstance =
     SearxInstance(name = "https://searx.0x1b.de/", url = "https://searx.0x1b.de/", favorite = true)
 
 
-class SearxInstanceManager @Inject constructor(private val mInstanceDao: SearxInstanceDao) {
+class SearxInstanceBucket @Inject constructor(private val mInstanceDao: SearxInstanceDao) {
 
     private val mInstances = ArrayList<SearxInstance>()
 

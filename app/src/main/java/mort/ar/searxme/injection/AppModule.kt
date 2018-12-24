@@ -8,10 +8,10 @@ import dagger.Module
 import dagger.Provides
 import mort.ar.searxme.access.SearxDatabase
 import mort.ar.searxme.access.SearxInstanceDao
-import mort.ar.searxme.manager.SearchManager
-import mort.ar.searxme.manager.SearchParameterManager
+import mort.ar.searxme.manager.SearchParameter
 import mort.ar.searxme.manager.SearchParams
-import mort.ar.searxme.manager.SearxInstanceManager
+import mort.ar.searxme.manager.Searcher
+import mort.ar.searxme.manager.SearxInstanceBucket
 import javax.inject.Singleton
 
 
@@ -41,23 +41,23 @@ internal class AppModule {
 
     @Singleton
     @Provides
-    fun provideSearchManager(
-        searchParameterManager: SearchParameterManager,
-        searxInstanceManager: SearxInstanceManager
-    ) = SearchManager(
-        searchParameterManager,
-        searxInstanceManager
+    fun provideSearcher(
+        searchParameter: SearchParameter,
+        searxInstanceBucket: SearxInstanceBucket
+    ) = Searcher(
+        searchParameter,
+        searxInstanceBucket
     )
 
     @Singleton
     @Provides
-    fun provideSearchParameterManager(sharedPreferences: SharedPreferences) =
-        SearchParameterManager(sharedPreferences)
+    fun provideSearchParameter(sharedPreferences: SharedPreferences) =
+        SearchParameter(sharedPreferences)
 
     @Singleton
     @Provides
-    fun provideSearxInstanceManager(searxInstanceDao: SearxInstanceDao) =
-        SearxInstanceManager(searxInstanceDao)
+    fun provideSearxInstanceBucket(searxInstanceDao: SearxInstanceDao) =
+        SearxInstanceBucket(searxInstanceDao)
 
     @Singleton
     @Provides

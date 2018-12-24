@@ -4,14 +4,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
-import mort.ar.searxme.manager.SearchManager
+import mort.ar.searxme.manager.Searcher
 import mort.ar.searxme.model.SearxResult
 import javax.inject.Inject
 
 
 class SearchPresenter @Inject constructor(
     private val view: SearchContract.SearchView,
-    private val searchManager: SearchManager
+    private val searcher: Searcher
 ) : SearchContract.SearchPresenter {
 
     private val compositeDisposable = CompositeDisposable()
@@ -25,9 +25,11 @@ class SearchPresenter @Inject constructor(
     }
 
     override fun onSearchResultClick(searchResult: SearxResult) {
+
     }
 
     override fun onSearchSuggestionClick(query: String): Boolean {
+        view.hideSearchSuggestions()
         executeSearch(query)
 
         return false
@@ -45,7 +47,7 @@ class SearchPresenter @Inject constructor(
     override fun onQueryTextChange(query: String?): Boolean {
         when {
             query.isNullOrEmpty() -> view.hideSearchSuggestions()
-            else -> searchManager.requestSearchAutoComplete(query)
+            else -> searcher.requestSearchAutoComplete(query)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { suggestions -> view.updateSearchSuggestions(suggestions.toList()) }
@@ -57,7 +59,7 @@ class SearchPresenter @Inject constructor(
 
     private fun executeSearch(searchTerm: String) {
         view.hideKeyboard()
-        compositeDisposable += searchManager.getSearchResults(searchTerm)
+        compositeDisposable += searcher.getSearchResults(searchTerm)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe(

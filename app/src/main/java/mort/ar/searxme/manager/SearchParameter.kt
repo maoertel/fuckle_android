@@ -5,15 +5,15 @@ import io.reactivex.Observable
 import javax.inject.Inject
 
 
-class SearchParameterManager @Inject constructor(private val mSharedSearchPreferences: SharedPreferences) {
+class SearchParameter @Inject constructor(private val sharedSearchPreferences: SharedPreferences) {
 
     private val mSharedPreferencesObservable: Observable<String> =
         Observable.create { emitter ->
-            mSharedSearchPreferences
+            sharedSearchPreferences
                 .registerOnSharedPreferenceChangeListener { _, key -> emitter.onNext(key) }
         }
 
-    val mSearchParams: SearchParams = SearchParams(mSharedSearchPreferences)
+    val searchParams: SearchParams = SearchParams(sharedSearchPreferences)
 }
 
 class SearchParams @Inject constructor(private val sharedPreferences: SharedPreferences) {

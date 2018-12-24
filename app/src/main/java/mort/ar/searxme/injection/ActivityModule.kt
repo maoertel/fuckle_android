@@ -3,7 +3,7 @@ package mort.ar.searxme.injection
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
-import mort.ar.searxme.manager.SearchManager
+import mort.ar.searxme.manager.Searcher
 import mort.ar.searxme.search.*
 
 
@@ -26,8 +26,8 @@ internal class ActivitySearchModule {
     @Provides
     internal fun provideSearchPresenter(
         mainView: SearchContract.SearchView,
-        searchManager: SearchManager
-    ): SearchPresenter = SearchPresenter(mainView, searchManager)
+        searcher: Searcher
+    ): SearchPresenter = SearchPresenter(mainView, searcher)
 
     @Provides
     fun provideSearchContractPresenter(searchPresenter: SearchPresenter) =
