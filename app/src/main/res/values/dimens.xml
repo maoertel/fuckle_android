@@ -1,47 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- MainActivity -->
-    <dimen name="activity_main_progressbar_search_height">14dp</dimen>
-    <dimen name="activity_main_search_suggestions_container_margin_start_end">8dp</dimen>
-    <dimen name="activity_main_search_suggestions_container_margin_top">8dp</dimen>
-    <dimen name="activity_main_search_suggestions_card_margin_bottom">2dp</dimen>
-    <dimen name="activity_main_search_suggestions_textview_padding_top_bottom">8dp</dimen>
-    <dimen name="activity_main_search_suggestions_textview_padding_start_end">16dp</dimen>
-
-    <!-- SearchBox -->
-    <dimen name="searchbox_background_radius">24dp</dimen>
-
-    <!-- Toolbar -->
     <dimen name="toolbar_padding_end">16dp</dimen>
+    <dimen name="activity_search_searchbox_background_radius">24dp</dimen>
 
-    <!-- StartFragment -->
-    <dimen name="fragment_start_margin_logo">64dp</dimen>
-    <dimen name="fragment_start_logo_height">200dp</dimen>
+    <dimen name="activity_search_progressbar_search_height">14dp</dimen>
 
-    <!-- SearchResultFragment -->
-    <dimen name="fragment_searchresult_margin_top">4dp</dimen>
-    <dimen name="fragment_searchresult_margin_bottom">8dp</dimen>
-    <dimen name="fragment_searchresult_card_margin_start_end">8dp</dimen>
-    <dimen name="fragment_searchresult_card_margin_top">8dp</dimen>
-    <dimen name="fragment_searchresult_card_description_block_padding_start_end">16dp</dimen>
-    <dimen name="fragment_searchresult_card_description_block_padding_start_top">8dp</dimen>
-    <dimen name="fragment_searchresult_card_title_textsize">14sp</dimen>
-    <dimen name="fragment_searchresult_card_description_textsize">13sp</dimen>
-    <dimen name="fragment_searchresult_card_description_margin_top">8dp</dimen>
-    <dimen name="fragment_searchresult_card_url_group_margin_top">4dp</dimen>
-    <dimen name="fragment_searchresult_card_url_group_margin_bottom">8dp</dimen>
-    <dimen name="fragment_searchresult_card_url_icon_width">16dp</dimen>
-    <dimen name="fragment_searchresult_card_url_icon_margin_top">1dp</dimen>
-    <dimen name="fragment_searchresult_card_url_textsize">12sp</dimen>
-    <dimen name="fragment_searchresult_card_url_margin_start">8dp</dimen>
-    <dimen name="fragment_searchresult_card_engine_icon_width_height">16dp</dimen>
-    <dimen name="fragment_searchresult_card_engine_icon_margin_end">8dp</dimen>
-    <dimen name="fragment_searchresult_card_engine_margin_end">8dp</dimen>
-    <dimen name="fragment_searchresult_card_engines_group_padding_bottom">8dp</dimen>
-    <dimen name="fragment_searchresult_card_engines_group_padding_top">8dp</dimen>
-    <dimen name="fragment_searchresult_card_engines_group_padding_start">8dp</dimen>
-    <dimen name="fragment_searchresult_card_engines_group_padding_end">16dp</dimen>
-    <dimen name="fragment_searchresult_card_engine_textsize">12sp</dimen>
+    <dimen name="activity_search_suggestions_container_margin_start_end">8dp</dimen>
+    <dimen name="activity_search_suggestions_container_margin_top">8dp</dimen>
+    <dimen name="activity_search_suggestions_card_margin_bottom">2dp</dimen>
+    <dimen name="activity_search_suggestions_textview_padding_top_bottom">8dp</dimen>
+    <dimen name="activity_search_suggestions_textview_padding_start_end">16dp</dimen>
+
+    <dimen name="activity_search_start_margin_logo">64dp</dimen>
+    <dimen name="activity_search_start_logo_height">200dp</dimen>
+
+    <dimen name="activity_search_searchresult_card_margin_start_end">8dp</dimen>
+    <dimen name="activity_search_searchresult_card_margin_top">4dp</dimen>
+    <dimen name="activity_search_searchresult_card_margin_bottom">4dp</dimen>
+    <dimen name="activity_search_searchresult_card_description_block_padding_start_end">16dp</dimen>
+    <dimen name="activity_search_searchresult_card_description_block_padding_start_top">8dp</dimen>
+    <dimen name="activity_search_searchresult_card_title_textsize">14sp</dimen>
+    <dimen name="activity_search_searchresult_card_description_textsize">13sp</dimen>
+    <dimen name="activity_search_searchresult_card_description_margin_top">8dp</dimen>
+    <dimen name="activity_search_searchresult_card_url_group_margin_top">4dp</dimen>
+    <dimen name="activity_search_searchresult_card_url_group_margin_bottom">8dp</dimen>
+    <dimen name="activity_search_searchresult_card_url_icon_width">16dp</dimen>
+    <dimen name="activity_search_searchresult_card_url_icon_margin_top">1dp</dimen>
+    <dimen name="activity_search_searchresult_card_url_textsize">12sp</dimen>
+    <dimen name="activity_search_searchresult_card_url_margin_start">8dp</dimen>
+    <dimen name="activity_search_searchresult_card_engine_icon_width_height">16dp</dimen>
+    <dimen name="activity_search_searchresult_card_engine_icon_margin_end">8dp</dimen>
+    <dimen name="activity_search_searchresult_card_engine_margin_end">8dp</dimen>
+    <dimen name="activity_search_searchresult_card_engines_group_padding_bottom">8dp</dimen>
+    <dimen name="activity_search_searchresult_card_engines_group_padding_top">8dp</dimen>
+    <dimen name="activity_search_searchresult_card_engines_group_padding_start">8dp</dimen>
+    <dimen name="activity_search_searchresult_card_engines_group_padding_end">16dp</dimen>
+    <dimen name="activity_search_searchresult_card_engine_textsize">12sp</dimen>
 
 </resources>

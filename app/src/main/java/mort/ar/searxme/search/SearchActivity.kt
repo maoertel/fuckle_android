@@ -34,13 +34,13 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
     lateinit var searchResultAdapter: SearchResultAdapter
 
     @Inject
-    lateinit var webViewFragment: WebViewFragment
-
-    @Inject
     lateinit var suggestionsLinearLayoutManager: LinearLayoutManager
 
     @Inject
     lateinit var searchResultLinearLayoutManager: LinearLayoutManager
+
+    @Inject
+    lateinit var webViewFragment: WebViewFragment
 
     private lateinit var searchView: SearchView
 
@@ -85,7 +85,7 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
     private fun initSearchView(searchView: SearchView) {
         searchView.setIconifiedByDefault(false)
         searchView.isSubmitButtonEnabled = false
-        searchView.queryHint = getString(R.string.fragment_start_searchbox_hint)
+        searchView.queryHint = getString(R.string.activity_search_searchbox_hint)
 
         val searchPlate = searchView.findViewById(android.support.v7.appcompat.R.id.search_plate) as View
         searchPlate.setBackgroundColor(resources.getColor(R.color.colorPrimary))
@@ -118,9 +118,9 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
         searchView.clearFocus()
     }
 
-    override fun clearSearchView() {
+    override fun setSearchQuery(query: String) {
         with(searchView) {
-            setQuery("", false)
+            setQuery(query, false)
             clearFocus()
         }
     }
@@ -130,7 +130,7 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
     }
 
     override fun hideSearchResults() {
-        searchResultAdapter.clearSearchResults()
+        searchResultAdapter.updateSearchResults(null)
     }
 
     override fun updateSearchSuggestions(searchSuggestions: List<String>) {
@@ -153,6 +153,8 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
         webViewFragmentContainer.visibility = View.INVISIBLE
     }
 
+    override fun webViewOnBackPressed() = webViewFragment.onBackPressed()
+
     override fun showProgress() {
         indeterminateBar.visibility = View.VISIBLE
     }
@@ -169,12 +171,15 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
 
     override fun hideKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-        imm.hideSoftInputFromWindow(currentFocus.windowToken, 0)
+        imm.hideSoftInputFromWindow(toolbar.windowToken, 0)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         searchPresenter.stop()
+    }
+
+    override fun onBackPressed() {
+        searchPresenter.onBackPressed()
     }
 }

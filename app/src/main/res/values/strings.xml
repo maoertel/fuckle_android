@@ -2,18 +2,13 @@
 
     <string name="app_name">fuckle</string>
 
-    <!-- MainActivity -->
-    <string name="activity_main_message_empty_search">Searchin\' for nuthin is cool, but&#8230;</string>
-
-    <!-- Toolbar -->
     <string name="toolbar_menuitem_title_more">more menu</string>
     <string name="toolbar_menuitem_title_home">more home</string>
 
-    <!-- StartFragment -->
-    <string name="fragment_start_searchbox_hint">Was suchst du?</string>
+    <string name="activity_search_searchbox_hint">Was suchst du?</string>
 
-    <!-- SearchResultFragment -->
-    <string name="fragment_searchresult_card_engine_text">Gefunden bei:</string>
-    <string name="activity_search_logo_content_description">Fuckle Logo</string>
+    <string name="activity_search_start_logo_content_description">Fuckle Logo</string>
+
+    <string name="activity_search_searchresult_card_engine_text">Gefunden bei:</string>
 
 </resources>

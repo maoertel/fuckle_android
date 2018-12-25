@@ -4,16 +4,16 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:background="@color/colorPrimary"
-        android:layout_marginBottom="@dimen/activity_main_search_suggestions_card_margin_bottom">
+        android:layout_marginBottom="@dimen/activity_search_suggestions_card_margin_bottom">
 
     <TextView
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/suggestionTitle"
-            android:textColor="@color/activity_main_search_suggestions_textcolor"
-            android:paddingTop="@dimen/activity_main_search_suggestions_textview_padding_top_bottom"
-            android:paddingBottom="@dimen/activity_main_search_suggestions_textview_padding_top_bottom"
-            android:paddingStart="@dimen/activity_main_search_suggestions_textview_padding_start_end"
-            android:paddingEnd="@dimen/activity_main_search_suggestions_textview_padding_start_end"
+            android:textColor="@color/activity_search_suggestions_textcolor"
+            android:paddingTop="@dimen/activity_search_suggestions_textview_padding_top_bottom"
+            android:paddingBottom="@dimen/activity_search_suggestions_textview_padding_top_bottom"
+            android:paddingStart="@dimen/activity_search_suggestions_textview_padding_start_end"
+            android:paddingEnd="@dimen/activity_search_suggestions_textview_padding_start_end"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

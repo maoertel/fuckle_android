@@ -6,12 +6,13 @@ import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
 import mort.ar.searxme.manager.Searcher
 import mort.ar.searxme.model.SearxResult
+import mort.ar.searxme.search.Pages.*
 import javax.inject.Inject
 
 
-private const val START = "START"
-private const val SEARCH_RESULT = "SEARCH_RESULT"
-private const val WEBVIEW = "WEBVIEW"
+private enum class Pages { START, SEARCH_RESULT, WEBVIEW }
+
+private const val EMPTY = ""
 
 
 class SearchPresenter @Inject constructor(
@@ -20,6 +21,8 @@ class SearchPresenter @Inject constructor(
 ) : SearchContract.SearchPresenter {
 
     private val compositeDisposable = CompositeDisposable()
+
+    private var currentPage = START
 
 
     override fun start() {
@@ -34,12 +37,9 @@ class SearchPresenter @Inject constructor(
         showPage(WEBVIEW)
     }
 
-    override fun onSearchSuggestionClick(query: String): Boolean {
-        // TODO: fill searchViews query text with suggestions textl
+    override fun onSearchSuggestionClick(query: String) {
         showPage(SEARCH_RESULT)
         executeSearch(query)
-
-        return false
     }
 
     override fun onHomeButtonClick(): Boolean {
@@ -57,13 +57,13 @@ class SearchPresenter @Inject constructor(
     override fun onQueryTextChange(query: String?): Boolean {
         when {
             query.isNullOrEmpty() -> view.hideSearchSuggestions()
-            else -> searcher.requestSearchAutoComplete(query)
+            else -> compositeDisposable += searcher.requestSearchAutoComplete(query)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { suggestions -> view.updateSearchSuggestions(suggestions.toList()) }
         }
 
-        return false
+        return true
     }
 
     private fun executeSearch(searchTerm: String) {
@@ -83,9 +83,19 @@ class SearchPresenter @Inject constructor(
             )
     }
 
-    private fun showPage(page: String) {
+    override fun onBackPressed() {
+        when (currentPage) {
+            START -> view.showErrorMessage("Next click finishes the app")
+            SEARCH_RESULT -> showPage(START)
+            WEBVIEW -> if (!view.webViewOnBackPressed()) showPage(SEARCH_RESULT)
+        }
+    }
+
+    private fun showPage(page: Pages) {
+        currentPage = page
         when (page) {
             START -> {
+                view.setSearchQuery(EMPTY)
                 view.hideKeyboard()
                 view.hideSearchResults()
                 view.hideSearchSuggestions()

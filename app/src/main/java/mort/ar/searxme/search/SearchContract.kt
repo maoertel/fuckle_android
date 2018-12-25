@@ -2,7 +2,6 @@ package mort.ar.searxme.search
 
 import mort.ar.searxme.model.SearxResponse
 import mort.ar.searxme.model.SearxResult
-import mort.ar.searxme.presenter.BasePresenter
 
 
 interface SearchContract {
@@ -19,10 +18,12 @@ interface SearchContract {
 
     interface WebView {
         fun loadUrl(url: String)
+
+        fun webViewOnBackPressed(): Boolean
     }
 
     interface SearchView : BaseView, WebView {
-        fun clearSearchView()
+        fun setSearchQuery(query: String)
 
         fun updateSearchResults(response: SearxResponse)
 
@@ -37,12 +38,18 @@ interface SearchContract {
         fun hideWebView()
     }
 
+    interface BasePresenter {
+        fun start()
+
+        fun stop()
+    }
+
     interface SearchResultPresenter {
         fun onSearchResultClick(searchResult: SearxResult)
     }
 
     interface SearchSuggestionPresenter {
-        fun onSearchSuggestionClick(query: String): Boolean
+        fun onSearchSuggestionClick(query: String)
     }
 
     interface SearchPresenter :
@@ -55,6 +62,8 @@ interface SearchContract {
         fun onQueryTextSubmit(query: String?): Boolean
 
         fun onQueryTextChange(query: String?): Boolean
+
+        fun onBackPressed()
     }
 
 }

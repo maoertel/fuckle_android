@@ -66,13 +66,8 @@ class SearchResultAdapter @Inject constructor(
         }
     }
 
-    fun updateSearchResults(searxResponse: SearxResponse) {
+    fun updateSearchResults(searxResponse: SearxResponse?) {
         this.searxResponse = searxResponse
-        notifyDataSetChanged()
-    }
-
-    fun clearSearchResults() {
-        this.searxResponse = null
         notifyDataSetChanged()
     }
 
