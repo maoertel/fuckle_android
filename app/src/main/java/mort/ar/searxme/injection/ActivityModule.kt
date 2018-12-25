@@ -39,17 +39,13 @@ internal class ActivitySearchModule {
         searcher: Searcher
     ): SearchContract.SearchPresenter = SearchPresenter(searchView, searcher)
 
-    /*   @Provides
-    fun provideSearchContractPresenter(searchPresenter: SearchPresenter) =
-        searchPresenter as SearchContract.SearchPresenter
-
     @Provides
-    fun provideSearchResultPresenter(searchPresenter: SearchPresenter) =
+    fun provideSearchResultPresenter(searchPresenter: SearchContract.SearchPresenter) =
         searchPresenter as SearchContract.SearchResultPresenter
 
     @Provides
-    fun provideSearchSuggestionsPresenter(searchPresenter: SearchPresenter) =
-        searchPresenter as SearchContract.SearchSuggestionPresenter*/
+    fun provideSearchSuggestionsPresenter(searchPresenter: SearchContract.SearchPresenter) =
+        searchPresenter as SearchContract.SearchSuggestionPresenter
 
     @Provides
     fun provideSearchSuggestionsAdapter(searchPresenter: SearchContract.SearchPresenter) =
