@@ -11,7 +11,8 @@ import javax.inject.Inject
 
 
 class SearchSuggestionsAdapter @Inject constructor(
-    private val searchPresenter: SearchContract.SearchSuggestionPresenter
+    private val searchPresenter: SearchContract.SearchPresenter
+//    private val searchPresenter: SearchContract.SearchSuggestionPresenter
 ) : RecyclerView.Adapter<SearchSuggestionsAdapter.SearchSuggestionViewHolder>() {
 
     private val onClickListener: View.OnClickListener

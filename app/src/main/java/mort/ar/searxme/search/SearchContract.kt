@@ -11,7 +11,7 @@ interface SearchContract {
 
         fun hideProgress()
 
-        fun showErrorMessage(message: String?)
+        fun showMessage(message: String?)
 
         fun hideKeyboard()
     }
@@ -26,6 +26,8 @@ interface SearchContract {
         fun setSearchQuery(query: String)
 
         fun updateSearchResults(response: SearxResponse)
+
+        fun showSearchResults()
 
         fun hideSearchResults()
 
@@ -63,7 +65,7 @@ interface SearchContract {
 
         fun onQueryTextChange(query: String?): Boolean
 
-        fun onBackPressed()
+        fun onBackPressed(): Boolean
     }
 
 }

@@ -129,8 +129,12 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
         searchResultAdapter.updateSearchResults(response)
     }
 
+    override fun showSearchResults() {
+        searchResultList.visibility = View.VISIBLE
+    }
+
     override fun hideSearchResults() {
-        searchResultAdapter.updateSearchResults(null)
+        searchResultList.visibility = View.GONE
     }
 
     override fun updateSearchSuggestions(searchSuggestions: List<String>) {
@@ -163,7 +167,7 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
         indeterminateBar.visibility = View.GONE
     }
 
-    override fun showErrorMessage(message: String?) {
+    override fun showMessage(message: String?) {
         Toast
             .makeText(this, message, Toast.LENGTH_LONG)
             .show()
@@ -180,6 +184,6 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
     }
 
     override fun onBackPressed() {
-        searchPresenter.onBackPressed()
+        if (!searchPresenter.onBackPressed()) super.onBackPressed()
     }
 }

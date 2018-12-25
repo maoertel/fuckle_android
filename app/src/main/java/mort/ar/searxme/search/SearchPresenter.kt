@@ -10,7 +10,7 @@ import mort.ar.searxme.search.Pages.*
 import javax.inject.Inject
 
 
-private enum class Pages { START, SEARCH_RESULT, WEBVIEW }
+private enum class Pages { START, SEARCH_RESULTS, WEBVIEW }
 
 private const val EMPTY = ""
 
@@ -23,6 +23,9 @@ class SearchPresenter @Inject constructor(
     private val compositeDisposable = CompositeDisposable()
 
     private var currentPage = START
+
+    private var isSuggestionListSubmit = false
+    private var isNextClickQuitsApp = false
 
 
     override fun start() {
@@ -38,7 +41,9 @@ class SearchPresenter @Inject constructor(
     }
 
     override fun onSearchSuggestionClick(query: String) {
-        showPage(SEARCH_RESULT)
+        isSuggestionListSubmit = true
+        view.setSearchQuery(query)
+        showPage(SEARCH_RESULTS)
         executeSearch(query)
     }
 
@@ -48,7 +53,7 @@ class SearchPresenter @Inject constructor(
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-        showPage(SEARCH_RESULT)
+        showPage(SEARCH_RESULTS)
         query?.let { executeSearch(it) }
 
         return false
@@ -56,6 +61,7 @@ class SearchPresenter @Inject constructor(
 
     override fun onQueryTextChange(query: String?): Boolean {
         when {
+            isSuggestionListSubmit -> isSuggestionListSubmit = !isSuggestionListSubmit
             query.isNullOrEmpty() -> view.hideSearchSuggestions()
             else -> compositeDisposable += searcher.requestSearchAutoComplete(query)
                 .subscribeOn(Schedulers.io())
@@ -78,33 +84,46 @@ class SearchPresenter @Inject constructor(
                 },
                 { error ->
                     view.hideProgress()
-                    view.showErrorMessage(error.message)
+                    view.showMessage(error.message)
                 }
             )
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressed(): Boolean {
+        var isHandled = true
+
         when (currentPage) {
-            START -> view.showErrorMessage("Next click finishes the app")
-            SEARCH_RESULT -> showPage(START)
-            WEBVIEW -> if (!view.webViewOnBackPressed()) showPage(SEARCH_RESULT)
+            SEARCH_RESULTS -> showPage(START)
+            WEBVIEW -> if (!view.webViewOnBackPressed()) showPage(SEARCH_RESULTS)
+            START ->
+                when {
+                    isNextClickQuitsApp -> isHandled = false
+                    else -> {
+                        isNextClickQuitsApp = true
+                        view.showMessage("Next click finishes the app")
+                    }
+                }
         }
+
+        return isHandled
     }
 
     private fun showPage(page: Pages) {
         currentPage = page
         when (page) {
             START -> {
+                isNextClickQuitsApp = false
                 view.setSearchQuery(EMPTY)
                 view.hideKeyboard()
-                view.hideSearchResults()
                 view.hideSearchSuggestions()
+                view.hideSearchResults()
                 view.hideWebView()
             }
-            SEARCH_RESULT -> {
+            SEARCH_RESULTS -> {
                 view.hideKeyboard()
                 view.hideSearchSuggestions()
                 view.hideWebView()
+                view.showSearchResults()
             }
             WEBVIEW -> {
                 view.hideKeyboard()

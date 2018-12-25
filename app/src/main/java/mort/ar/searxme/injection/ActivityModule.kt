@@ -7,11 +7,17 @@ import dagger.android.ContributesAndroidInjector
 import mort.ar.searxme.WebViewFragment
 import mort.ar.searxme.manager.Searcher
 import mort.ar.searxme.search.*
+import javax.inject.Scope
+
+@Scope
+@kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
+annotation class ActivityScope
 
 
 @Module
 internal abstract class ActivityModule {
 
+    @ActivityScope
     @ContributesAndroidInjector(modules = [ActivitySearchModule::class])
     abstract fun contributeSearchActivity(): SearchActivity
 
@@ -20,18 +26,20 @@ internal abstract class ActivityModule {
 @Module
 internal class ActivitySearchModule {
 
+    @ActivityScope
     @Provides
-    internal fun provideSearchActivity(
+    fun provideSearchActivity(
         searchActivity: SearchActivity
     ): SearchContract.SearchView = searchActivity
 
+    @ActivityScope
     @Provides
-    internal fun provideSearchPresenter(
-        mainView: SearchContract.SearchView,
+    fun provideSearchPresenter(
+        searchView: SearchContract.SearchView,
         searcher: Searcher
-    ): SearchPresenter = SearchPresenter(mainView, searcher)
+    ): SearchContract.SearchPresenter = SearchPresenter(searchView, searcher)
 
-    @Provides
+    /*   @Provides
     fun provideSearchContractPresenter(searchPresenter: SearchPresenter) =
         searchPresenter as SearchContract.SearchPresenter
 
@@ -41,14 +49,14 @@ internal class ActivitySearchModule {
 
     @Provides
     fun provideSearchSuggestionsPresenter(searchPresenter: SearchPresenter) =
-        searchPresenter as SearchContract.SearchSuggestionPresenter
+        searchPresenter as SearchContract.SearchSuggestionPresenter*/
 
     @Provides
-    fun provideSearchSuggestionsAdapter(searchPresenter: SearchPresenter) =
+    fun provideSearchSuggestionsAdapter(searchPresenter: SearchContract.SearchPresenter) =
         SearchSuggestionsAdapter(searchPresenter)
 
     @Provides
-    fun provideSearchResultAdapter(searchPresenter: SearchPresenter) =
+    fun provideSearchResultAdapter(searchPresenter: SearchContract.SearchPresenter) =
         SearchResultAdapter(searchPresenter)
 
     @Provides
