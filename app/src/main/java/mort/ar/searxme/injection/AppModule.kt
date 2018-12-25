@@ -6,7 +6,7 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
-import mort.ar.searxme.access.SearxDatabase
+import mort.ar.searxme.access.Database
 import mort.ar.searxme.access.SearxInstanceDao
 import mort.ar.searxme.manager.SearchParameter
 import mort.ar.searxme.manager.SearchParams
@@ -25,18 +25,18 @@ internal class AppModule {
 
     @Singleton
     @Provides
-    fun provideDatabase(app: Application): SearxDatabase =
+    fun provideDatabase(app: Application): Database =
         Room
             .databaseBuilder(
                 app,
-                SearxDatabase::class.java,
+                Database::class.java,
                 "searx.db"
             )
             .build()
 
     @Singleton
     @Provides
-    fun provideSearxInstanceDao(database: SearxDatabase) =
+    fun provideSearxInstanceDao(database: Database) =
         database.searxInstanceDao()
 
     @Singleton
