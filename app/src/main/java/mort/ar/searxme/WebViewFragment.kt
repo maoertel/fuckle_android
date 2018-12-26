@@ -36,12 +36,11 @@ class WebViewFragment : Fragment() {
 
     private fun initWebSettings(webSettings: WebSettings) {
         webSettings.setSupportZoom(true)
-        webSettings.builtInZoomControls = true
         webSettings.javaScriptEnabled = true
         webSettings.domStorageEnabled = true
         webSettings.loadWithOverviewMode = true
         webSettings.useWideViewPort = true
-        webSettings.setAppCacheEnabled(false)
+        webSettings.setGeolocationEnabled(false)
     }
 
     fun onBackPressed(): Boolean =
