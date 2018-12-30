@@ -13,6 +13,9 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_settings.*
+import kotlinx.android.synthetic.main.settings_languages.*
+import kotlinx.android.synthetic.main.settings_searx_instances.*
+import kotlinx.android.synthetic.main.settings_time_ranges.*
 import mort.ar.searxme.R
 import mort.ar.searxme.manager.SearchParameter
 import mort.ar.searxme.manager.SearxInstanceBucket
@@ -45,6 +48,7 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
         initializeSearxInstanceSpinner()
         initializeLanguageSpinner()
         initializeTimeRangeSpinner()
+        initializeCategories()
     }
 
     private fun initializeTimeRangeSpinner() {
@@ -94,6 +98,7 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
                     android.R.layout.simple_spinner_dropdown_item,
                     instances
                 )
+                spinnerSearxInstances.setSelection(0)
                 spinnerSearxInstances.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                         searxInstanceBucket.setCurrentInstance(spinnerSearxInstances.selectedItem.toString())
@@ -102,6 +107,10 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
                     override fun onNothingSelected(parent: AdapterView<*>?) {}
                 }
             }
+    }
+
+    private fun initializeCategories() {
+
     }
 
     override fun showProgress() {

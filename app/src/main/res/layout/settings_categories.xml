@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_weight="50"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
+
+    <TextView
+            android:id="@+id/categoriesTitle"
+            android:text="Kategorien"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/categoriesTitle">
+
+        <CheckBox
+                android:id="@+id/checkBoxCategoriesDefault"
+                android:text="alle (default)"
+                android:buttonTint="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"/>
+
+        <CheckBox
+                android:id="@+id/checkBoxFiles"
+                android:text="Dateien"
+                android:buttonTint="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"/>
+
+        <CheckBox
+                android:id="@+id/checkBoxImages"
+                android:text="Bilder"
+                android:buttonTint="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"/>
+
+        <CheckBox
+                android:id="@+id/checkBoxIT"
+                android:text="IT"
+                android:buttonTint="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"/>
+
+        <CheckBox
+                android:id="@+id/checkBoxMap"
+                android:text="Karte"
+                android:buttonTint="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"/>
+
+        <CheckBox
+                android:id="@+id/checkBoxMusic"
+                android:text="Musik"
+                android:buttonTint="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"/>
+
+        <CheckBox
+                android:id="@+id/checkBoxNews"
+                android:text="News"
+                android:buttonTint="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"/>
+
+        <CheckBox
+                android:id="@+id/checkBoxScience"
+                android:text="Wissenschaft"
+                android:buttonTint="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"/>
+
+        <CheckBox
+                android:id="@+id/checkBoxSocialMedia"
+                android:text="Soziale Medien"
+                android:buttonTint="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"/>
+
+        <CheckBox
+                android:id="@+id/checkBoxVideo"
+                android:text="Videos"
+                android:buttonTint="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"/>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
