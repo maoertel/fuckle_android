@@ -29,14 +29,4 @@
           app:iconTint="@color/activity_search_toolbar_icons"
           app:showAsAction="always"/>
 
-    <!--<item android:id="@+id/action_more"
-          android:title="@string/toolbar_menuitem_title_more"
-          android:visible="true"
-          android:enabled="true"
-          android:checkable="true"
-          android:icon="@drawable/ic_baseline_more_vert_24px"
-          android:iconTint="@color/activity_search_toolbar_icons"
-          app:iconTint="@color/activity_search_toolbar_icons"
-          app:showAsAction="always"/>-->
-
 </menu>

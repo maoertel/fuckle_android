@@ -23,18 +23,11 @@
         <include android:id="@+id/settingsTimeRange"
                  layout="@layout/settings_time_ranges"/>
 
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+        <include android:id="@+id/settingsEngines"
+                 layout="@layout/settings_engines"/>
 
-            <include android:id="@+id/settingsEngines"
-                     layout="@layout/settings_engines"/>
-
-            <include android:id="@+id/settingsCategories"
-                     layout="@layout/settings_categories"/>
-
-        </LinearLayout>
+        <include android:id="@+id/settingsCategories"
+                 layout="@layout/settings_categories"/>
 
     </LinearLayout>
 
