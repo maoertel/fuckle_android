@@ -26,7 +26,7 @@ class Searcher @Inject constructor(
     }
 
     private fun initRetrofitService() {
-        compositeDisposable += searxInstanceBucket.getFirstInstance()
+        compositeDisposable += searxInstanceBucket.getCurrentInstance()
             .subscribe { searxInstance ->
                 val retrofit = Retrofit.Builder()
                     .baseUrl(searxInstance.url)
@@ -39,15 +39,15 @@ class Searcher @Inject constructor(
             }
     }
 
-    fun getSearchResults(query: String): Observable<SearxResponse> {
+    fun requestSearchResults(query: String): Observable<SearxResponse> {
         val requestParams = searchParameter.searchParams
-        return retrofitService.getSearchResults(
+        return retrofitService.requestSearchResults(
             query = query,
             categories = requestParams.categories,
             engines = requestParams.engines,
-            language = requestParams.language,
+            language = requestParams.language.languageParameter,
             pageNo = requestParams.pageNo,
-            timeRange = requestParams.timeRange,
+            timeRange = requestParams.timeRange.rangeParameter,
             format = requestParams.format,
             imageProxy = requestParams.imageProxy,
             autoComplete = requestParams.autoComplete,
@@ -56,7 +56,7 @@ class Searcher @Inject constructor(
     }
 
     fun requestSearchAutoComplete(query: String): Single<Array<String>> {
-        return retrofitService.getSearchAutocomplete(query)
+        return retrofitService.requestSearchAutocomplete(query)
     }
 
     /*    private fun buildSearchRequest(query: String): SearchRequest {

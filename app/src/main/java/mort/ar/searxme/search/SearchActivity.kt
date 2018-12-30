@@ -1,6 +1,7 @@
 package mort.ar.searxme.search
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -42,6 +43,9 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
     @Inject
     lateinit var webViewFragment: WebViewFragment
 
+    @Inject
+    lateinit var settingsIntent: Intent
+
     private lateinit var searchView: SearchView
 
 
@@ -79,6 +83,9 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
         val home = menu.findItem(R.id.action_home)
         home?.setOnMenuItemClickListener { searchPresenter.onHomeButtonClick() }
 
+        val settings = menu.findItem(R.id.action_settings)
+        settings.setOnMenuItemClickListener { searchPresenter.onSettingsButtonClick() }
+
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -91,14 +98,14 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
         searchPlate.setBackgroundColor(resources.getColor(R.color.colorPrimary))
 
         val searchIcon = searchView.findViewById(android.support.v7.appcompat.R.id.search_mag_icon) as ImageView
-        searchIcon.setColorFilter(getColor(R.color.toolbar_icons))
+        searchIcon.setColorFilter(getColor(R.color.activity_search_toolbar_icons))
         searchIcon.layoutParams = LinearLayout.LayoutParams(0, 0)
 
         val closeButton = searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn) as ImageView
-        closeButton.setColorFilter(getColor(R.color.toolbar_icons))
+        closeButton.setColorFilter(getColor(R.color.activity_search_toolbar_icons))
 
         val submitButton = searchView.findViewById(android.support.v7.appcompat.R.id.search_go_btn) as ImageView
-        submitButton.setColorFilter(getColor(R.color.toolbar_icons))
+        submitButton.setColorFilter(getColor(R.color.activity_search_toolbar_icons))
 
         val submitButtonArea = searchView.findViewById(android.support.v7.appcompat.R.id.submit_area) as View
         submitButtonArea.setBackgroundColor(resources.getColor(R.color.colorPrimary))
@@ -157,7 +164,11 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
         webViewFragmentContainer.visibility = View.INVISIBLE
     }
 
-    override fun webViewOnBackPressed() = webViewFragment.onBackPressed()
+    override fun onBackPressedHandledByWebView() = webViewFragment.onBackPressed()
+
+    override fun startSettings() {
+        startActivity(settingsIntent)
+    }
 
     override fun showProgress() {
         indeterminateBar.visibility = View.VISIBLE
@@ -184,6 +195,6 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
     }
 
     override fun onBackPressed() {
-        if (!searchPresenter.onBackPressed()) super.onBackPressed()
+        if (!searchPresenter.handleOnBackPress()) super.onBackPressed()
     }
 }

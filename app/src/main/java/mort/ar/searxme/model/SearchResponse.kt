@@ -3,6 +3,7 @@ package mort.ar.searxme.model
 import com.squareup.moshi.Json
 import java.io.Serializable
 
+
 data class SearxResponse(
     @field:Json(name = "number_of_results") val numberOfResults: Long,
     @field:Json(name = "corrections") val corrections: Array<String>,

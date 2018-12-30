@@ -2,13 +2,16 @@
 
     <string name="app_name">fuckle</string>
 
-    <string name="toolbar_menuitem_title_more">more menu</string>
-    <string name="toolbar_menuitem_title_home">more home</string>
+    <string name="toolbar_menuitem_title_more">Mehr</string>
+    <string name="toolbar_menuitem_title_home">Home</string>
+    <string name="toolbar_menuitem_title_settings">Einstellungen</string>
 
     <string name="activity_search_searchbox_hint">Was suchst du?</string>
 
     <string name="activity_search_start_logo_content_description">Fuckle Logo</string>
 
     <string name="activity_search_searchresult_card_engine_text">Gefunden bei:</string>
+
+    <string name="activity_settings_toolbar_title">Einstellungen</string>
 
 </resources>

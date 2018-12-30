@@ -1,5 +1,6 @@
 package mort.ar.searxme.injection
 
+import android.content.Intent
 import android.support.v7.widget.LinearLayoutManager
 import dagger.Module
 import dagger.Provides
@@ -7,6 +8,9 @@ import dagger.android.ContributesAndroidInjector
 import mort.ar.searxme.WebViewFragment
 import mort.ar.searxme.manager.Searcher
 import mort.ar.searxme.search.*
+import mort.ar.searxme.settings.SettingsActivity
+import mort.ar.searxme.settings.SettingsContract
+import mort.ar.searxme.settings.SettingsPresenter
 import javax.inject.Scope
 
 @Scope
@@ -20,6 +24,27 @@ internal abstract class ActivityModule {
     @ActivityScope
     @ContributesAndroidInjector(modules = [ActivitySearchModule::class])
     abstract fun contributeSearchActivity(): SearchActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [ActivitySettingsModule::class])
+    abstract fun contributeSettingsActivity(): SettingsActivity
+
+}
+
+@Module
+internal class ActivitySettingsModule {
+
+    @ActivityScope
+    @Provides
+    fun provideSettingsActivity(
+        settingsActivity: SettingsActivity
+    ): SettingsContract.SettingsView = settingsActivity
+
+    @ActivityScope
+    @Provides
+    fun provideSettingsPresenter(
+        settingsView: SettingsContract.SettingsView
+    ): SettingsContract.SettingsPresenter = SettingsPresenter(settingsView)
 
 }
 
@@ -63,4 +88,7 @@ internal class ActivitySearchModule {
     fun provideLinearLayoutManager(searchActivity: SearchActivity) =
         LinearLayoutManager(searchActivity)
 
+    @Provides
+    fun provideSettingsIntent(searchActivity: SearchActivity) =
+            Intent(searchActivity, SettingsActivity::class.java)
 }

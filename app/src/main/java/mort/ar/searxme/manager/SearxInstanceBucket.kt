@@ -31,4 +31,19 @@ class SearxInstanceBucket @Inject constructor(private val mInstanceDao: SearxIns
         }
     }
 
+    fun getAllInstances(): Observable<List<SearxInstance>> {
+        return when {
+            mInstances.isNotEmpty() -> Observable.just(mInstances)
+            else -> mInstanceDao.getAllSearxInstances()
+                .toObservable()
+        }
+    }
+
+    fun getCurrentInstance(): Observable<SearxInstance> =
+        getFirstInstance()
+
+    fun setCurrentInstance(instance: String) {
+        // TODO
+    }
+
 }

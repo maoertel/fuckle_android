@@ -2,6 +2,10 @@ package mort.ar.searxme.manager
 
 import android.content.SharedPreferences
 import io.reactivex.Observable
+import mort.ar.searxme.model.Languages
+import mort.ar.searxme.model.Languages.*
+import mort.ar.searxme.model.TimeRanges
+import mort.ar.searxme.model.TimeRanges.*
 import javax.inject.Inject
 
 
@@ -36,12 +40,37 @@ class SearchParams @Inject constructor(private val sharedPreferences: SharedPref
                 .apply()
         }
 
-    var language: String? = sharedPreferences.getString("language", null)
+    var language: Languages = Languages.DEFAULT
+        get() =
+            when (sharedPreferences.getString("language", null)) {
+                "en" -> ENGLISH
+                "de" -> GERMAN
+                "fr" -> FRENCH
+                "es" -> SPANISH
+                else -> Languages.DEFAULT
+            }
         set(value) {
             field = value
             sharedPreferences
                 .edit()
-                .putString("language", value)
+                .putString("language", value.languageParameter)
+                .apply()
+        }
+
+    var timeRange: TimeRanges = TimeRanges.DEFAULT
+        get() =
+            when (sharedPreferences.getString("time_range", null)) {
+                "day" -> DAY
+                "week" -> WEEK
+                "month" -> MONTH
+                "year" -> YEAR
+                else -> TimeRanges.DEFAULT
+            }
+        set(value) {
+            field = value
+            sharedPreferences
+                .edit()
+                .putString("time_range", value.rangeParameter)
                 .apply()
         }
 
@@ -51,15 +80,6 @@ class SearchParams @Inject constructor(private val sharedPreferences: SharedPref
             sharedPreferences
                 .edit()
                 .putInt("pageno", value ?: 1)
-                .apply()
-        }
-
-    var timeRange: String? = sharedPreferences.getString("time_range", null)
-        set(value) {
-            field = value
-            sharedPreferences
-                .edit()
-                .putString("time_range", value)
                 .apply()
         }
 

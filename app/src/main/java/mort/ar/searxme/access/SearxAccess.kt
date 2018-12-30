@@ -10,7 +10,7 @@ import retrofit2.http.Query
 interface SearxAccess {
 
     @GET("/search")
-    fun getSearchResults(
+    fun requestSearchResults(
         @Query("q") query: String,
         @Query("categories") categories: String? = null,
         @Query("engines") engines: String? = null,
@@ -24,7 +24,7 @@ interface SearxAccess {
     ): Observable<SearxResponse>
 
     @GET("/autocompleter")
-    fun getSearchAutocomplete(
+    fun requestSearchAutocomplete(
         @Query("q") query: String? = "",
         @Query("autocomplete") autoComplete: String? = "duckduckgo"
     ): Single<Array<String>>

@@ -19,7 +19,7 @@ interface SearchContract {
     interface WebView {
         fun loadUrl(url: String)
 
-        fun webViewOnBackPressed(): Boolean
+        fun onBackPressedHandledByWebView(): Boolean
     }
 
     interface SearchView : BaseView, WebView {
@@ -38,6 +38,8 @@ interface SearchContract {
         fun showWebView()
 
         fun hideWebView()
+
+        fun startSettings()
     }
 
     interface BasePresenter {
@@ -61,11 +63,13 @@ interface SearchContract {
 
         fun onHomeButtonClick(): Boolean
 
+        fun onSettingsButtonClick(): Boolean
+
         fun onQueryTextSubmit(query: String?): Boolean
 
         fun onQueryTextChange(query: String?): Boolean
 
-        fun onBackPressed(): Boolean
+        fun handleOnBackPress(): Boolean
     }
 
 }

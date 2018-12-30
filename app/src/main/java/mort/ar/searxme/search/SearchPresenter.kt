@@ -25,7 +25,7 @@ class SearchPresenter @Inject constructor(
     private var currentPage = START
 
     private var isSuggestionListSubmit = false
-    private var isNextClickQuitsApp = false
+    private var isLastClickBeforeQuitApp = false
 
 
     override fun start() {
@@ -52,6 +52,11 @@ class SearchPresenter @Inject constructor(
         return false
     }
 
+    override fun onSettingsButtonClick(): Boolean {
+        view.startSettings()
+        return false
+    }
+
     override fun onQueryTextSubmit(query: String?): Boolean {
         showPage(SEARCH_RESULTS)
         query?.let { executeSearch(it) }
@@ -74,7 +79,7 @@ class SearchPresenter @Inject constructor(
 
     private fun executeSearch(searchTerm: String) {
         view.showProgress()
-        compositeDisposable += searcher.getSearchResults(searchTerm)
+        compositeDisposable += searcher.requestSearchResults(searchTerm)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe(
@@ -89,20 +94,19 @@ class SearchPresenter @Inject constructor(
             )
     }
 
-    override fun onBackPressed(): Boolean {
+    override fun handleOnBackPress(): Boolean {
         var isHandled = true
 
         when (currentPage) {
             SEARCH_RESULTS -> showPage(START)
-            WEBVIEW -> if (!view.webViewOnBackPressed()) showPage(SEARCH_RESULTS)
-            START ->
-                when {
-                    isNextClickQuitsApp -> isHandled = false
-                    else -> {
-                        isNextClickQuitsApp = true
-                        view.showMessage("Next click finishes the app")
-                    }
+            WEBVIEW -> if (!view.onBackPressedHandledByWebView()) showPage(SEARCH_RESULTS)
+            START -> when {
+                isLastClickBeforeQuitApp -> isHandled = false
+                else -> {
+                    isLastClickBeforeQuitApp = true
+                    view.showMessage("Next click finishes the app")
                 }
+            }
         }
 
         return isHandled
@@ -111,27 +115,33 @@ class SearchPresenter @Inject constructor(
     private fun showPage(page: Pages) {
         currentPage = page
         when (page) {
-            START -> {
-                isNextClickQuitsApp = false
-                view.setSearchQuery(EMPTY)
-                view.hideKeyboard()
-                view.hideSearchSuggestions()
-                view.hideSearchResults()
-                view.hideWebView()
-            }
-            SEARCH_RESULTS -> {
-                view.hideKeyboard()
-                view.hideSearchSuggestions()
-                view.hideWebView()
-                view.showSearchResults()
-            }
-            WEBVIEW -> {
-                view.hideKeyboard()
-                view.hideSearchResults()
-                view.hideSearchSuggestions()
-                view.showWebView()
-            }
+            START -> showStartPage()
+            SEARCH_RESULTS -> showSearchResultPage()
+            WEBVIEW -> showWebViewPage()
         }
+    }
+
+    private fun showStartPage() {
+        isLastClickBeforeQuitApp = false
+        view.setSearchQuery(EMPTY)
+        view.hideKeyboard()
+        view.hideSearchSuggestions()
+        view.hideSearchResults()
+        view.hideWebView()
+    }
+
+    private fun showSearchResultPage() {
+        view.hideKeyboard()
+        view.hideSearchSuggestions()
+        view.hideWebView()
+        view.showSearchResults()
+    }
+
+    private fun showWebViewPage() {
+        view.hideKeyboard()
+        view.hideSearchResults()
+        view.hideSearchSuggestions()
+        view.showWebView()
     }
 
 }
