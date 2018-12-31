@@ -13,9 +13,11 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_settings.*
+import kotlinx.android.synthetic.main.settings_engines.*
 import kotlinx.android.synthetic.main.settings_languages.*
 import kotlinx.android.synthetic.main.settings_searx_instances.*
 import kotlinx.android.synthetic.main.settings_time_ranges.*
+import kotlinx.android.synthetic.main.toolbar_settings.*
 import mort.ar.searxme.R
 import mort.ar.searxme.manager.SearchParameter
 import mort.ar.searxme.manager.SearxInstanceBucket
@@ -37,6 +39,8 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
 
     private val compositeDisposable = CompositeDisposable()
 
+    private val engines = HashMap<String, String>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -45,10 +49,13 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
         setContentView(R.layout.activity_settings)
         setSupportActionBar(toolbarSettings as Toolbar)
 
+        backButton.setOnClickListener { onBackPressed() }
+
         initializeSearxInstanceSpinner()
         initializeLanguageSpinner()
         initializeTimeRangeSpinner()
         initializeCategories()
+        initializeEngines()
     }
 
     private fun initializeTimeRangeSpinner() {
@@ -113,6 +120,58 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
 
     }
 
+    private fun initializeEngines() {
+        checkBoxDefault.isChecked = true
+        checkBoxDefault.setOnClickListener {
+            when (checkBoxDefault.isChecked) {
+                true -> checkBoxDefault.isChecked = false
+                else -> checkBoxDefault.isChecked = true
+            }
+        }
+
+        checkBoxDdg.setOnClickListener {
+            when (checkBoxDdg.isChecked) {
+                true -> engines["duckduckgo"] = "duckduckgo"
+                else -> engines.remove("duckduckgo")
+            }
+        }
+
+        checkBoxBing.setOnClickListener {
+            when (checkBoxBing.isChecked) {
+                true -> engines["bing"] = "bing"
+                else -> engines.remove("bing")
+            }
+        }
+
+        checkBoxWikipedia.setOnClickListener {
+            when (checkBoxWikipedia.isChecked) {
+                true -> engines["wikipedia"] = "wikipedia"
+                else -> engines.remove("wikipedia")
+            }
+        }
+
+        checkBoxDuden.setOnClickListener {
+            when (checkBoxDuden.isChecked) {
+                true -> engines["duden"] = "duden"
+                else -> engines.remove("duden")
+            }
+        }
+
+        checkBoxGoogle.setOnClickListener {
+            when (checkBoxGoogle.isChecked) {
+                true -> engines["google"] = "google"
+                else -> engines.remove("google")
+            }
+        }
+
+        checkBoxQwant.setOnClickListener {
+            when (checkBoxQwant.isChecked) {
+                true -> engines["qwant"] = "qwant"
+                else -> engines.remove("qwant")
+            }
+        }
+    }
+
     override fun showProgress() {
     }
 
@@ -123,6 +182,11 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
     }
 
     override fun hideKeyboard() {
+    }
+
+    override fun onBackPressed() {
+        searchParameter.searchParams.engines = engines.values.joinToString(",")
+        super.onBackPressed()
     }
 
 }

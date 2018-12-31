@@ -35,7 +35,7 @@ class SearchResultAdapter @Inject constructor(
         val iconDuckDuckGo: ImageView = view.iconDuckDuckGo
         val iconBing: ImageView = view.iconBing
         val iconWikipedia: ImageView = view.iconWikipedia
-        val iconAmazon: ImageView = view.iconAmazon
+        val iconQwant: ImageView = view.iconQwant
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -57,7 +57,7 @@ class SearchResultAdapter @Inject constructor(
             if (item.engines.contains("duckduckgo")) holder.iconDuckDuckGo.visibility = View.VISIBLE
             if (item.engines.contains("bing")) holder.iconBing.visibility = View.VISIBLE
             if (item.engines.contains("wikipedia")) holder.iconWikipedia.visibility = View.VISIBLE
-            if (item.engines.contains("amazon")) holder.iconAmazon.visibility = View.VISIBLE
+            if (item.engines.contains("qwant")) holder.iconQwant.visibility = View.VISIBLE
 
             with(holder.view) {
                 tag = item

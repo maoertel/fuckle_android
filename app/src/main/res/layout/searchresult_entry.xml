@@ -99,27 +99,11 @@
                     android:text="@string/activity_search_searchresult_card_engine_text"/>
 
             <ImageView
-                    android:id="@+id/iconGoogle"
-                    android:layout_width="@dimen/activity_search_searchresult_card_engine_icon_width_height"
-                    android:layout_height="@dimen/activity_search_searchresult_card_engine_icon_width_height"
-                    android:layout_marginEnd="@dimen/activity_search_searchresult_card_engine_icon_margin_end"
-                    android:src="@drawable/ic_googl_logo"
-                    android:visibility="gone"/>
-
-            <ImageView
                     android:id="@+id/iconDuckDuckGo"
                     android:layout_width="@dimen/activity_search_searchresult_card_engine_icon_width_height"
                     android:layout_height="@dimen/activity_search_searchresult_card_engine_icon_width_height"
                     android:layout_marginEnd="@dimen/activity_search_searchresult_card_engine_icon_margin_end"
                     android:src="@drawable/ic_ddg_logo"
-                    android:visibility="gone"/>
-
-            <ImageView
-                    android:id="@+id/iconBing"
-                    android:layout_width="@dimen/activity_search_searchresult_card_engine_icon_width_height"
-                    android:layout_height="@dimen/activity_search_searchresult_card_engine_icon_width_height"
-                    android:layout_marginEnd="@dimen/activity_search_searchresult_card_engine_icon_margin_end"
-                    android:src="@drawable/ic_bing_logo"
                     android:visibility="gone"/>
 
             <ImageView
@@ -131,10 +115,26 @@
                     android:visibility="gone"/>
 
             <ImageView
-                    android:id="@+id/iconAmazon"
+                    android:id="@+id/iconQwant"
                     android:layout_width="@dimen/activity_search_searchresult_card_engine_icon_width_height"
                     android:layout_height="@dimen/activity_search_searchresult_card_engine_icon_width_height"
-                    android:src="@drawable/ic_amazon_logo"
+                    android:layout_marginEnd="@dimen/activity_search_searchresult_card_engine_icon_margin_end"
+                    android:src="@drawable/ic_qwant_logo"
+                    android:visibility="gone"/>
+
+            <ImageView
+                    android:id="@+id/iconBing"
+                    android:layout_width="@dimen/activity_search_searchresult_card_engine_icon_width_height"
+                    android:layout_height="@dimen/activity_search_searchresult_card_engine_icon_width_height"
+                    android:layout_marginEnd="@dimen/activity_search_searchresult_card_engine_icon_margin_end"
+                    android:src="@drawable/ic_bing_logo"
+                    android:visibility="gone"/>
+
+            <ImageView
+                    android:id="@+id/iconGoogle"
+                    android:layout_width="@dimen/activity_search_searchresult_card_engine_icon_width_height"
+                    android:layout_height="@dimen/activity_search_searchresult_card_engine_icon_width_height"
+                    android:src="@drawable/ic_google_logo"
                     android:visibility="gone"/>
 
         </LinearLayout>

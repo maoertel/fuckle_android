@@ -12,7 +12,7 @@
             android:layout_height="match_parent">
 
         <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/backButton"
                 android:src="@drawable/ic_baseline_arrow_back_24px"
                 android:tint="@color/activity_settings_toolbar_icons"
                 android:background="@color/colorPrimary"
@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                app:layout_constraintStart_toEndOf="@+id/imageButton"/>
+                app:layout_constraintStart_toEndOf="@+id/backButton"/>
 
     </android.support.constraint.ConstraintLayout>
 
