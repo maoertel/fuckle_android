@@ -37,6 +37,7 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
     @Inject
     lateinit var languageAdapter: ArrayAdapter<Languages>
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
@@ -76,9 +77,8 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
                 )
         spinnerSearxInstances.setSelection(position)
         spinnerSearxInstances.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) =
                 settingsPresenter.onSearxInstanceSelect(spinnerSearxInstances.selectedItem.toString())
-            }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
@@ -87,9 +87,8 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
     override fun initializeLanguageSpinner(position: Int) {
         spinnerLanguage.setSelection(position)
         spinnerLanguage.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) =
                 settingsPresenter.onLanguageSelect(spinnerLanguage.selectedItem as Languages)
-            }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
