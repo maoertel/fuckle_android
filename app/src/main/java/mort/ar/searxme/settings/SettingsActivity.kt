@@ -54,12 +54,28 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
         setSupportActionBar(toolbarSettings as Toolbar)
 
         backButton.setOnClickListener { onBackPressed() }
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         initializeSearxInstanceSpinner()
         initializeLanguageSpinner()
         initializeTimeRangeSpinner()
-        initializeCategories()
         initializeEngines()
+        initializeCategories()
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        assignSearchParameterEngines()
+        assignSearchParameterCategories()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.clear()
     }
 
     private fun initializeSearxInstanceSpinner() {
@@ -126,21 +142,6 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
         initializeEngineCheckBoxes()
     }
 
-    private fun initializeCategories() {
-        initializeCategoriesSet()
-        initializeCategoriesDefaultCheckbox()
-        initializeCategoriesCheckBoxes()
-
-    }
-
-    private fun initializeCategoriesSet() {
-        categories.clear()
-        searchParameter.searchParams.categories
-            ?.split(",")
-            ?.map { it.trim() }
-            ?.forEach { categories.add(Categories.valueOf(it.toUpperCase())) }
-    }
-
     private fun initializeEnginesSet() {
         engines.clear()
         searchParameter.searchParams.engines
@@ -150,26 +151,13 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
     }
 
     private fun initializeEnginesDefaultCheckbox() {
-        activateCheckBoxEnginesDefault(engines.isEmpty())
+        checkBoxDefault.activate(engines.isEmpty())
         checkBoxDefault.setOnClickListener {
             if (checkBoxDefault.isChecked) {
                 engines.clear()
                 checkBoxDefault.isClickable = false
                 Engines.values().forEach { engine ->
                     findViewById<CheckBox>(engine.checkBox).isChecked = false
-                }
-            }
-        }
-    }
-
-    private fun initializeCategoriesDefaultCheckbox() {
-        activateCheckBoxCategoriesDefault(categories.isEmpty())
-        checkBoxCategoriesDefault.setOnClickListener {
-            if (checkBoxCategoriesDefault.isChecked) {
-                categories.clear()
-                checkBoxCategoriesDefault.isClickable = false
-                Categories.values().forEach { category ->
-                    findViewById<CheckBox>(category.checkBox).isChecked = false
                 }
             }
         }
@@ -184,14 +172,40 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
                 when (checkbox.isChecked) {
                     true -> {
                         engines.add(engine)
-                        activateCheckBoxEnginesDefault(!checkbox.isChecked)
+                        checkBoxDefault.activate(!checkbox.isChecked)
                     }
                     false -> {
                         engines.remove(engine)
                         if (engines.isEmpty())
-                            activateCheckBoxEnginesDefault(!checkbox.isChecked)
-
+                            checkBoxDefault.activate(!checkbox.isChecked)
                     }
+                }
+            }
+        }
+    }
+
+    private fun initializeCategories() {
+        initializeCategoriesSet()
+        initializeCategoriesDefaultCheckbox()
+        initializeCategoriesCheckBoxes()
+    }
+
+    private fun initializeCategoriesSet() {
+        categories.clear()
+        searchParameter.searchParams.categories
+            ?.split(",")
+            ?.map { it.trim() }
+            ?.forEach { categories.add(Categories.valueOf(it.toUpperCase())) }
+    }
+
+    private fun initializeCategoriesDefaultCheckbox() {
+        checkBoxCategoriesDefault.activate(categories.isEmpty())
+        checkBoxCategoriesDefault.setOnClickListener {
+            if (checkBoxCategoriesDefault.isChecked) {
+                categories.clear()
+                checkBoxCategoriesDefault.isClickable = false
+                Categories.values().forEach { category ->
+                    findViewById<CheckBox>(category.checkBox).isChecked = false
                 }
             }
         }
@@ -206,27 +220,17 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
                 when (checkbox.isChecked) {
                     true -> {
                         categories.add(category)
-                        activateCheckBoxCategoriesDefault(!checkbox.isChecked)
+                        checkBoxCategoriesDefault.activate(!checkbox.isChecked)
                     }
                     false -> {
                         categories.remove(category)
                         if (categories.isEmpty())
-                            activateCheckBoxCategoriesDefault(!checkbox.isChecked)
+                            checkBoxCategoriesDefault.activate(!checkbox.isChecked)
 
                     }
                 }
             }
         }
-    }
-
-    private fun activateCheckBoxEnginesDefault(activate: Boolean) {
-        checkBoxDefault.isChecked = activate
-        checkBoxDefault.isClickable = !activate
-    }
-
-    private fun activateCheckBoxCategoriesDefault(activate: Boolean) {
-        checkBoxCategoriesDefault.isChecked = activate
-        checkBoxCategoriesDefault.isClickable = !activate
     }
 
     override fun showProgress() {
@@ -239,12 +243,6 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
     }
 
     override fun hideKeyboard() {
-    }
-
-    override fun onBackPressed() {
-        assignSearchParameterEngines()
-        assignSearchParameterCategories()
-        super.onBackPressed()
     }
 
     private fun assignSearchParameterEngines() {
