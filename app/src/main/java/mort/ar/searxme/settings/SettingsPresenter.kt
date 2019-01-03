@@ -1,5 +1,6 @@
 package mort.ar.searxme.settings
 
+import android.widget.ArrayAdapter
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -9,8 +10,6 @@ import mort.ar.searxme.manager.SearchParameter
 import mort.ar.searxme.manager.SearxInstanceBucket
 import mort.ar.searxme.model.Languages
 import mort.ar.searxme.model.TimeRanges
-import mort.ar.searxme.settings.SettingsActivity.Categories
-import mort.ar.searxme.settings.SettingsActivity.Engines
 import javax.inject.Inject
 
 
@@ -18,12 +17,16 @@ class SettingsPresenter @Inject constructor(
     private val settingsView: SettingsContract.SettingsView,
     private val searchParameter: SearchParameter,
     private val searxInstanceBucket: SearxInstanceBucket,
-    private val engines: HashSet<SettingsActivity.Engines>,
-    private val categories: HashSet<SettingsActivity.Categories>,
+    private val instanceAdapter: ArrayAdapter<String>,
+    private val timeRangeAdapter: ArrayAdapter<TimeRanges>,
+    private val languageAdapter: ArrayAdapter<Languages>,
+    private val engines: HashSet<Engines>,
+    private val categories: HashSet<Categories>,
     private val compositeDisposable: CompositeDisposable
 ) : SettingsContract.SettingsPresenter {
 
     override fun start() {
+        settingsView.setSpinnerAdapters(instanceAdapter, timeRangeAdapter, languageAdapter)
     }
 
     override fun loadSettings() {
@@ -55,7 +58,9 @@ class SettingsPresenter @Inject constructor(
             .subscribeOn(Schedulers.io())
             .subscribe(
                 { instances ->
-                    settingsView.initializeSearxInstanceSpinner(instances, 0)
+                    instanceAdapter.addAll(instances)
+                    instanceAdapter.notifyDataSetChanged()
+                    settingsView.initializeSearxInstanceSpinner(0)
                     settingsView.hideProgress()
                 },
                 { throwable ->
@@ -108,7 +113,7 @@ class SettingsPresenter @Inject constructor(
         settingsView.setEnginesDefaultCheckBoxActivated()
     }
 
-    override fun onEngineCheckBoxClick(engine: SettingsActivity.Engines, shouldAdd: Boolean): Boolean {
+    override fun onEngineCheckBoxClick(engine: Engines, shouldAdd: Boolean): Boolean {
         if (shouldAdd) engines.add(engine) else engines.remove(engine)
         return engines.isEmpty()
     }
@@ -144,7 +149,7 @@ class SettingsPresenter @Inject constructor(
         settingsView.setCategoriesDefaultCheckBoxActivated()
     }
 
-    override fun onCategoryCheckBoxClick(category: SettingsActivity.Categories, shouldAdd: Boolean): Boolean {
+    override fun onCategoryCheckBoxClick(category: Categories, shouldAdd: Boolean): Boolean {
         if (shouldAdd) categories.add(category) else categories.remove(category)
         return categories.isEmpty()
     }

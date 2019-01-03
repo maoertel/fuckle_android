@@ -20,7 +20,6 @@ import kotlinx.android.synthetic.main.settings_searx_instances.*
 import kotlinx.android.synthetic.main.settings_time_ranges.*
 import kotlinx.android.synthetic.main.toolbar_settings.*
 import mort.ar.searxme.R
-import mort.ar.searxme.R.id.*
 import mort.ar.searxme.model.Languages
 import mort.ar.searxme.model.TimeRanges
 import javax.inject.Inject
@@ -31,15 +30,6 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
     @Inject
     lateinit var settingsPresenter: SettingsContract.SettingsPresenter
 
-    @Inject
-    lateinit var instanceAdapter: ArrayAdapter<String>
-
-    @Inject
-    lateinit var languageAdapter: ArrayAdapter<Languages>
-
-    @Inject
-    lateinit var timeRangeAdapter: ArrayAdapter<TimeRanges>
-
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
@@ -48,10 +38,6 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
         setSupportActionBar(toolbarSettings as Toolbar)
 
         backButton.setOnClickListener { onBackPressed() }
-
-        spinnerSearxInstances.adapter = instanceAdapter
-        spinnerTimeRange.adapter = timeRangeAdapter
-        spinnerLanguage.adapter = languageAdapter
 
         settingsPresenter.start()
     }
@@ -71,10 +57,17 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
         settingsPresenter.stop()
     }
 
-    override fun initializeSearxInstanceSpinner(instances: ArrayList<String>, position: Int) {
-        instanceAdapter.addAll(instances)
-        instanceAdapter.notifyDataSetChanged()
+    override fun setSpinnerAdapters(
+        instanceAdapter: ArrayAdapter<String>,
+        timeRangeAdapter: ArrayAdapter<TimeRanges>,
+        languageAdapter: ArrayAdapter<Languages>
+    ) {
+        spinnerSearxInstances.adapter = instanceAdapter
+        spinnerTimeRange.adapter = timeRangeAdapter
+        spinnerLanguage.adapter = languageAdapter
+    }
 
+    override fun initializeSearxInstanceSpinner(position: Int) {
         spinnerSearxInstances.setSelection(position)
         spinnerSearxInstances.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) =
@@ -176,33 +169,6 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
     override fun hideKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(toolbar.windowToken, 0)
-    }
-
-    enum class Engines(
-        val urlParameter: String,
-        val checkBox: Int
-    ) {
-        DUCKDUCKGO("duckduckgo", checkBoxDdg),
-        WIKIPEDIA("wikipedia", checkBoxWikipedia),
-        DUDEN("duden", checkBoxDuden),
-        BING("bing", checkBoxBing),
-        GOOGLE("google", checkBoxGoogle),
-        QWANT("qwant", checkBoxQwant)
-    }
-
-    enum class Categories(
-        val urlParameter: String,
-        val checkBox: Int
-    ) {
-        FILES("files", checkBoxFiles),
-        IMAGES("images", checkBoxImages),
-        IT("it", checkBoxIT),
-        MAPS("maps", checkBoxMap),
-        MUSIC("music", checkBoxMusic),
-        NEWS("news", checkBoxNews),
-        SCIENCE("science", checkBoxScience),
-        SOCIAL_MEDIA("social_media", checkBoxSocialMedia),
-        VIDEOS("videos", checkBoxVideo)
     }
 
 }

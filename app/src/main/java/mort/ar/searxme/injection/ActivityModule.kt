@@ -15,9 +15,7 @@ import mort.ar.searxme.manager.SearxInstanceBucket
 import mort.ar.searxme.model.Languages
 import mort.ar.searxme.model.TimeRanges
 import mort.ar.searxme.search.*
-import mort.ar.searxme.settings.SettingsActivity
-import mort.ar.searxme.settings.SettingsContract
-import mort.ar.searxme.settings.SettingsPresenter
+import mort.ar.searxme.settings.*
 import javax.inject.Scope
 
 @Scope
@@ -53,14 +51,20 @@ internal class ActivitySettingsModule {
         settingsView: SettingsContract.SettingsView,
         searchParameter: SearchParameter,
         searxInstanceBucket: SearxInstanceBucket,
-        engines: HashSet<SettingsActivity.Engines>,
-        categories: HashSet<SettingsActivity.Categories>,
+        instanceAdapter: ArrayAdapter<String>,
+        timeRangeAdapter: ArrayAdapter<TimeRanges>,
+        languageAdapter: ArrayAdapter<Languages>,
+        engines: HashSet<Engines>,
+        categories: HashSet<Categories>,
         compositeDisposable: CompositeDisposable
     ): SettingsContract.SettingsPresenter =
         SettingsPresenter(
             settingsView,
             searchParameter,
             searxInstanceBucket,
+            instanceAdapter,
+            timeRangeAdapter,
+            languageAdapter,
             engines,
             categories,
             compositeDisposable
@@ -68,11 +72,11 @@ internal class ActivitySettingsModule {
 
     @Provides
     fun provideEnginesHashSet() =
-        hashSetOf<SettingsActivity.Engines>()
+        hashSetOf<Engines>()
 
     @Provides
     fun provideCategoriesHashSet() =
-        hashSetOf<SettingsActivity.Categories>()
+        hashSetOf<Categories>()
 
     @Provides
     fun provideTimeRangeAdapter(settingsActivity: SettingsActivity) =
