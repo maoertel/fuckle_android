@@ -103,6 +103,11 @@ class SettingsPresenter @Inject constructor(
                 }
     }
 
+    override fun onEnginesDefaultCheckboxClick() {
+        engines.clear()
+        settingsView.setEnginesDefaultCheckBoxActivated()
+    }
+
     override fun onEngineCheckBoxClick(engine: SettingsActivity.Engines, shouldAdd: Boolean): Boolean {
         if (shouldAdd) engines.add(engine) else engines.remove(engine)
         return engines.isEmpty()
@@ -132,6 +137,11 @@ class SettingsPresenter @Inject constructor(
                     categoriesList.isNullOrEmpty() -> null
                     else -> categoriesList.joinToString(separator = ",", prefix = "")
                 }
+    }
+
+    override fun onCategoriesDefaultCheckboxClick() {
+        categories.clear()
+        settingsView.setCategoriesDefaultCheckBoxActivated()
     }
 
     override fun onCategoryCheckBoxClick(category: SettingsActivity.Categories, shouldAdd: Boolean): Boolean {

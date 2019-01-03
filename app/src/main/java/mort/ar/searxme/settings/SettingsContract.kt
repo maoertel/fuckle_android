@@ -28,6 +28,10 @@ interface SettingsContract {
 
         fun initializeEnginesDefaultCheckbox(isActivated: Boolean)
 
+        fun setEnginesDefaultCheckBoxActivated()
+
+        fun setCategoriesDefaultCheckBoxActivated()
+
         fun initializeEngineCheckBox(
             engine: SettingsActivity.Engines,
             containsEngine: Boolean
@@ -58,7 +62,11 @@ interface SettingsContract {
 
         fun onLanguageSelect(selectedLanguage: Languages)
 
+        fun onEnginesDefaultCheckboxClick()
+
         fun onEngineCheckBoxClick(engine: SettingsActivity.Engines, shouldAdd: Boolean): Boolean
+
+        fun onCategoriesDefaultCheckboxClick()
 
         fun onCategoryCheckBoxClick(category: SettingsActivity.Categories, shouldAdd: Boolean): Boolean
     }

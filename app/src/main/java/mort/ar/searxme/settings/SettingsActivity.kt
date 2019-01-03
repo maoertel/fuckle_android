@@ -32,14 +32,13 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
     lateinit var settingsPresenter: SettingsContract.SettingsPresenter
 
     @Inject
-    lateinit var timeRangeAdapter: ArrayAdapter<TimeRanges>
+    lateinit var instanceAdapter: ArrayAdapter<String>
 
     @Inject
     lateinit var languageAdapter: ArrayAdapter<Languages>
 
     @Inject
-    lateinit var instanceAdapter: ArrayAdapter<String>
-
+    lateinit var timeRangeAdapter: ArrayAdapter<TimeRanges>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -110,11 +109,15 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
         checkBoxDefault.activate(isActivated)
         checkBoxDefault.setOnClickListener {
             if (checkBoxDefault.isChecked) {
-                checkBoxDefault.isClickable = false
-                Engines.values().forEach { engine ->
-                    findViewById<CheckBox>(engine.checkBox).isChecked = false
-                }
+                settingsPresenter.onEnginesDefaultCheckboxClick()
             }
+        }
+    }
+
+    override fun setEnginesDefaultCheckBoxActivated() {
+        checkBoxDefault.isClickable = false
+        Engines.values().forEach { engine ->
+            findViewById<CheckBox>(engine.checkBox).isChecked = false
         }
     }
 
@@ -135,11 +138,15 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
         checkBoxCategoriesDefault.activate(isActivated)
         checkBoxCategoriesDefault.setOnClickListener {
             if (checkBoxCategoriesDefault.isChecked) {
-                checkBoxCategoriesDefault.isClickable = false
-                Categories.values().forEach { category ->
-                    findViewById<CheckBox>(category.checkBox).isChecked = false
-                }
+                settingsPresenter.onCategoriesDefaultCheckboxClick()
             }
+        }
+    }
+
+    override fun setCategoriesDefaultCheckBoxActivated() {
+        checkBoxCategoriesDefault.isClickable = false
+        Categories.values().forEach { category ->
+            findViewById<CheckBox>(category.checkBox).isChecked = false
         }
     }
 
