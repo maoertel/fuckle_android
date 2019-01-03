@@ -27,13 +27,13 @@ class Searcher @Inject constructor(
 
     private fun initRetrofitService() {
         // Just for logging purposes
-//        val httpClient = OkHttpClient.Builder()
-//            .readTimeout(30, TimeUnit.SECONDS)
-//            .writeTimeout(30, TimeUnit.SECONDS)
-//
-//        val logging = HttpLoggingInterceptor()
-//        logging.level = HttpLoggingInterceptor.Level.BASIC
-//        httpClient.addInterceptor(logging)
+        // val httpClient = OkHttpClient.Builder()
+        // .readTimeout(30, TimeUnit.SECONDS)
+        // .writeTimeout(30, TimeUnit.SECONDS)
+
+        // val logging = HttpLoggingInterceptor()
+        // logging.level = HttpLoggingInterceptor.Level.BASIC
+        // httpClient.addInterceptor(logging)
 
         compositeDisposable += searxInstanceBucket.getCurrentInstance()
             .subscribe { searxInstance ->
@@ -41,7 +41,7 @@ class Searcher @Inject constructor(
                     .baseUrl(searxInstance.url)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(MoshiConverterFactory.create())
-//                    .client(httpClient.build())
+                    // .client(httpClient.build())
                     .build()
 
                 retrofitService = retrofit.create<SearxAccess>(SearxAccess::class.java)
