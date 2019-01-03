@@ -1,12 +1,19 @@
 package mort.ar.searxme.injection
 
+import android.R
 import android.content.Intent
 import android.support.v7.widget.LinearLayoutManager
+import android.widget.ArrayAdapter
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
+import io.reactivex.disposables.CompositeDisposable
 import mort.ar.searxme.WebViewFragment
+import mort.ar.searxme.manager.SearchParameter
 import mort.ar.searxme.manager.Searcher
+import mort.ar.searxme.manager.SearxInstanceBucket
+import mort.ar.searxme.model.Languages
+import mort.ar.searxme.model.TimeRanges
 import mort.ar.searxme.search.*
 import mort.ar.searxme.settings.SettingsActivity
 import mort.ar.searxme.settings.SettingsContract
@@ -43,9 +50,45 @@ internal class ActivitySettingsModule {
     @ActivityScope
     @Provides
     fun provideSettingsPresenter(
-        settingsView: SettingsContract.SettingsView
-    ): SettingsContract.SettingsPresenter = SettingsPresenter(settingsView)
+        settingsView: SettingsContract.SettingsView,
+        searchParameter: SearchParameter,
+        searxInstanceBucket: SearxInstanceBucket,
+        engines: HashSet<SettingsActivity.Engines>,
+        categories: HashSet<SettingsActivity.Categories>,
+        compositeDisposable: CompositeDisposable
+    ): SettingsContract.SettingsPresenter =
+        SettingsPresenter(
+            settingsView,
+            searchParameter,
+            searxInstanceBucket,
+            engines,
+            categories,
+            compositeDisposable
+        )
 
+    @Provides
+    fun provideEnginesHashSet() =
+        hashSetOf<SettingsActivity.Engines>()
+
+    @Provides
+    fun provideCategoriesHashSet() =
+        hashSetOf<SettingsActivity.Categories>()
+
+    @Provides
+    fun provideTimeRangeAdapter(settingsActivity: SettingsActivity) =
+        ArrayAdapter(
+            settingsActivity,
+            R.layout.simple_spinner_dropdown_item,
+            TimeRanges.values()
+        )
+
+    @Provides
+    fun provideLanguageAdapter(settingsActivity: SettingsActivity) =
+        ArrayAdapter(
+            settingsActivity,
+            R.layout.simple_spinner_dropdown_item,
+            Languages.values()
+        )
 }
 
 @Module
@@ -61,8 +104,9 @@ internal class ActivitySearchModule {
     @Provides
     fun provideSearchPresenter(
         searchView: SearchContract.SearchView,
-        searcher: Searcher
-    ): SearchContract.SearchPresenter = SearchPresenter(searchView, searcher)
+        searcher: Searcher,
+        compositeDisposable: CompositeDisposable
+    ): SearchContract.SearchPresenter = SearchPresenter(searchView, searcher, compositeDisposable)
 
     @Provides
     fun provideSearchResultPresenter(searchPresenter: SearchContract.SearchPresenter) =
@@ -90,5 +134,5 @@ internal class ActivitySearchModule {
 
     @Provides
     fun provideSettingsIntent(searchActivity: SearchActivity) =
-            Intent(searchActivity, SettingsActivity::class.java)
+        Intent(searchActivity, SettingsActivity::class.java)
 }

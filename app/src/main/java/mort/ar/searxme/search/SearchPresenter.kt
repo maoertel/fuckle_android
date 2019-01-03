@@ -17,10 +17,9 @@ private const val EMPTY = ""
 
 class SearchPresenter @Inject constructor(
     private val view: SearchContract.SearchView,
-    private val searcher: Searcher
+    private val searcher: Searcher,
+    private val compositeDisposable: CompositeDisposable
 ) : SearchContract.SearchPresenter {
-
-    private val compositeDisposable = CompositeDisposable()
 
     private var currentPage = START
 

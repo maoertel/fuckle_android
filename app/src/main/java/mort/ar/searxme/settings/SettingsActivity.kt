@@ -1,18 +1,17 @@
 package mort.ar.searxme.settings
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
+import android.widget.Toast
 import dagger.android.AndroidInjection
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.plusAssign
-import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.settings_categories.*
 import kotlinx.android.synthetic.main.settings_engines.*
@@ -22,8 +21,6 @@ import kotlinx.android.synthetic.main.settings_time_ranges.*
 import kotlinx.android.synthetic.main.toolbar_settings.*
 import mort.ar.searxme.R
 import mort.ar.searxme.R.id.*
-import mort.ar.searxme.manager.SearchParameter
-import mort.ar.searxme.manager.SearxInstanceBucket
 import mort.ar.searxme.model.Languages
 import mort.ar.searxme.model.TimeRanges
 import javax.inject.Inject
@@ -35,16 +32,10 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
     lateinit var settingsPresenter: SettingsContract.SettingsPresenter
 
     @Inject
-    lateinit var searchParameter: SearchParameter
+    lateinit var timeRangeAdapter: ArrayAdapter<TimeRanges>
 
     @Inject
-    lateinit var searxInstanceBucket: SearxInstanceBucket
-
-    private val compositeDisposable = CompositeDisposable()
-
-    private val engines = HashSet<Engines>()
-    private val categories = HashSet<Categories>()
-
+    lateinit var languageAdapter: ArrayAdapter<Languages>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -54,107 +45,71 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
         setSupportActionBar(toolbarSettings as Toolbar)
 
         backButton.setOnClickListener { onBackPressed() }
+
+        spinnerTimeRange.adapter = timeRangeAdapter
+        spinnerLanguage.adapter = languageAdapter
+
+        settingsPresenter.start()
     }
 
     override fun onResume() {
         super.onResume()
-
-        initializeSearxInstanceSpinner()
-        initializeLanguageSpinner()
-        initializeTimeRangeSpinner()
-        initializeEngines()
-        initializeCategories()
+        settingsPresenter.loadSettings()
     }
 
     override fun onPause() {
         super.onPause()
-
-        assignSearchParameterEngines()
-        assignSearchParameterCategories()
+        settingsPresenter.persistSettings()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        compositeDisposable.clear()
+        settingsPresenter.stop()
     }
 
-    private fun initializeSearxInstanceSpinner() {
-        compositeDisposable += searxInstanceBucket.getAllInstances()
-            .flatMap { spinnerSearxInstances ->
-                val instances = arrayListOf<String>()
-                spinnerSearxInstances.forEach { instances.add(it.url) }
-                Observable.just(instances)
-            }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .subscribe { instances ->
-                spinnerSearxInstances.adapter = ArrayAdapter<String>(
+    override fun initializeSearxInstanceSpinner(instances: ArrayList<String>, position: Int) {
+        spinnerSearxInstances.adapter =
+                ArrayAdapter<String>(
                     this,
                     android.R.layout.simple_spinner_dropdown_item,
                     instances
                 )
-                spinnerSearxInstances.setSelection(0)
-                spinnerSearxInstances.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                        searxInstanceBucket.setCurrentInstance(spinnerSearxInstances.selectedItem.toString())
-                    }
-
-                    override fun onNothingSelected(parent: AdapterView<*>?) {}
-                }
+        spinnerSearxInstances.setSelection(position)
+        spinnerSearxInstances.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                settingsPresenter.onSearxInstanceSelect(spinnerSearxInstances.selectedItem.toString())
             }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
     }
 
-    private fun initializeLanguageSpinner() {
-        spinnerLanguage.adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_dropdown_item,
-            Languages.values()
-        )
-        spinnerLanguage.setSelection(searchParameter.searchParams.language.ordinal)
+    override fun initializeLanguageSpinner(position: Int) {
+        spinnerLanguage.setSelection(position)
         spinnerLanguage.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                searchParameter.searchParams.language = spinnerLanguage.selectedItem as Languages
+                settingsPresenter.onLanguageSelect(spinnerLanguage.selectedItem as Languages)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
 
-    private fun initializeTimeRangeSpinner() {
-        spinnerTimeRange.adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_dropdown_item,
-            TimeRanges.values()
-        )
-        spinnerTimeRange.setSelection(searchParameter.searchParams.timeRange.ordinal)
+    override fun initializeTimeRangeSpinner(position: Int) {
+        spinnerTimeRange.setSelection(position)
         spinnerTimeRange.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                searchParameter.searchParams.timeRange = spinnerTimeRange.selectedItem as TimeRanges
+                settingsPresenter.onTimeRangeSelect(spinnerTimeRange.selectedItem as TimeRanges)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
 
-    private fun initializeEngines() {
-        initializeEnginesSet()
-        initializeEnginesDefaultCheckbox()
-        initializeEngineCheckBoxes()
-    }
-
-    private fun initializeEnginesSet() {
-        engines.clear()
-        searchParameter.searchParams.engines
-            ?.split(",")
-            ?.map { it.trim() }
-            ?.forEach { engines.add(Engines.valueOf(it.toUpperCase())) }
-    }
-
-    private fun initializeEnginesDefaultCheckbox() {
-        checkBoxDefault.activate(engines.isEmpty())
+    override fun initializeEnginesDefaultCheckbox(isActivated: Boolean) {
+        checkBoxDefault.activate(isActivated)
         checkBoxDefault.setOnClickListener {
             if (checkBoxDefault.isChecked) {
-                engines.clear()
                 checkBoxDefault.isClickable = false
                 Engines.values().forEach { engine ->
                     findViewById<CheckBox>(engine.checkBox).isChecked = false
@@ -163,46 +118,23 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
         }
     }
 
-    private fun initializeEngineCheckBoxes() {
-        Engines.values().forEach { engine ->
-            val checkbox = findViewById<CheckBox>(engine.checkBox)
-
-            checkbox.isChecked = engines.contains(engine)
-            checkbox.setOnClickListener {
-                when (checkbox.isChecked) {
-                    true -> {
-                        engines.add(engine)
-                        checkBoxDefault.activate(!checkbox.isChecked)
-                    }
-                    false -> {
-                        engines.remove(engine)
-                        if (engines.isEmpty())
-                            checkBoxDefault.activate(!checkbox.isChecked)
-                    }
-                }
+    override fun initializeEngineCheckBox(engine: Engines, containsEngine: Boolean) {
+        val checkbox = findViewById<CheckBox>(engine.checkBox)
+        checkbox.isChecked = containsEngine
+        checkbox.setOnClickListener {
+            val clickClearedEngines =
+                settingsPresenter.onEngineCheckBoxClick(engine, checkbox.isChecked)
+            when (checkbox.isChecked) {
+                true -> checkBoxDefault.activate(!checkbox.isChecked)
+                false -> if (clickClearedEngines) checkBoxDefault.activate(!checkbox.isChecked)
             }
         }
     }
 
-    private fun initializeCategories() {
-        initializeCategoriesSet()
-        initializeCategoriesDefaultCheckbox()
-        initializeCategoriesCheckBoxes()
-    }
-
-    private fun initializeCategoriesSet() {
-        categories.clear()
-        searchParameter.searchParams.categories
-            ?.split(",")
-            ?.map { it.trim() }
-            ?.forEach { categories.add(Categories.valueOf(it.toUpperCase())) }
-    }
-
-    private fun initializeCategoriesDefaultCheckbox() {
-        checkBoxCategoriesDefault.activate(categories.isEmpty())
+    override fun initializeCategoriesDefaultCheckbox(isActivated: Boolean) {
+        checkBoxCategoriesDefault.activate(isActivated)
         checkBoxCategoriesDefault.setOnClickListener {
             if (checkBoxCategoriesDefault.isChecked) {
-                categories.clear()
                 checkBoxCategoriesDefault.isClickable = false
                 Categories.values().forEach { category ->
                     findViewById<CheckBox>(category.checkBox).isChecked = false
@@ -211,24 +143,16 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
         }
     }
 
-    private fun initializeCategoriesCheckBoxes() {
-        Categories.values().forEach { category ->
-            val checkbox = findViewById<CheckBox>(category.checkBox)
+    override fun initializeCategoryCheckBox(category: Categories, containsCategory: Boolean) {
+        val checkbox = findViewById<CheckBox>(category.checkBox)
 
-            checkbox.isChecked = categories.contains(category)
-            checkbox.setOnClickListener {
-                when (checkbox.isChecked) {
-                    true -> {
-                        categories.add(category)
-                        checkBoxCategoriesDefault.activate(!checkbox.isChecked)
-                    }
-                    false -> {
-                        categories.remove(category)
-                        if (categories.isEmpty())
-                            checkBoxCategoriesDefault.activate(!checkbox.isChecked)
-
-                    }
-                }
+        checkbox.isChecked = containsCategory
+        checkbox.setOnClickListener {
+            val clickClearedCategories =
+                settingsPresenter.onCategoryCheckBoxClick(category, checkbox.isChecked)
+            when (checkbox.isChecked) {
+                true -> checkBoxCategoriesDefault.activate(!checkbox.isChecked)
+                false -> if (clickClearedCategories) checkBoxCategoriesDefault.activate(!checkbox.isChecked)
             }
         }
     }
@@ -239,33 +163,15 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
     override fun hideProgress() {
     }
 
-    override fun showMessage(message: String?) {
-    }
+    override fun showMessage(message: String?) =
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 
     override fun hideKeyboard() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(toolbar.windowToken, 0)
     }
 
-    private fun assignSearchParameterEngines() {
-        val engineList = arrayListOf<String>()
-        engines.forEach { engineList.add(it.urlParameter) }
-        searchParameter.searchParams.engines =
-                when {
-                    engineList.isNullOrEmpty() -> null
-                    else -> engineList.joinToString(separator = ",", prefix = "")
-                }
-    }
-
-    private fun assignSearchParameterCategories() {
-        val categoriesList = arrayListOf<String>()
-        categories.forEach { categoriesList.add(it.urlParameter) }
-        searchParameter.searchParams.categories =
-                when {
-                    categoriesList.isNullOrEmpty() -> null
-                    else -> categoriesList.joinToString(separator = ",", prefix = "")
-                }
-    }
-
-    private enum class Engines(
+    enum class Engines(
         val urlParameter: String,
         val checkBox: Int
     ) {
@@ -277,7 +183,7 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
         QWANT("qwant", checkBoxQwant)
     }
 
-    private enum class Categories(
+    enum class Categories(
         val urlParameter: String,
         val checkBox: Int
     ) {

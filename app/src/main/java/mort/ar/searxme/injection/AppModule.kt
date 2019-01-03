@@ -6,6 +6,7 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
+import io.reactivex.disposables.CompositeDisposable
 import mort.ar.searxme.access.Database
 import mort.ar.searxme.access.SearxInstanceDao
 import mort.ar.searxme.manager.SearchParameter
@@ -63,5 +64,8 @@ internal class AppModule {
     @Provides
     fun provideSearchParams(sharedPreferences: SharedPreferences) =
         SearchParams(sharedPreferences)
+
+    @Provides
+    fun provideCompositeDisposables() = CompositeDisposable()
 
 }
