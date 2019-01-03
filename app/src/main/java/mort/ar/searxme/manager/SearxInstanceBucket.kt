@@ -6,7 +6,9 @@ import mort.ar.searxme.model.SearxInstance
 import javax.inject.Inject
 
 private val initialInstance =
-    SearxInstance(name = "https://searx.0x1b.de/", url = "https://searx.0x1b.de/", favorite = true)
+//    SearxInstance(name = "https://searx.neocities.org/", url = "https://searx.neocities.org/", favorite = true)
+//    SearxInstance(name = "https://searx.0x1b.de/", url = "https://searx.0x1b.de/", favorite = true)
+    SearxInstance(name = "https://searx.me/", url = "https://searx.me/", favorite = true)
 
 
 class SearxInstanceBucket @Inject constructor(private val mInstanceDao: SearxInstanceDao) {

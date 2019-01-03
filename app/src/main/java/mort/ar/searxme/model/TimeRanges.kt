@@ -11,8 +11,6 @@ enum class TimeRanges(
     MONTH("Last month", "month"),
     YEAR("Last year", "year");
 
-    override fun toString(): String {
-        return rangeName
-    }
+    override fun toString() = rangeName
 
 }

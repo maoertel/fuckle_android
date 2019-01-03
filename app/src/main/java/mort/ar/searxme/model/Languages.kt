@@ -11,8 +11,6 @@ enum class Languages(
     FRENCH("French", "fr"),
     SPANISH("Spanish", "es");
 
-    override fun toString(): String {
-        return languageName
-    }
+    override fun toString() = languageName
 
 }
