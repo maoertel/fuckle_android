@@ -9,6 +9,8 @@ import mort.ar.searxme.manager.SearchParameter
 import mort.ar.searxme.manager.SearxInstanceBucket
 import mort.ar.searxme.model.Languages
 import mort.ar.searxme.model.TimeRanges
+import mort.ar.searxme.settings.SettingsActivity.Categories
+import mort.ar.searxme.settings.SettingsActivity.Engines
 import javax.inject.Inject
 
 
@@ -78,7 +80,7 @@ class SettingsPresenter @Inject constructor(
     private fun initializeEngines() {
         initializeEnginesSet()
         settingsView.initializeEnginesDefaultCheckbox(engines.isEmpty())
-        SettingsActivity.Engines.values().forEach { engine ->
+        Engines.values().forEach { engine ->
             settingsView.initializeEngineCheckBox(engine, engines.contains(engine))
         }
     }
@@ -88,7 +90,7 @@ class SettingsPresenter @Inject constructor(
         searchParameter.searchParams.engines
             ?.split(",")
             ?.map { it.trim() }
-            ?.forEach { engines.add(SettingsActivity.Engines.valueOf(it.toUpperCase())) }
+            ?.forEach { engines.add(Engines.valueOf(it.toUpperCase())) }
     }
 
     private fun assignSearchParameterEngines() {
@@ -109,7 +111,7 @@ class SettingsPresenter @Inject constructor(
     private fun initializeCategories() {
         initializeCategoriesSet()
         settingsView.initializeCategoriesDefaultCheckbox(categories.isEmpty())
-        SettingsActivity.Categories.values().forEach { category ->
+        Categories.values().forEach { category ->
             settingsView.initializeCategoryCheckBox(category, categories.contains(category))
         }
     }
@@ -119,7 +121,7 @@ class SettingsPresenter @Inject constructor(
         searchParameter.searchParams.categories
             ?.split(",")
             ?.map { it.trim() }
-            ?.forEach { categories.add(SettingsActivity.Categories.valueOf(it.toUpperCase())) }
+            ?.forEach { categories.add(Categories.valueOf(it.toUpperCase())) }
     }
 
     private fun assignSearchParameterCategories() {

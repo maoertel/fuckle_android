@@ -89,6 +89,14 @@ internal class ActivitySettingsModule {
             R.layout.simple_spinner_dropdown_item,
             Languages.values()
         )
+
+    @Provides
+    fun provideSearxInstanceAdapter(settingsActivity: SettingsActivity) =
+        ArrayAdapter(
+            settingsActivity,
+            R.layout.simple_spinner_dropdown_item,
+            arrayListOf<String>()
+        )
 }
 
 @Module

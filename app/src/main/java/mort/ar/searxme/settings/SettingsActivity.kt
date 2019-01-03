@@ -37,6 +37,9 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
     @Inject
     lateinit var languageAdapter: ArrayAdapter<Languages>
 
+    @Inject
+    lateinit var instanceAdapter: ArrayAdapter<String>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -47,6 +50,7 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
 
         backButton.setOnClickListener { onBackPressed() }
 
+        spinnerSearxInstances.adapter = instanceAdapter
         spinnerTimeRange.adapter = timeRangeAdapter
         spinnerLanguage.adapter = languageAdapter
 
@@ -69,12 +73,9 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
     }
 
     override fun initializeSearxInstanceSpinner(instances: ArrayList<String>, position: Int) {
-        spinnerSearxInstances.adapter =
-                ArrayAdapter<String>(
-                    this,
-                    android.R.layout.simple_spinner_dropdown_item,
-                    instances
-                )
+        instanceAdapter.addAll(instances)
+        instanceAdapter.notifyDataSetChanged()
+
         spinnerSearxInstances.setSelection(position)
         spinnerSearxInstances.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) =
@@ -199,7 +200,7 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
 
 }
 
-fun CheckBox.activate(activate: Boolean) {
+internal fun CheckBox.activate(activate: Boolean) {
     isChecked = activate
     isClickable = !activate
 }
