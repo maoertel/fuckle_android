@@ -2,8 +2,6 @@ package mort.ar.searxme.manager
 
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.plusAssign
 import mort.ar.searxme.access.SearxAccess
 import mort.ar.searxme.model.SearxResponse
 import retrofit2.Retrofit
@@ -15,8 +13,7 @@ import javax.inject.Inject
 class Searcher @Inject constructor(
     private val searchParameter: SearchParameter,
     private val searxInstanceBucket: SearxInstanceBucket,
-    private val retrofitBuilder: Retrofit.Builder,
-    private val compositeDisposable: CompositeDisposable
+    private val retrofitBuilder: Retrofit.Builder
 ) {
 
     private lateinit var retrofitService: SearxAccess
@@ -35,18 +32,19 @@ class Searcher @Inject constructor(
         // logging.level = HttpLoggingInterceptor.Level.BASIC
         // httpClient.addInterceptor(logging)
 
-        compositeDisposable.clear()
-        compositeDisposable += searxInstanceBucket.getPrimaryInstance()
-            .subscribe { searxInstance ->
-                retrofitService =
-                        retrofitBuilder
-                            .baseUrl(searxInstance.url)
-                            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                            .addConverterFactory(MoshiConverterFactory.create())
-                            // .client(httpClient.build())
-                            .build()
-                            .create<SearxAccess>(SearxAccess::class.java)
+        retrofitService = searxInstanceBucket.getPrimaryInstance()
+            .flatMap { searxInstance ->
+                Observable.just(
+                    retrofitBuilder
+                        .baseUrl(searxInstance.url)
+                        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                        .addConverterFactory(MoshiConverterFactory.create())
+                        // .client(httpClient.build())
+                        .build()
+                        .create<SearxAccess>(SearxAccess::class.java)
+                )
             }
+            .blockingFirst()
     }
 
     fun requestSearchResults(query: String): Observable<SearxResponse> =

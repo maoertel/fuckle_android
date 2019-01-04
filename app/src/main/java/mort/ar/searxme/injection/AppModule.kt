@@ -48,14 +48,12 @@ internal class AppModule {
     fun provideSearcher(
         searchParameter: SearchParameter,
         searxInstanceBucket: SearxInstanceBucket,
-        retrofitBuilder: Retrofit.Builder,
-        compositeDisposable: CompositeDisposable
+        retrofitBuilder: Retrofit.Builder
     ) =
         Searcher(
             searchParameter,
             searxInstanceBucket,
-            retrofitBuilder,
-            compositeDisposable
+            retrofitBuilder
         )
 
     @Singleton
