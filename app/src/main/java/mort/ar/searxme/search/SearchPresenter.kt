@@ -28,6 +28,9 @@ class SearchPresenter @Inject constructor(
 
 
     override fun start() {
+        searchView.initializeWebViewFragment()
+        searchView.initializeSearchSuggestionsAdapter()
+        searchView.initializeSearchResultsAdapter()
     }
 
     override fun stop() {

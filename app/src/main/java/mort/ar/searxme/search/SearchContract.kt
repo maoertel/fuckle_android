@@ -23,6 +23,12 @@ interface SearchContract {
     }
 
     interface SearchView : BaseView, WebView {
+        fun initializeWebViewFragment()
+
+        fun initializeSearchResultsAdapter()
+
+        fun initializeSearchSuggestionsAdapter()
+
         fun setSearchQuery(query: String)
 
         fun updateSearchResults(response: SearxResponse)

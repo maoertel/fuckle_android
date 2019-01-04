@@ -57,21 +57,27 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
         setSupportActionBar(toolbar as Toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        with(searchSuggestionsList) {
-            layoutManager = suggestionsLinearLayoutManager
-            adapter = searchSuggestionsAdapter
-        }
+        searchPresenter.start()
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        searchPresenter.stop()
+    }
+
+    override fun initializeSearchResultsAdapter() =
         with(searchResultList) {
             layoutManager = searchResultLinearLayoutManager
             adapter = searchResultAdapter
         }
 
-        supportFragmentManager
-            .beginTransaction()
-            .add(R.id.webViewFragmentContainer, webViewFragment)
-            .commit()
-    }
+    override fun initializeSearchSuggestionsAdapter() =
+        with(searchSuggestionsList) {
+            layoutManager = suggestionsLinearLayoutManager
+            adapter = searchSuggestionsAdapter
+        }
+
+    override fun initializeWebViewFragment() = replaceFragment(webViewFragment)
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
@@ -125,16 +131,14 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
         searchView.clearFocus()
     }
 
-    override fun setSearchQuery(query: String) {
+    override fun setSearchQuery(query: String) =
         with(searchView) {
             setQuery(query, false)
             clearFocus()
         }
-    }
 
-    override fun updateSearchResults(response: SearxResponse) {
+    override fun updateSearchResults(response: SearxResponse) =
         searchResultAdapter.updateSearchResults(response)
-    }
 
     override fun showSearchResults() {
         searchResultList.visibility = View.VISIBLE
@@ -144,17 +148,13 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
         searchResultList.visibility = View.GONE
     }
 
-    override fun updateSearchSuggestions(searchSuggestions: List<String>) {
+    override fun updateSearchSuggestions(searchSuggestions: List<String>) =
         searchSuggestionsAdapter.updateSuggestions(searchSuggestions)
-    }
 
-    override fun hideSearchSuggestions() {
+    override fun hideSearchSuggestions() =
         searchSuggestionsAdapter.clearSuggestions()
-    }
 
-    override fun loadUrl(url: String) {
-        webView.loadUrl(url)
-    }
+    override fun loadUrl(url: String) = webView.loadUrl(url)
 
     override fun showWebView() {
         webViewFragmentContainer.visibility = View.VISIBLE
@@ -162,12 +162,6 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
 
     override fun hideWebView() {
         webViewFragmentContainer.visibility = View.INVISIBLE
-    }
-
-    override fun onBackPressedHandledByWebView() = webViewFragment.onBackPressed()
-
-    override fun startSettings() {
-        startActivity(settingsIntent)
     }
 
     override fun showProgress() {
@@ -178,23 +172,27 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
         indeterminateBar.visibility = View.GONE
     }
 
-    override fun showMessage(message: String?) {
-        Toast
-            .makeText(this, message, Toast.LENGTH_LONG)
-            .show()
-    }
+    override fun showMessage(message: String?) =
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 
     override fun hideKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(toolbar.windowToken, 0)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        searchPresenter.stop()
+    private fun replaceFragment(fragment: WebViewFragment) {
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.webViewFragmentContainer, fragment)
+            .commit()
     }
+
+    override fun startSettings() = startActivity(settingsIntent)
+
+    override fun onBackPressedHandledByWebView() = webViewFragment.onBackPressed()
 
     override fun onBackPressed() {
         if (!searchPresenter.handleOnBackPress()) super.onBackPressed()
     }
+
 }
