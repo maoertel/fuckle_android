@@ -17,6 +17,9 @@ abstract class SearxInstanceDao {
     @Query("SELECT * FROM searx_instances WHERE name IS :name")
     abstract fun getSearxInstance(name: String): Flowable<SearxInstance>
 
+    @Query("SELECT * FROM searx_instances WHERE favorite")
+    abstract fun getFavoriteInstance(): Flowable<SearxInstance>
+
     @Query("SELECT * FROM searx_instances WHERE name IN (:names)")
     abstract fun getSearxInstances(names: List<String>): Flowable<List<SearxInstance>>
 

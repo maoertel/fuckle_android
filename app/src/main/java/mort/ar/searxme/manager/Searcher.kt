@@ -14,12 +14,11 @@ import javax.inject.Inject
 
 class Searcher @Inject constructor(
     private val searchParameter: SearchParameter,
-    private val searxInstanceBucket: SearxInstanceBucket
+    private val searxInstanceBucket: SearxInstanceBucket,
+    private val compositeDisposable: CompositeDisposable
 ) {
 
     private lateinit var retrofitService: SearxAccess
-
-    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     init {
         initRetrofitService()
@@ -35,7 +34,7 @@ class Searcher @Inject constructor(
         // logging.level = HttpLoggingInterceptor.Level.BASIC
         // httpClient.addInterceptor(logging)
 
-        compositeDisposable += searxInstanceBucket.getCurrentInstance()
+        compositeDisposable += searxInstanceBucket.getPrimaryInstance()
             .subscribe { searxInstance ->
                 val retrofit = Retrofit.Builder()
                     .baseUrl(searxInstance.url)
@@ -48,25 +47,22 @@ class Searcher @Inject constructor(
             }
     }
 
-    fun requestSearchResults(query: String): Observable<SearxResponse> {
-        val requestParams = searchParameter.searchParams
-        return retrofitService.requestSearchResults(
+    fun requestSearchResults(query: String): Observable<SearxResponse> =
+        retrofitService.requestSearchResults(
             query = query,
-            categories = requestParams.categories,
-            engines = requestParams.engines,
-            language = requestParams.language.languageParameter,
-            pageNo = requestParams.pageNo,
-            timeRange = requestParams.timeRange.rangeParameter,
-            format = requestParams.format,
-            imageProxy = requestParams.imageProxy,
-            autoComplete = requestParams.autoComplete,
-            safeSearch = requestParams.safeSearch
+            categories = searchParameter.categories,
+            engines = searchParameter.engines,
+            language = searchParameter.language.languageParameter,
+            pageNo = searchParameter.pageNo,
+            timeRange = searchParameter.timeRange.rangeParameter,
+            format = searchParameter.format,
+            imageProxy = searchParameter.imageProxy,
+            autoComplete = searchParameter.autoComplete,
+            safeSearch = searchParameter.safeSearch
         )
-    }
 
-    fun requestSearchAutoComplete(query: String): Single<Array<String>> {
-        return retrofitService.requestSearchAutocomplete(query)
-    }
+    fun requestSearchAutoComplete(query: String): Single<Array<String>> =
+        retrofitService.requestSearchAutocomplete(query)
 
     /*    private fun buildSearchRequest(query: String): SearchRequest {
         val searchParams = searchParameter.searchParams

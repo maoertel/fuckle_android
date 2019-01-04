@@ -27,8 +27,8 @@ class SettingsPresenter @Inject constructor(
 
     override fun loadSettings() {
         initializeSearxInstanceSpinner()
-        settingsView.initializeTimeRangeSpinner(searchParameter.searchParams.timeRange.ordinal)
-        settingsView.initializeLanguageSpinner(searchParameter.searchParams.language.ordinal)
+        settingsView.initializeTimeRangeSpinner(searchParameter.timeRange.ordinal)
+        settingsView.initializeLanguageSpinner(searchParameter.language.ordinal)
         initializeEngines()
         initializeCategories()
     }
@@ -74,7 +74,7 @@ class SettingsPresenter @Inject constructor(
 
     private fun initializeEnginesSet() {
         engines.clear()
-        searchParameter.searchParams.engines
+        searchParameter.engines
             ?.split(",")
             ?.map { it.trim() }
             ?.forEach { engines.add(Engines.valueOf(it.toUpperCase())) }
@@ -90,22 +90,22 @@ class SettingsPresenter @Inject constructor(
 
     private fun initializeCategoriesSet() {
         categories.clear()
-        searchParameter.searchParams.categories
+        searchParameter.categories
             ?.split(",")
             ?.map { it.trim() }
             ?.forEach { categories.add(Categories.valueOf(it.toUpperCase())) }
     }
 
     override fun onSearxInstanceSelect(searxInstance: String) {
-        searxInstanceBucket.setCurrentInstance(searxInstance)
+        searxInstanceBucket.setPrimaryInstance(searxInstance)
     }
 
     override fun onTimeRangeSelect(selectedTimeRange: TimeRanges) {
-        searchParameter.searchParams.timeRange = selectedTimeRange
+        searchParameter.timeRange = selectedTimeRange
     }
 
     override fun onLanguageSelect(selectedLanguage: Languages) {
-        searchParameter.searchParams.language = selectedLanguage
+        searchParameter.language = selectedLanguage
     }
 
     override fun onEnginesDefaultCheckboxClick() {
@@ -155,7 +155,7 @@ class SettingsPresenter @Inject constructor(
     private fun assignSearchParameterEngines() {
         val engineList = arrayListOf<String>()
         engines.forEach { engineList.add(it.urlParameter) }
-        searchParameter.searchParams.engines =
+        searchParameter.engines =
                 when {
                     engineList.isNullOrEmpty() -> null
                     else -> engineList.joinToString(separator = ",", prefix = "")
@@ -165,7 +165,7 @@ class SettingsPresenter @Inject constructor(
     private fun assignSearchParameterCategories() {
         val categoriesList = arrayListOf<String>()
         categories.forEach { categoriesList.add(it.urlParameter) }
-        searchParameter.searchParams.categories =
+        searchParameter.categories =
                 when {
                     categoriesList.isNullOrEmpty() -> null
                     else -> categoriesList.joinToString(separator = ",", prefix = "")

@@ -9,18 +9,15 @@ import mort.ar.searxme.model.TimeRanges.*
 import javax.inject.Inject
 
 
-class SearchParameter @Inject constructor(private val sharedSearchPreferences: SharedPreferences) {
+class SearchParameter @Inject constructor(
+    private val sharedPreferences: SharedPreferences
+) {
 
-    private val mSharedPreferencesObservable: Observable<String> =
+    val sharedPreferencesObservable: Observable<String> =
         Observable.create { emitter ->
-            sharedSearchPreferences
+            sharedPreferences
                 .registerOnSharedPreferenceChangeListener { _, key -> emitter.onNext(key) }
         }
-
-    val searchParams: SearchParams = SearchParams(sharedSearchPreferences)
-}
-
-class SearchParams @Inject constructor(private val sharedPreferences: SharedPreferences) {
 
     var categories: String? = sharedPreferences.getString("categories", null)
         set(value) {

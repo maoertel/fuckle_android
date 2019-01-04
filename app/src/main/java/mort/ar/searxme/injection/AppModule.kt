@@ -10,7 +10,6 @@ import io.reactivex.disposables.CompositeDisposable
 import mort.ar.searxme.access.Database
 import mort.ar.searxme.access.SearxInstanceDao
 import mort.ar.searxme.manager.SearchParameter
-import mort.ar.searxme.manager.SearchParams
 import mort.ar.searxme.manager.Searcher
 import mort.ar.searxme.manager.SearxInstanceBucket
 import javax.inject.Singleton
@@ -44,10 +43,12 @@ internal class AppModule {
     @Provides
     fun provideSearcher(
         searchParameter: SearchParameter,
-        searxInstanceBucket: SearxInstanceBucket
+        searxInstanceBucket: SearxInstanceBucket,
+        compositeDisposable: CompositeDisposable
     ) = Searcher(
         searchParameter,
-        searxInstanceBucket
+        searxInstanceBucket,
+        compositeDisposable
     )
 
     @Singleton
@@ -59,11 +60,6 @@ internal class AppModule {
     @Provides
     fun provideSearxInstanceBucket(searxInstanceDao: SearxInstanceDao) =
         SearxInstanceBucket(searxInstanceDao)
-
-    @Singleton
-    @Provides
-    fun provideSearchParams(sharedPreferences: SharedPreferences) =
-        SearchParams(sharedPreferences)
 
     @Provides
     fun provideCompositeDisposables() = CompositeDisposable()

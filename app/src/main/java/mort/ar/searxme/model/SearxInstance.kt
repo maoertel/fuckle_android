@@ -7,7 +7,6 @@ import android.arch.persistence.room.PrimaryKey
 
 @Entity(tableName = "searx_instances")
 data class SearxInstance(
-
     @PrimaryKey
     @ColumnInfo
     val name: String,
