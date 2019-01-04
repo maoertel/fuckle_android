@@ -51,9 +51,6 @@ internal class ActivitySettingsModule {
         settingsView: SettingsContract.SettingsView,
         searchParameter: SearchParameter,
         searxInstanceBucket: SearxInstanceBucket,
-        instanceAdapter: ArrayAdapter<String>,
-        timeRangeAdapter: ArrayAdapter<TimeRanges>,
-        languageAdapter: ArrayAdapter<Languages>,
         engines: HashSet<Engines>,
         categories: HashSet<Categories>,
         compositeDisposable: CompositeDisposable
@@ -62,9 +59,6 @@ internal class ActivitySettingsModule {
             settingsView,
             searchParameter,
             searxInstanceBucket,
-            instanceAdapter,
-            timeRangeAdapter,
-            languageAdapter,
             engines,
             categories,
             compositeDisposable
@@ -101,6 +95,7 @@ internal class ActivitySettingsModule {
             R.layout.simple_spinner_dropdown_item,
             arrayListOf<String>()
         )
+
 }
 
 @Module
@@ -147,4 +142,5 @@ internal class ActivitySearchModule {
     @Provides
     fun provideSettingsIntent(searchActivity: SearchActivity) =
         Intent(searchActivity, SettingsActivity::class.java)
+
 }

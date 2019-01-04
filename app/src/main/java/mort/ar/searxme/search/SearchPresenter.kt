@@ -16,7 +16,7 @@ private const val EMPTY = ""
 
 
 class SearchPresenter @Inject constructor(
-    private val view: SearchContract.SearchView,
+    private val searchView: SearchContract.SearchView,
     private val searcher: Searcher,
     private val compositeDisposable: CompositeDisposable
 ) : SearchContract.SearchPresenter {
@@ -35,13 +35,13 @@ class SearchPresenter @Inject constructor(
     }
 
     override fun onSearchResultClick(searchResult: SearxResult) {
-        view.loadUrl(searchResult.prettyUrl)
+        searchView.loadUrl(searchResult.prettyUrl)
         showPage(WEBVIEW)
     }
 
     override fun onSearchSuggestionClick(query: String) {
         isSuggestionListSubmit = true
-        view.setSearchQuery(query)
+        searchView.setSearchQuery(query)
         showPage(SEARCH_RESULTS)
         executeSearch(query)
     }
@@ -52,7 +52,7 @@ class SearchPresenter @Inject constructor(
     }
 
     override fun onSettingsButtonClick(): Boolean {
-        view.startSettings()
+        searchView.startSettings()
         return false
     }
 
@@ -66,29 +66,32 @@ class SearchPresenter @Inject constructor(
     override fun onQueryTextChange(query: String?): Boolean {
         when {
             isSuggestionListSubmit -> isSuggestionListSubmit = !isSuggestionListSubmit
-            query.isNullOrEmpty() -> view.hideSearchSuggestions()
+            query.isNullOrEmpty() -> searchView.hideSearchSuggestions()
             else -> compositeDisposable += searcher.requestSearchAutoComplete(query)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { suggestions -> view.updateSearchSuggestions(suggestions.toList()) }
+                .subscribe(
+                    { suggestions -> searchView.updateSearchSuggestions(suggestions.toList()) },
+                    { throwable -> searchView.showMessage(throwable.message) }
+                )
         }
 
         return true
     }
 
     private fun executeSearch(searchTerm: String) {
-        view.showProgress()
+        searchView.showProgress()
         compositeDisposable += searcher.requestSearchResults(searchTerm)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe(
                 { response ->
-                    view.hideProgress()
-                    view.updateSearchResults(response)
+                    searchView.hideProgress()
+                    searchView.updateSearchResults(response)
                 },
-                { error ->
-                    view.hideProgress()
-                    view.showMessage(error.message)
+                { throwable ->
+                    searchView.hideProgress()
+                    searchView.showMessage(throwable.message)
                 }
             )
     }
@@ -98,12 +101,12 @@ class SearchPresenter @Inject constructor(
 
         when (currentPage) {
             SEARCH_RESULTS -> showPage(START)
-            WEBVIEW -> if (!view.onBackPressedHandledByWebView()) showPage(SEARCH_RESULTS)
+            WEBVIEW -> if (!searchView.onBackPressedHandledByWebView()) showPage(SEARCH_RESULTS)
             START -> when {
                 isLastClickBeforeQuitApp -> isHandled = false
                 else -> {
                     isLastClickBeforeQuitApp = true
-                    view.showMessage("Next click finishes the app")
+                    searchView.showMessage("Next click finishes the app")
                 }
             }
         }
@@ -122,25 +125,25 @@ class SearchPresenter @Inject constructor(
 
     private fun showStartPage() {
         isLastClickBeforeQuitApp = false
-        view.setSearchQuery(EMPTY)
-        view.hideKeyboard()
-        view.hideSearchSuggestions()
-        view.hideSearchResults()
-        view.hideWebView()
+        searchView.setSearchQuery(EMPTY)
+        searchView.hideKeyboard()
+        searchView.hideSearchSuggestions()
+        searchView.hideSearchResults()
+        searchView.hideWebView()
     }
 
     private fun showSearchResultPage() {
-        view.hideKeyboard()
-        view.hideSearchSuggestions()
-        view.hideWebView()
-        view.showSearchResults()
+        searchView.hideKeyboard()
+        searchView.hideSearchSuggestions()
+        searchView.hideWebView()
+        searchView.showSearchResults()
     }
 
     private fun showWebViewPage() {
-        view.hideKeyboard()
-        view.hideSearchResults()
-        view.hideSearchSuggestions()
-        view.showWebView()
+        searchView.hideKeyboard()
+        searchView.hideSearchResults()
+        searchView.hideSearchSuggestions()
+        searchView.showWebView()
     }
 
 }

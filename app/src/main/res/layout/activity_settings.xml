@@ -23,10 +23,10 @@
             <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp">
+                    android:layout_marginStart="@dimen/activity_settings_card_margin_start"
+                    android:layout_marginEnd="@dimen/activity_settings_card_margin_end"
+                    android:layout_marginTop="@dimen/activity_settings_card_margin_top"
+                    android:layout_marginBottom="@dimen/activity_settings_card_margin_bottom">
 
                 <include android:id="@+id/settingsSearxInstance"
                          layout="@layout/settings_searx_instances"/>
@@ -36,10 +36,10 @@
             <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp">
+                    android:layout_marginStart="@dimen/activity_settings_card_margin_start"
+                    android:layout_marginEnd="@dimen/activity_settings_card_margin_end"
+                    android:layout_marginTop="@dimen/activity_settings_card_margin_top"
+                    android:layout_marginBottom="@dimen/activity_settings_card_margin_bottom">
 
                 <include android:id="@+id/settingsLanguage"
                          layout="@layout/settings_languages"/>
@@ -49,10 +49,10 @@
             <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp">
+                    android:layout_marginStart="@dimen/activity_settings_card_margin_start"
+                    android:layout_marginEnd="@dimen/activity_settings_card_margin_end"
+                    android:layout_marginTop="@dimen/activity_settings_card_margin_top"
+                    android:layout_marginBottom="@dimen/activity_settings_card_margin_bottom">
 
                 <include android:id="@+id/settingsTimeRange"
                          layout="@layout/settings_time_ranges"/>
@@ -62,10 +62,10 @@
             <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp">
+                    android:layout_marginStart="@dimen/activity_settings_card_margin_start"
+                    android:layout_marginEnd="@dimen/activity_settings_card_margin_end"
+                    android:layout_marginTop="@dimen/activity_settings_card_margin_top"
+                    android:layout_marginBottom="@dimen/activity_settings_card_margin_bottom">
 
                 <include android:id="@+id/settingsEngines"
                          layout="@layout/settings_engines"/>
@@ -75,10 +75,10 @@
             <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp">
+                    android:layout_marginStart="@dimen/activity_settings_card_margin_start"
+                    android:layout_marginEnd="@dimen/activity_settings_card_margin_end"
+                    android:layout_marginTop="@dimen/activity_settings_card_margin_top"
+                    android:layout_marginBottom="@dimen/activity_settings_card_margin_bottom">
 
                 <include android:id="@+id/settingsCategories"
                          layout="@layout/settings_categories"/>

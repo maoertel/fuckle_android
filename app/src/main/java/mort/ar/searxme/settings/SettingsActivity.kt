@@ -30,6 +30,16 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
     @Inject
     lateinit var settingsPresenter: SettingsContract.SettingsPresenter
 
+    @Inject
+    lateinit var instanceAdapter: ArrayAdapter<String>
+
+    @Inject
+    lateinit var languageAdapter: ArrayAdapter<Languages>
+
+    @Inject
+    lateinit var timeRangeAdapter: ArrayAdapter<TimeRanges>
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
@@ -57,17 +67,16 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
         settingsPresenter.stop()
     }
 
-    override fun setSpinnerAdapters(
-        instanceAdapter: ArrayAdapter<String>,
-        timeRangeAdapter: ArrayAdapter<TimeRanges>,
-        languageAdapter: ArrayAdapter<Languages>
-    ) {
+    override fun setSpinnerAdapters() {
         spinnerSearxInstances.adapter = instanceAdapter
         spinnerTimeRange.adapter = timeRangeAdapter
         spinnerLanguage.adapter = languageAdapter
     }
 
-    override fun initializeSearxInstanceSpinner(position: Int) {
+    override fun initializeSearxInstanceSpinner(searxInstances: List<String>, position: Int) {
+        instanceAdapter.addAll(searxInstances)
+        instanceAdapter.notifyDataSetChanged()
+
         spinnerSearxInstances.setSelection(position)
         spinnerSearxInstances.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) =

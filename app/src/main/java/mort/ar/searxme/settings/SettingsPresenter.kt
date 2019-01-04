@@ -1,6 +1,5 @@
 package mort.ar.searxme.settings
 
-import android.widget.ArrayAdapter
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -17,16 +16,13 @@ class SettingsPresenter @Inject constructor(
     private val settingsView: SettingsContract.SettingsView,
     private val searchParameter: SearchParameter,
     private val searxInstanceBucket: SearxInstanceBucket,
-    private val instanceAdapter: ArrayAdapter<String>,
-    private val timeRangeAdapter: ArrayAdapter<TimeRanges>,
-    private val languageAdapter: ArrayAdapter<Languages>,
     private val engines: HashSet<Engines>,
     private val categories: HashSet<Categories>,
     private val compositeDisposable: CompositeDisposable
 ) : SettingsContract.SettingsPresenter {
 
     override fun start() {
-        settingsView.setSpinnerAdapters(instanceAdapter, timeRangeAdapter, languageAdapter)
+        settingsView.setSpinnerAdapters()
     }
 
     override fun loadSettings() {
@@ -58,9 +54,7 @@ class SettingsPresenter @Inject constructor(
             .subscribeOn(Schedulers.io())
             .subscribe(
                 { instances ->
-                    instanceAdapter.addAll(instances)
-                    instanceAdapter.notifyDataSetChanged()
-                    settingsView.initializeSearxInstanceSpinner(0)
+                    settingsView.initializeSearxInstanceSpinner(instances, 0)
                     settingsView.hideProgress()
                 },
                 { throwable ->

@@ -1,6 +1,5 @@
 package mort.ar.searxme.settings
 
-import android.widget.ArrayAdapter
 import mort.ar.searxme.model.Languages
 import mort.ar.searxme.model.TimeRanges
 
@@ -18,13 +17,12 @@ interface SettingsContract {
     }
 
     interface SettingsView : BaseView {
-        fun setSpinnerAdapters(
-            instanceAdapter: ArrayAdapter<String>,
-            timeRangeAdapter: ArrayAdapter<TimeRanges>,
-            languageAdapter: ArrayAdapter<Languages>
-        )
+        fun setSpinnerAdapters()
 
-        fun initializeSearxInstanceSpinner(position: Int)
+        fun initializeSearxInstanceSpinner(
+            searxInstances: List<String>,
+            position: Int
+        )
 
         fun initializeTimeRangeSpinner(position: Int)
 
@@ -68,11 +66,17 @@ interface SettingsContract {
 
         fun onEnginesDefaultCheckboxClick()
 
-        fun onEngineCheckBoxClick(engine: Engines, shouldAdd: Boolean): Boolean
+        fun onEngineCheckBoxClick(
+            engine: Engines,
+            shouldAdd: Boolean
+        ): Boolean
 
         fun onCategoriesDefaultCheckboxClick()
 
-        fun onCategoryCheckBoxClick(category: Categories, shouldAdd: Boolean): Boolean
+        fun onCategoryCheckBoxClick(
+            category: Categories,
+            shouldAdd: Boolean
+        ): Boolean
     }
 
 }
