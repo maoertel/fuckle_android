@@ -12,6 +12,7 @@ import mort.ar.searxme.access.SearxInstanceDao
 import mort.ar.searxme.manager.SearchParameter
 import mort.ar.searxme.manager.Searcher
 import mort.ar.searxme.manager.SearxInstanceBucket
+import retrofit2.Retrofit
 import javax.inject.Singleton
 
 
@@ -20,15 +21,15 @@ internal class AppModule {
 
     @Singleton
     @Provides
-    fun provideSearchParameterSharedPreferences(app: Application): SharedPreferences =
-        app.getSharedPreferences("SearchParameter", MODE_PRIVATE)
+    fun provideSearchParameterSharedPreferences(application: Application): SharedPreferences =
+        application.getSharedPreferences("SearchParameter", MODE_PRIVATE)
 
     @Singleton
     @Provides
-    fun provideDatabase(app: Application): Database =
+    fun provideDatabase(application: Application): Database =
         Room
             .databaseBuilder(
-                app,
+                application,
                 Database::class.java,
                 "searx.db"
             )
@@ -39,17 +40,23 @@ internal class AppModule {
     fun provideSearxInstanceDao(database: Database) =
         database.searxInstanceDao()
 
+    @Provides
+    fun provideRetrofitBuilder() = Retrofit.Builder()
+
     @Singleton
     @Provides
     fun provideSearcher(
         searchParameter: SearchParameter,
         searxInstanceBucket: SearxInstanceBucket,
+        retrofitBuilder: Retrofit.Builder,
         compositeDisposable: CompositeDisposable
-    ) = Searcher(
-        searchParameter,
-        searxInstanceBucket,
-        compositeDisposable
-    )
+    ) =
+        Searcher(
+            searchParameter,
+            searxInstanceBucket,
+            retrofitBuilder,
+            compositeDisposable
+        )
 
     @Singleton
     @Provides
@@ -62,6 +69,7 @@ internal class AppModule {
         SearxInstanceBucket(searxInstanceDao)
 
     @Provides
-    fun provideCompositeDisposables() = CompositeDisposable()
+    fun provideCompositeDisposables() =
+        CompositeDisposable()
 
 }

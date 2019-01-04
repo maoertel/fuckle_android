@@ -15,6 +15,7 @@ import javax.inject.Inject
 class Searcher @Inject constructor(
     private val searchParameter: SearchParameter,
     private val searxInstanceBucket: SearxInstanceBucket,
+    private val retrofitBuilder: Retrofit.Builder,
     private val compositeDisposable: CompositeDisposable
 ) {
 
@@ -34,16 +35,17 @@ class Searcher @Inject constructor(
         // logging.level = HttpLoggingInterceptor.Level.BASIC
         // httpClient.addInterceptor(logging)
 
+        compositeDisposable.clear()
         compositeDisposable += searxInstanceBucket.getPrimaryInstance()
             .subscribe { searxInstance ->
-                val retrofit = Retrofit.Builder()
-                    .baseUrl(searxInstance.url)
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .addConverterFactory(MoshiConverterFactory.create())
-                    // .client(httpClient.build())
-                    .build()
-
-                retrofitService = retrofit.create<SearxAccess>(SearxAccess::class.java)
+                retrofitService =
+                        retrofitBuilder
+                            .baseUrl(searxInstance.url)
+                            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                            .addConverterFactory(MoshiConverterFactory.create())
+                            // .client(httpClient.build())
+                            .build()
+                            .create<SearxAccess>(SearxAccess::class.java)
             }
     }
 
