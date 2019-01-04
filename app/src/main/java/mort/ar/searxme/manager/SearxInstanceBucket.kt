@@ -39,7 +39,7 @@ class SearxInstanceBucket @Inject constructor(
         // TODO
     }
 
-    private fun insertInitialInstance(): Completable =
+    private fun insertInitialInstance() =
         Completable.create {
             instanceDao.insert(initialInstance)
             it.onComplete()

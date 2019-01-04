@@ -16,23 +16,25 @@ class Searcher @Inject constructor(
     private val retrofitBuilder: Retrofit.Builder
 ) {
 
-    private lateinit var retrofitService: SearxAccess
+    private var retrofitService: SearxAccess
 
     init {
-        initRetrofitService()
+        retrofitService = initRetrofitService()
     }
 
-    private fun initRetrofitService() {
-        // Just for logging purposes
-        // val httpClient = OkHttpClient.Builder()
-        // .readTimeout(30, TimeUnit.SECONDS)
-        // .writeTimeout(30, TimeUnit.SECONDS)
+    private fun initRetrofitService() =
+        buildRetrofitService().blockingFirst()
 
-        // val logging = HttpLoggingInterceptor()
-        // logging.level = HttpLoggingInterceptor.Level.BASIC
-        // httpClient.addInterceptor(logging)
+    private fun buildRetrofitService(): Observable<SearxAccess> =
+    // Just for logging purposes
+    // val httpClient = OkHttpClient.Builder()
+    // .readTimeout(30, TimeUnit.SECONDS)
+    // .writeTimeout(30, TimeUnit.SECONDS)
 
-        retrofitService = searxInstanceBucket.getPrimaryInstance()
+    // val logging = HttpLoggingInterceptor()
+    // logging.level = HttpLoggingInterceptor.Level.BASIC
+    // httpClient.addInterceptor(logging)
+        searxInstanceBucket.getPrimaryInstance()
             .flatMap { searxInstance ->
                 Observable.just(
                     retrofitBuilder
@@ -44,8 +46,6 @@ class Searcher @Inject constructor(
                         .create<SearxAccess>(SearxAccess::class.java)
                 )
             }
-            .blockingFirst()
-    }
 
     fun requestSearchResults(query: String): Observable<SearxResponse> =
         retrofitService.requestSearchResults(
