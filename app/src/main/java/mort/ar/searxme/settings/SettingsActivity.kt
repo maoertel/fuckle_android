@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.Toast
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.settings_categories.*
 import kotlinx.android.synthetic.main.settings_engines.*
@@ -32,10 +31,8 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
 
     @Inject
     lateinit var instanceAdapter: ArrayAdapter<String>
-
     @Inject
     lateinit var languageAdapter: ArrayAdapter<Languages>
-
     @Inject
     lateinit var timeRangeAdapter: ArrayAdapter<TimeRanges>
 
@@ -116,23 +113,11 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
         }
     }
 
-    override fun setEnginesDefaultCheckBoxActivated() {
-        checkBoxDefault.isClickable = false
-        Engines.values().forEach { engine ->
-            findViewById<CheckBox>(engine.checkBox).isChecked = false
-        }
-    }
-
     override fun initializeEngineCheckBox(engine: Engines, containsEngine: Boolean) {
         val checkbox = findViewById<CheckBox>(engine.checkBox)
         checkbox.isChecked = containsEngine
         checkbox.setOnClickListener {
-            val clickClearedEngines =
-                settingsPresenter.onEngineCheckBoxClick(engine, checkbox.isChecked)
-            when (checkbox.isChecked) {
-                true -> checkBoxDefault.activate(!checkbox.isChecked)
-                false -> if (clickClearedEngines) checkBoxDefault.activate(!checkbox.isChecked)
-            }
+            settingsPresenter.onEngineCheckBoxClick(engine, checkbox.isChecked)
         }
     }
 
@@ -145,25 +130,26 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
         }
     }
 
-    override fun setCategoriesDefaultCheckBoxActivated() {
-        checkBoxCategoriesDefault.isClickable = false
-        Categories.values().forEach { category ->
-            findViewById<CheckBox>(category.checkBox).isChecked = false
+    override fun initializeCategoryCheckBox(category: Categories, containsCategory: Boolean) {
+        val checkbox = findViewById<CheckBox>(category.checkBox)
+        checkbox.isChecked = containsCategory
+        checkbox.setOnClickListener {
+            settingsPresenter.onCategoryCheckBoxClick(category, checkbox.isChecked)
         }
     }
 
-    override fun initializeCategoryCheckBox(category: Categories, containsCategory: Boolean) {
-        val checkbox = findViewById<CheckBox>(category.checkBox)
+    override fun setEnginesDefaultCheckBoxActive(shouldBeActivated: Boolean) {
+        checkBoxDefault.isChecked = shouldBeActivated
+        checkBoxDefault.isClickable = !shouldBeActivated
+    }
 
-        checkbox.isChecked = containsCategory
-        checkbox.setOnClickListener {
-            val clickClearedCategories =
-                settingsPresenter.onCategoryCheckBoxClick(category, checkbox.isChecked)
-            when (checkbox.isChecked) {
-                true -> checkBoxCategoriesDefault.activate(!checkbox.isChecked)
-                false -> if (clickClearedCategories) checkBoxCategoriesDefault.activate(!checkbox.isChecked)
-            }
-        }
+    override fun setCategoriesDefaultCheckBoxActive(shouldBeActivated: Boolean) {
+        checkBoxCategoriesDefault.isChecked = shouldBeActivated
+        checkBoxCategoriesDefault.isClickable = !shouldBeActivated
+    }
+
+    override fun setCheckBoxActive(checkBoxId: Int, shouldBeActivated: Boolean) {
+        findViewById<CheckBox>(checkBoxId).isChecked = shouldBeActivated
     }
 
     override fun showProgress() {
@@ -177,7 +163,7 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
 
     override fun hideKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(toolbar.windowToken, 0)
+        imm.hideSoftInputFromWindow(toolbarSettings.windowToken, 0)
     }
 
 }

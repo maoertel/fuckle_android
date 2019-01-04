@@ -1,6 +1,5 @@
 package mort.ar.searxme.injection
 
-import android.R
 import android.content.Intent
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.ArrayAdapter
@@ -76,7 +75,7 @@ internal class ActivitySettingsModule {
     fun provideTimeRangeAdapter(settingsActivity: SettingsActivity) =
         ArrayAdapter(
             settingsActivity,
-            R.layout.simple_spinner_dropdown_item,
+            android.R.layout.simple_spinner_dropdown_item,
             TimeRanges.values()
         )
 
@@ -84,7 +83,7 @@ internal class ActivitySettingsModule {
     fun provideLanguageAdapter(settingsActivity: SettingsActivity) =
         ArrayAdapter(
             settingsActivity,
-            R.layout.simple_spinner_dropdown_item,
+            android.R.layout.simple_spinner_dropdown_item,
             Languages.values()
         )
 
@@ -92,7 +91,7 @@ internal class ActivitySettingsModule {
     fun provideSearxInstanceAdapter(settingsActivity: SettingsActivity) =
         ArrayAdapter(
             settingsActivity,
-            R.layout.simple_spinner_dropdown_item,
+            android.R.layout.simple_spinner_dropdown_item,
             arrayListOf<String>()
         )
 

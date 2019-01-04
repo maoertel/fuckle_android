@@ -30,7 +30,7 @@ interface SettingsContract {
 
         fun initializeEnginesDefaultCheckbox(isActivated: Boolean)
 
-        fun setEnginesDefaultCheckBoxActivated()
+        fun setEnginesDefaultCheckBoxActive(shouldBeActivated: Boolean)
 
         fun initializeEngineCheckBox(
             engine: Engines,
@@ -39,12 +39,14 @@ interface SettingsContract {
 
         fun initializeCategoriesDefaultCheckbox(isActivated: Boolean)
 
-        fun setCategoriesDefaultCheckBoxActivated()
+        fun setCategoriesDefaultCheckBoxActive(shouldBeActivated: Boolean)
 
         fun initializeCategoryCheckBox(
             category: Categories,
             containsCategory: Boolean
         )
+
+        fun setCheckBoxActive(checkBoxId: Int, shouldBeActivated: Boolean)
     }
 
     interface BasePresenter {
@@ -69,14 +71,14 @@ interface SettingsContract {
         fun onEngineCheckBoxClick(
             engine: Engines,
             shouldAdd: Boolean
-        ): Boolean
+        )
 
         fun onCategoriesDefaultCheckboxClick()
 
         fun onCategoryCheckBoxClick(
             category: Categories,
             shouldAdd: Boolean
-        ): Boolean
+        )
     }
 
 }

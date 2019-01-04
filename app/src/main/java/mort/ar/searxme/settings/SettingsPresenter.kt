@@ -64,18 +64,6 @@ class SettingsPresenter @Inject constructor(
             )
     }
 
-    override fun onSearxInstanceSelect(searxInstance: String) {
-        searxInstanceBucket.setCurrentInstance(searxInstance)
-    }
-
-    override fun onTimeRangeSelect(selectedTimeRange: TimeRanges) {
-        searchParameter.searchParams.timeRange = selectedTimeRange
-    }
-
-    override fun onLanguageSelect(selectedLanguage: Languages) {
-        searchParameter.searchParams.language = selectedLanguage
-    }
-
     private fun initializeEngines() {
         initializeEnginesSet()
         settingsView.initializeEnginesDefaultCheckbox(engines.isEmpty())
@@ -90,26 +78,6 @@ class SettingsPresenter @Inject constructor(
             ?.split(",")
             ?.map { it.trim() }
             ?.forEach { engines.add(Engines.valueOf(it.toUpperCase())) }
-    }
-
-    private fun assignSearchParameterEngines() {
-        val engineList = arrayListOf<String>()
-        engines.forEach { engineList.add(it.urlParameter) }
-        searchParameter.searchParams.engines =
-                when {
-                    engineList.isNullOrEmpty() -> null
-                    else -> engineList.joinToString(separator = ",", prefix = "")
-                }
-    }
-
-    override fun onEnginesDefaultCheckboxClick() {
-        engines.clear()
-        settingsView.setEnginesDefaultCheckBoxActivated()
-    }
-
-    override fun onEngineCheckBoxClick(engine: Engines, shouldAdd: Boolean): Boolean {
-        if (shouldAdd) engines.add(engine) else engines.remove(engine)
-        return engines.isEmpty()
     }
 
     private fun initializeCategories() {
@@ -128,6 +96,72 @@ class SettingsPresenter @Inject constructor(
             ?.forEach { categories.add(Categories.valueOf(it.toUpperCase())) }
     }
 
+    override fun onSearxInstanceSelect(searxInstance: String) {
+        searxInstanceBucket.setCurrentInstance(searxInstance)
+    }
+
+    override fun onTimeRangeSelect(selectedTimeRange: TimeRanges) {
+        searchParameter.searchParams.timeRange = selectedTimeRange
+    }
+
+    override fun onLanguageSelect(selectedLanguage: Languages) {
+        searchParameter.searchParams.language = selectedLanguage
+    }
+
+    override fun onEnginesDefaultCheckboxClick() {
+        engines.clear()
+        settingsView.setEnginesDefaultCheckBoxActive(true)
+        Engines.values().forEach { engine ->
+            settingsView.setCheckBoxActive(engine.checkBox, false)
+        }
+    }
+
+    override fun onEngineCheckBoxClick(engine: Engines, shouldAdd: Boolean) {
+        when (shouldAdd) {
+            true -> {
+                engines.add(engine)
+                settingsView.setEnginesDefaultCheckBoxActive(!shouldAdd)
+            }
+            false -> {
+                engines.remove(engine)
+                if (engines.isEmpty())
+                    settingsView.setEnginesDefaultCheckBoxActive(!shouldAdd)
+            }
+        }
+    }
+
+    override fun onCategoriesDefaultCheckboxClick() {
+        categories.clear()
+        settingsView.setCategoriesDefaultCheckBoxActive(true)
+        Categories.values().forEach { category ->
+            settingsView.setCheckBoxActive(category.checkBox, false)
+        }
+    }
+
+    override fun onCategoryCheckBoxClick(category: Categories, shouldAdd: Boolean) {
+        when (shouldAdd) {
+            true -> {
+                categories.add(category)
+                settingsView.setCategoriesDefaultCheckBoxActive(!shouldAdd)
+            }
+            false -> {
+                categories.remove(category)
+                if (categories.isEmpty())
+                    settingsView.setCategoriesDefaultCheckBoxActive(!shouldAdd)
+            }
+        }
+    }
+
+    private fun assignSearchParameterEngines() {
+        val engineList = arrayListOf<String>()
+        engines.forEach { engineList.add(it.urlParameter) }
+        searchParameter.searchParams.engines =
+                when {
+                    engineList.isNullOrEmpty() -> null
+                    else -> engineList.joinToString(separator = ",", prefix = "")
+                }
+    }
+
     private fun assignSearchParameterCategories() {
         val categoriesList = arrayListOf<String>()
         categories.forEach { categoriesList.add(it.urlParameter) }
@@ -136,16 +170,6 @@ class SettingsPresenter @Inject constructor(
                     categoriesList.isNullOrEmpty() -> null
                     else -> categoriesList.joinToString(separator = ",", prefix = "")
                 }
-    }
-
-    override fun onCategoriesDefaultCheckboxClick() {
-        categories.clear()
-        settingsView.setCategoriesDefaultCheckBoxActivated()
-    }
-
-    override fun onCategoryCheckBoxClick(category: Categories, shouldAdd: Boolean): Boolean {
-        if (shouldAdd) categories.add(category) else categories.remove(category)
-        return categories.isEmpty()
     }
 
 }
