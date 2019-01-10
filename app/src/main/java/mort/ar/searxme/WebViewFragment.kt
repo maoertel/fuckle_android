@@ -1,7 +1,6 @@
 package mort.ar.searxme
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +8,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_web_view.*
 
 
@@ -35,12 +35,14 @@ class WebViewFragment : Fragment() {
     }
 
     private fun initWebSettings(webSettings: WebSettings) {
-        webSettings.setSupportZoom(true)
-        webSettings.javaScriptEnabled = true
-        webSettings.domStorageEnabled = true
-        webSettings.loadWithOverviewMode = true
-        webSettings.useWideViewPort = true
-        webSettings.setGeolocationEnabled(false)
+        with(webSettings) {
+            setSupportZoom(true)
+            javaScriptEnabled = true
+            domStorageEnabled = true
+            loadWithOverviewMode = true
+            useWideViewPort = true
+            setGeolocationEnabled(false)
+        }
     }
 
     fun onBackPressed(): Boolean =

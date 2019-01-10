@@ -23,44 +23,54 @@ class SettingsPresenter @Inject constructor(
 
     override fun start() {
         settingsView.setSpinnerAdapters()
+        initializeSearxInstanceSpinner()
     }
 
     override fun loadSettings() {
-        initializeSearxInstanceSpinner()
-        settingsView.initializeTimeRangeSpinner(searchParameter.timeRange.ordinal)
-        settingsView.initializeLanguageSpinner(searchParameter.language.ordinal)
         initializeEngines()
         initializeCategories()
+        with(settingsView) {
+            initializeTimeRangeSpinner(searchParameter.timeRange.ordinal)
+            initializeLanguageSpinner(searchParameter.language.ordinal)
+        }
     }
 
-    override fun persistSettings() {
+    override fun persistSettings(
+        instance: String,
+        language: Languages,
+        timeRange: TimeRanges
+    ) {
+        persistInstance(instance)
+        persistLanguage(language)
+        persistTimeRange(timeRange)
         assignSearchParameterEngines()
         assignSearchParameterCategories()
+//        assignSearchParameter { searchParameter.engines }
+//        assignSearchParameter { searchParameter.categories }
     }
 
-    override fun stop() {
-        compositeDisposable.clear()
-    }
+    override fun stop() = compositeDisposable.clear()
 
     private fun initializeSearxInstanceSpinner() {
-        settingsView.showProgress()
         compositeDisposable += searxInstanceBucket.getAllInstances()
             .flatMap { spinnerSearxInstances ->
                 val instances = arrayListOf<String>()
-                spinnerSearxInstances.forEach { instances.add(it.url) }
+                val secondaryInstances = arrayListOf<String>()
+                spinnerSearxInstances.forEach { searxInstance ->
+                    when {
+                        searxInstance.favorite -> instances.add(searxInstance.url)
+                        else -> secondaryInstances.add(searxInstance.url)
+                    }
+                }
+                instances.addAll(secondaryInstances)
+
                 Observable.just(instances)
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe(
-                { instances ->
-                    settingsView.initializeSearxInstanceSpinner(instances, 0)
-                    settingsView.hideProgress()
-                },
-                { throwable ->
-                    settingsView.showMessage(throwable.message)
-                    settingsView.hideProgress()
-                }
+                { instances -> settingsView.initializeSearxInstanceSpinner(instances) },
+                { throwable -> settingsView.showMessage(throwable.message) }
             )
     }
 
@@ -96,15 +106,21 @@ class SettingsPresenter @Inject constructor(
             ?.forEach { categories.add(Categories.valueOf(it.toUpperCase())) }
     }
 
-    override fun onSearxInstanceSelect(searxInstance: String) {
-        searxInstanceBucket.setPrimaryInstance(searxInstance)
+    private fun persistInstance(searxInstance: String) {
+        compositeDisposable += searxInstanceBucket.setPrimaryInstance(searxInstance)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe(
+                { /* do nothing so far */ },
+                { throwable -> settingsView.showMessage(throwable.message) }
+            )
     }
 
-    override fun onTimeRangeSelect(selectedTimeRange: TimeRanges) {
+    private fun persistTimeRange(selectedTimeRange: TimeRanges) {
         searchParameter.timeRange = selectedTimeRange
     }
 
-    override fun onLanguageSelect(selectedLanguage: Languages) {
+    private fun persistLanguage(selectedLanguage: Languages) {
         searchParameter.language = selectedLanguage
     }
 
@@ -117,12 +133,12 @@ class SettingsPresenter @Inject constructor(
     }
 
     override fun onEngineCheckBoxClick(engine: Engines, shouldAdd: Boolean) {
-        when (shouldAdd) {
-            true -> {
+        when {
+            shouldAdd -> {
                 engines.add(engine)
                 settingsView.setEnginesDefaultCheckBoxActive(!shouldAdd)
             }
-            false -> {
+            else -> {
                 engines.remove(engine)
                 if (engines.isEmpty())
                     settingsView.setEnginesDefaultCheckBoxActive(!shouldAdd)
@@ -139,18 +155,29 @@ class SettingsPresenter @Inject constructor(
     }
 
     override fun onCategoryCheckBoxClick(category: Categories, shouldAdd: Boolean) {
-        when (shouldAdd) {
-            true -> {
+        when {
+            shouldAdd -> {
                 categories.add(category)
                 settingsView.setCategoriesDefaultCheckBoxActive(!shouldAdd)
             }
-            false -> {
+            else -> {
                 categories.remove(category)
                 if (categories.isEmpty())
                     settingsView.setCategoriesDefaultCheckBoxActive(!shouldAdd)
             }
         }
     }
+
+    /*private fun assignSearchParameter(parameter: (String?) -> Unit) {
+        val engineList = arrayListOf<String>()
+        this.engines.forEach { engineList.add(it.urlParameter) }
+        parameter(
+            when {
+                engineList.isNullOrEmpty() -> null
+                else -> engineList.joinToString(separator = ",", prefix = "")
+            }
+        )
+    }*/
 
     private fun assignSearchParameterEngines() {
         val engineList = arrayListOf<String>()

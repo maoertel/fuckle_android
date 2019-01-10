@@ -1,11 +1,9 @@
 package mort.ar.searxme.access
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
+import androidx.room.RoomDatabase
 import mort.ar.searxme.model.SearxInstance
 
-
-@Database(
+@androidx.room.Database(
     entities = [SearxInstance::class],
     version = 1,
     exportSchema = false

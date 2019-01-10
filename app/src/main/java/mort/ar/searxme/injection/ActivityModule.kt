@@ -1,8 +1,8 @@
 package mort.ar.searxme.injection
 
 import android.content.Intent
-import android.support.v7.widget.LinearLayoutManager
 import android.widget.ArrayAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector

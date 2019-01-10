@@ -19,10 +19,7 @@ interface SettingsContract {
     interface SettingsView : BaseView {
         fun setSpinnerAdapters()
 
-        fun initializeSearxInstanceSpinner(
-            searxInstances: List<String>,
-            position: Int
-        )
+        fun initializeSearxInstanceSpinner(searxInstances: List<String>)
 
         fun initializeTimeRangeSpinner(position: Int)
 
@@ -54,18 +51,16 @@ interface SettingsContract {
 
         fun loadSettings()
 
-        fun persistSettings()
+        fun persistSettings(
+            instance: String,
+            language: Languages,
+            timeRange: TimeRanges
+        )
 
         fun stop()
     }
 
     interface SettingsPresenter : BasePresenter {
-        fun onSearxInstanceSelect(searxInstance: String)
-
-        fun onTimeRangeSelect(selectedTimeRange: TimeRanges)
-
-        fun onLanguageSelect(selectedLanguage: Languages)
-
         fun onEnginesDefaultCheckboxClick()
 
         fun onEngineCheckBoxClick(

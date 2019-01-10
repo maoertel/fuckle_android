@@ -27,15 +27,14 @@ class SearchPresenter @Inject constructor(
     private var isLastClickBeforeQuitApp = false
 
 
-    override fun start() {
-        searchView.initializeWebViewFragment()
-        searchView.initializeSearchSuggestionsAdapter()
-        searchView.initializeSearchResultsAdapter()
-    }
+    override fun start() =
+        with(searchView) {
+            initializeWebViewFragment()
+            initializeSearchSuggestionsAdapter()
+            initializeSearchResultsAdapter()
+        }
 
-    override fun stop() {
-        compositeDisposable.clear()
-    }
+    override fun stop() = compositeDisposable.clear()
 
     override fun onSearchResultClick(searchResult: SearxResult) {
         searchView.loadUrl(searchResult.prettyUrl)
@@ -89,12 +88,16 @@ class SearchPresenter @Inject constructor(
             .subscribeOn(Schedulers.io())
             .subscribe(
                 { response ->
-                    searchView.hideProgress()
-                    searchView.updateSearchResults(response)
+                    with(searchView) {
+                        hideProgress()
+                        updateSearchResults(response)
+                    }
                 },
                 { throwable ->
-                    searchView.hideProgress()
-                    searchView.showMessage(throwable.message)
+                    with(searchView) {
+                        hideProgress()
+                        showMessage(throwable.message)
+                    }
                 }
             )
     }
@@ -128,25 +131,29 @@ class SearchPresenter @Inject constructor(
 
     private fun showStartPage() {
         isLastClickBeforeQuitApp = false
-        searchView.setSearchQuery(EMPTY)
-        searchView.hideKeyboard()
-        searchView.hideSearchSuggestions()
-        searchView.hideSearchResults()
-        searchView.hideWebView()
+        with(searchView) {
+            setSearchQuery(EMPTY)
+            hideKeyboard()
+            hideSearchSuggestions()
+            hideSearchResults()
+            hideWebView()
+        }
     }
 
-    private fun showSearchResultPage() {
-        searchView.hideKeyboard()
-        searchView.hideSearchSuggestions()
-        searchView.hideWebView()
-        searchView.showSearchResults()
-    }
+    private fun showSearchResultPage() =
+        with(searchView) {
+            hideKeyboard()
+            hideSearchSuggestions()
+            hideWebView()
+            showSearchResults()
+        }
 
-    private fun showWebViewPage() {
-        searchView.hideKeyboard()
-        searchView.hideSearchResults()
-        searchView.hideSearchSuggestions()
-        searchView.showWebView()
-    }
+    private fun showWebViewPage() =
+        with(searchView) {
+            hideKeyboard()
+            hideSearchResults()
+            hideSearchSuggestions()
+            showWebView()
+        }
 
 }

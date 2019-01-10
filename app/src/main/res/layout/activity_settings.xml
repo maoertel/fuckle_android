@@ -20,7 +20,7 @@
                 android:background="@color/colorPrimary"
                 android:orientation="vertical">
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/activity_settings_card_margin_start"
@@ -31,9 +31,9 @@
                 <include android:id="@+id/settingsSearxInstance"
                          layout="@layout/settings_searx_instances"/>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/activity_settings_card_margin_start"
@@ -44,9 +44,9 @@
                 <include android:id="@+id/settingsLanguage"
                          layout="@layout/settings_languages"/>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/activity_settings_card_margin_start"
@@ -57,9 +57,9 @@
                 <include android:id="@+id/settingsTimeRange"
                          layout="@layout/settings_time_ranges"/>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/activity_settings_card_margin_start"
@@ -70,9 +70,9 @@
                 <include android:id="@+id/settingsEngines"
                          layout="@layout/settings_engines"/>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/activity_settings_card_margin_start"
@@ -83,7 +83,7 @@
                 <include android:id="@+id/settingsCategories"
                          layout="@layout/settings_categories"/>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 

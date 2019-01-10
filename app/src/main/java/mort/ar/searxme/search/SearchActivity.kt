@@ -3,10 +3,6 @@ package mort.ar.searxme.search
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.SearchView
-import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -14,6 +10,10 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.fragment_web_view.*
@@ -100,23 +100,23 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
         searchView.isSubmitButtonEnabled = false
         searchView.queryHint = getString(R.string.activity_search_searchbox_hint)
 
-        val searchPlate = searchView.findViewById(android.support.v7.appcompat.R.id.search_plate) as View
+        val searchPlate = searchView.findViewById(androidx.appcompat.R.id.search_plate) as View
         searchPlate.setBackgroundColor(resources.getColor(R.color.colorPrimary, null))
 
-        val searchIcon = searchView.findViewById(android.support.v7.appcompat.R.id.search_mag_icon) as ImageView
+        val searchIcon = searchView.findViewById(androidx.appcompat.R.id.search_mag_icon) as ImageView
         searchIcon.setColorFilter(getColor(R.color.activity_search_toolbar_icons))
         searchIcon.layoutParams = LinearLayout.LayoutParams(0, 0)
 
-        val closeButton = searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn) as ImageView
+        val closeButton = searchView.findViewById(androidx.appcompat.R.id.search_close_btn) as ImageView
         closeButton.setColorFilter(getColor(R.color.activity_search_toolbar_icons))
 
-        val submitButton = searchView.findViewById(android.support.v7.appcompat.R.id.search_go_btn) as ImageView
+        val submitButton = searchView.findViewById(androidx.appcompat.R.id.search_go_btn) as ImageView
         submitButton.setColorFilter(getColor(R.color.activity_search_toolbar_icons))
 
-        val submitButtonArea = searchView.findViewById(android.support.v7.appcompat.R.id.submit_area) as View
+        val submitButtonArea = searchView.findViewById(androidx.appcompat.R.id.submit_area) as View
         submitButtonArea.setBackgroundColor(resources.getColor(R.color.colorPrimary, null))
 
-        val searchEditText = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text) as EditText
+        val searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text) as EditText
         searchEditText.background = getDrawable(R.drawable.edittext_background)
         searchEditText.setTextAppearance(R.style.Searchbox)
 
