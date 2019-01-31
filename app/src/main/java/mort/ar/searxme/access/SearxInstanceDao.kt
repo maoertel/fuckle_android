@@ -1,13 +1,11 @@
 package mort.ar.searxme.access
 
-import androidx.room.Dao
-import androidx.room.Insert
+import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
-import androidx.room.Query
-import androidx.room.Update
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import mort.ar.searxme.model.SearxInstance
 
 
@@ -15,7 +13,7 @@ import mort.ar.searxme.model.SearxInstance
 abstract class SearxInstanceDao {
 
     @Query("SELECT * FROM searx_instances")
-    abstract fun getAllSearxInstances(): Observable<List<SearxInstance>>
+    abstract fun observeAllSearxInstances(): Observable<List<SearxInstance>>
 
     @Query("SELECT * FROM searx_instances")
     abstract fun getAllSearxInstancesSingle(): Single<List<SearxInstance>>
@@ -24,10 +22,10 @@ abstract class SearxInstanceDao {
     abstract fun getSearxInstance(name: String): Single<SearxInstance>
 
     @Query("SELECT * FROM searx_instances WHERE favorite")
-    abstract fun getFavoriteInstance(): Observable<SearxInstance>
+    abstract fun observeFavoriteInstance(): Observable<SearxInstance>
 
     @Query("SELECT * FROM searx_instances WHERE favorite")
-    abstract fun getFavoriteInstanceSingle(): Single<SearxInstance>
+    abstract fun getFavoriteInstance(): Single<SearxInstance>
 
     @Query("SELECT * FROM searx_instances WHERE name IN (:names)")
     abstract fun getSearxInstances(names: List<String>): Single<List<SearxInstance>>
@@ -40,5 +38,30 @@ abstract class SearxInstanceDao {
 
     @Query("DELETE FROM searx_instances")
     abstract fun deleteAll()
+
+    @Transaction
+    open fun changeFavoriteInstance(newFavoriteInstance: String): Completable =
+        Completable
+            .concat(
+                listOf(
+                    setInstanceToFavorite(false) { getFavoriteInstance() },
+                    setInstanceToFavorite(true) { getSearxInstance(newFavoriteInstance) }
+                )
+            )
+
+    private fun setInstanceToFavorite(
+        markAsFavorite: Boolean,
+        instance: () -> Single<SearxInstance>
+    ): Completable =
+        instance()
+            .subscribeOn(Schedulers.io())
+            .flatMap { searxInstance ->
+                searxInstance.favorite = markAsFavorite
+                updateInstance(searxInstance)
+                    .subscribeOn(Schedulers.io())
+                    .toSingle { true }
+            }
+            .subscribeOn(Schedulers.io())
+            .ignoreElement()
 
 }

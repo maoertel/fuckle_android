@@ -8,21 +8,19 @@ import io.reactivex.schedulers.Schedulers
 import mort.ar.searxme.access.SearxAccess
 import mort.ar.searxme.model.SearxResponse
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
 class Searcher @Inject constructor(
     private val searchParameter: SearchParameter,
     private val searxInstanceBucket: SearxInstanceBucket,
-    private val retrofitBuilder: Retrofit.Builder
+    private val retrofitBuilder: Retrofit.Builder,
+    private val compositeDisposable: CompositeDisposable,
+    private val loggingHttpClient: OkHttpClient
 ) {
-
-    private val compositeDisposable = CompositeDisposable()
 
     private lateinit var retrofitService: SearxAccess
 
@@ -33,22 +31,14 @@ class Searcher @Inject constructor(
     }
 
     private fun buildRetrofitService() =
-        searxInstanceBucket.getPrimaryInstance()
-            .flatMap { searxInstance ->
-                //Just for logging purposes
-                val httpClient = OkHttpClient.Builder()
-                    .readTimeout(30, TimeUnit.SECONDS)
-                    .writeTimeout(30, TimeUnit.SECONDS)
-
-                val logging = HttpLoggingInterceptor()
-                logging.level = HttpLoggingInterceptor.Level.BASIC
-                httpClient.addInterceptor(logging)
+        searxInstanceBucket.observePrimaryInstance()
+            .flatMap {
                 Observable.just(
                     retrofitBuilder
-                        .baseUrl(searxInstance.url)
+                        .baseUrl(it.url)
                         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                         .addConverterFactory(MoshiConverterFactory.create())
-                        .client(httpClient.build()) // Logging
+                        .client(loggingHttpClient)
                         .build()
                         .create<SearxAccess>(SearxAccess::class.java)
                 )

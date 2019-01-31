@@ -12,7 +12,10 @@ import mort.ar.searxme.access.SearxInstanceDao
 import mort.ar.searxme.manager.SearchParameter
 import mort.ar.searxme.manager.Searcher
 import mort.ar.searxme.manager.SearxInstanceBucket
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 
@@ -43,17 +46,35 @@ internal class AppModule {
     @Provides
     fun provideRetrofitBuilder() = Retrofit.Builder()
 
+    @Provides
+    fun provideHttpClient(): OkHttpClient {
+        val httpClient =
+            OkHttpClient.Builder()
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BASIC
+        httpClient.addInterceptor(logging)
+
+        return httpClient.build()
+    }
+
     @Singleton
     @Provides
     fun provideSearcher(
         searchParameter: SearchParameter,
         searxInstanceBucket: SearxInstanceBucket,
-        retrofitBuilder: Retrofit.Builder
+        retrofitBuilder: Retrofit.Builder,
+        compositeDisposable: CompositeDisposable,
+        loggingHttpClient: OkHttpClient
     ) =
         Searcher(
             searchParameter,
             searxInstanceBucket,
-            retrofitBuilder
+            retrofitBuilder,
+            compositeDisposable,
+            loggingHttpClient
         )
 
     @Singleton

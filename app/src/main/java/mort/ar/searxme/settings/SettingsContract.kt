@@ -74,6 +74,8 @@ interface SettingsContract {
             category: Categories,
             shouldAdd: Boolean
         )
+
+        fun onInstanceSpinnerItemSelected(selectedItem: String);
     }
 
 }

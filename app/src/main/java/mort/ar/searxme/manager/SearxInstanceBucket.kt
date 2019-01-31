@@ -2,7 +2,6 @@ package mort.ar.searxme.manager
 
 import io.reactivex.Completable
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import mort.ar.searxme.access.SearxInstanceDao
 import mort.ar.searxme.model.SearxInstance
@@ -33,25 +32,26 @@ class SearxInstanceBucket @Inject constructor(
         instanceDao.insert(secondaryInstance).subscribeOn(Schedulers.io()).subscribe()
     }
 
-    fun getAllInstances(): Observable<List<SearxInstance>> =
-        instanceDao.getAllSearxInstances()
+    fun observeAllInstances(): Observable<List<SearxInstance>> =
+        instanceDao.observeAllSearxInstances()
 
-
-    fun getPrimaryInstance(): Observable<SearxInstance> =
-        instanceDao.getFavoriteInstance()
-
-    fun getPrimaryInstanceSingle(): Single<SearxInstance> =
-        instanceDao.getFavoriteInstanceSingle()
+    fun observePrimaryInstance(): Observable<SearxInstance> =
+        instanceDao.observeFavoriteInstance()
 
     fun setPrimaryInstance(instance: String): Completable =
-        Completable.concat(
-            listOf(
-                setInstanceToFavorite(false) { getPrimaryInstanceSingle() },
-                setInstanceToFavorite(true) { instanceDao.getSearxInstance(instance) }
-            )
-        )
+        instanceDao.changeFavoriteInstance(instance)
 
-    private fun setInstanceToFavorite(
+    /*fun getPrimaryInstance(): Single<SearxInstance> =
+        instanceDao.getFavoriteInstance()*/
+
+    /*Completable.concat(
+        listOf(
+            setInstanceToFavorite(false) { getPrimaryInstance() },
+            setInstanceToFavorite(true) { instanceDao.getSearxInstance(instance) }
+        )
+    )*/
+
+    /*private fun setInstanceToFavorite(
         markAsFavorite: Boolean,
         instance: () -> Single<SearxInstance>
     ): Completable =
@@ -62,7 +62,7 @@ class SearxInstanceBucket @Inject constructor(
                     .updateInstance(searxInstance)
                     .toSingle { }
             }
-            .ignoreElement()
+            .ignoreElement()*/
 
     /*private fun insertInitialInstance(): Completable =
         instanceDao.getAllSearxInstancesSingle()

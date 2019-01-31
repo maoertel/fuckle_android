@@ -8,6 +8,7 @@ import io.reactivex.schedulers.Schedulers
 import mort.ar.searxme.manager.SearchParameter
 import mort.ar.searxme.manager.SearxInstanceBucket
 import mort.ar.searxme.model.Languages
+import mort.ar.searxme.model.SearxInstance
 import mort.ar.searxme.model.TimeRanges
 import javax.inject.Inject
 
@@ -43,35 +44,37 @@ class SettingsPresenter @Inject constructor(
         persistInstance(instance)
         persistLanguage(language)
         persistTimeRange(timeRange)
-        assignSearchParameterEngines()
-        assignSearchParameterCategories()
-//        assignSearchParameter { searchParameter.engines }
-//        assignSearchParameter { searchParameter.categories }
+//        assignSearchParameterEngines()
+//        assignSearchParameterCategories()
+        assignSearchParameter { run { searchParameter.engines } }
+        assignSearchParameter { run { searchParameter.categories } }
     }
 
     override fun stop() = compositeDisposable.clear()
 
     private fun initializeSearxInstanceSpinner() {
-        compositeDisposable += searxInstanceBucket.getAllInstances()
-            .flatMap { spinnerSearxInstances ->
-                val instances = arrayListOf<String>()
-                val secondaryInstances = arrayListOf<String>()
-                spinnerSearxInstances.forEach { searxInstance ->
-                    when {
-                        searxInstance.favorite -> instances.add(searxInstance.url)
-                        else -> secondaryInstances.add(searxInstance.url)
-                    }
-                }
-                instances.addAll(secondaryInstances)
-
-                Observable.just(instances)
-            }
+        compositeDisposable += searxInstanceBucket.observeAllInstances()
+            .flatMap { spinnerSearxInstances -> buildSpinnerInstanceList(spinnerSearxInstances) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe(
                 { instances -> settingsView.initializeSearxInstanceSpinner(instances) },
                 { throwable -> settingsView.showMessage(throwable.message) }
             )
+    }
+
+    private fun buildSpinnerInstanceList(spinnerSearxInstances: List<SearxInstance>): Observable<ArrayList<String>>? {
+        val instances = arrayListOf<String>()
+        val secondaryInstances = arrayListOf<String>()
+        spinnerSearxInstances.forEach { searxInstance ->
+            when {
+                searxInstance.favorite -> instances.add(searxInstance.url)
+                else -> secondaryInstances.add(searxInstance.url)
+            }
+        }
+        instances.addAll(secondaryInstances)
+
+        return Observable.just(instances)
     }
 
     private fun initializeEngines() {
@@ -108,12 +111,16 @@ class SettingsPresenter @Inject constructor(
 
     private fun persistInstance(searxInstance: String) {
         compositeDisposable += searxInstanceBucket.setPrimaryInstance(searxInstance)
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { /* do nothing so far */ },
                 { throwable -> settingsView.showMessage(throwable.message) }
             )
+    }
+
+    override fun onInstanceSpinnerItemSelected(selectedItem: String) {
+
     }
 
     private fun persistTimeRange(selectedTimeRange: TimeRanges) {
@@ -168,7 +175,7 @@ class SettingsPresenter @Inject constructor(
         }
     }
 
-    /*private fun assignSearchParameter(parameter: (String?) -> Unit) {
+    private fun assignSearchParameter(parameter: (String?) -> Unit) {
         val engineList = arrayListOf<String>()
         this.engines.forEach { engineList.add(it.urlParameter) }
         parameter(
@@ -177,7 +184,7 @@ class SettingsPresenter @Inject constructor(
                 else -> engineList.joinToString(separator = ",", prefix = "")
             }
         )
-    }*/
+    }
 
     private fun assignSearchParameterEngines() {
         val engineList = arrayListOf<String>()
