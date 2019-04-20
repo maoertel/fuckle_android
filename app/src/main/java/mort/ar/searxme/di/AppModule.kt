@@ -9,7 +9,7 @@ import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
 import mort.ar.searxme.data.SearchResultRepository
 import mort.ar.searxme.data.SearxInstanceRepository
-import mort.ar.searxme.data.repositories.SearchParameterRepositoryImpl
+import mort.ar.searxme.data.repositories.SearchParameterRepositoryImplTemp
 import mort.ar.searxme.data.repositories.SearchResultRepositoryImpl
 import mort.ar.searxme.data.repositories.SearxInstanceRepositoryImpl
 import mort.ar.searxme.database.Database
@@ -64,14 +64,14 @@ internal class AppModule {
     @Singleton
     @Provides
     fun provideSearcher(
-        searchParameter: SearchParameterRepositoryImpl,
+        searchParameterTemp: SearchParameterRepositoryImplTemp,
         searxInstanceRepositoryImpl: SearxInstanceRepositoryImpl,
         retrofitBuilder: Retrofit.Builder,
         compositeDisposable: CompositeDisposable,
         loggingHttpClient: OkHttpClient
     ): SearchResultRepository =
         SearchResultRepositoryImpl(
-            searchParameter,
+            searchParameterTemp,
             searxInstanceRepositoryImpl,
             retrofitBuilder,
             compositeDisposable,
@@ -80,8 +80,9 @@ internal class AppModule {
 
     @Singleton
     @Provides
-    fun provideSearchParameter(sharedPreferences: SharedPreferences): SearchParameterRepositoryImpl = // TODO interface
-        SearchParameterRepositoryImpl(sharedPreferences)
+    fun provideSearchParameter(sharedPreferences: SharedPreferences): SearchParameterRepositoryImplTemp =
+        // TODO interface
+        SearchParameterRepositoryImplTemp(sharedPreferences)
 
     @Singleton
     @Provides

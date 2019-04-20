@@ -3,7 +3,7 @@ package mort.ar.searxme
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.test.platform.app.InstrumentationRegistry
-import mort.ar.searxme.data.repositories.SearchParameterRepositoryImpl
+import mort.ar.searxme.data.repositories.SearchParameterRepositoryImplTemp
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -14,21 +14,21 @@ private const val testStringCategories = "general,it,pictures"
 
 
 @RunWith(MockitoJUnitRunner::class)
-class SearchParameterRepositoryImplUnitTest {
+class SearchParameterRepositoryImplTempUnitTest {
 
     private val context: Context = InstrumentationRegistry.getInstrumentation().context
 
     lateinit var sharedPreferences: SharedPreferences
 
-    lateinit var searchParameter: SearchParameterRepositoryImpl
+    lateinit var searchParameterTemp: SearchParameterRepositoryImplTemp
 
     @Test
     fun testCategoriesProperty() {
         before()
 
-        searchParameter.categories = testStringCategories
+        searchParameterTemp.categories = testStringCategories
 
-        assertEquals(testStringCategories, searchParameter.categories)
+        assertEquals(testStringCategories, searchParameterTemp.categories)
     }
 
     private fun before() {
@@ -37,8 +37,8 @@ class SearchParameterRepositoryImplUnitTest {
 //            .`when`(context.getSharedPreferences("SearchParameterTest", Context.MODE_PRIVATE))
 //            .thenReturn(sharedPreferences)
 
-        searchParameter =
-            SearchParameterRepositoryImpl(sharedPreferences)
+        searchParameterTemp =
+            SearchParameterRepositoryImplTemp(sharedPreferences)
     }
 
 }

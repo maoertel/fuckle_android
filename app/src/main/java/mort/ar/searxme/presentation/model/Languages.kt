@@ -1,10 +1,10 @@
 package mort.ar.searxme.presentation.model
 
 enum class Languages(
-    val languageName: String,
-    val languageParameter: String?
+    private val languageName: String,
+    val languageParameter: String
 ) {
-    DEFAULT("no specific language (default)", null),
+    DEFAULT_LANGUAGE("no specific language (default)", "default"),
     ENGLISH("English", "en"),
     GERMAN("German", "de"),
     FRENCH("French", "fr"),

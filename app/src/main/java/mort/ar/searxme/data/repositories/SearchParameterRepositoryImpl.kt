@@ -1,118 +1,69 @@
 package mort.ar.searxme.data.repositories
 
-import android.content.SharedPreferences
-import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.Completable
+import io.reactivex.Single
+import mort.ar.searxme.data.SearchParameterRepository
+import mort.ar.searxme.data.localdata.SearchParameterDataSource
 import mort.ar.searxme.presentation.model.Languages
-import mort.ar.searxme.presentation.model.Languages.*
 import mort.ar.searxme.presentation.model.TimeRanges
-import mort.ar.searxme.presentation.model.TimeRanges.*
 import javax.inject.Inject
 
 class SearchParameterRepositoryImpl @Inject constructor(
-    private val sharedPreferences: SharedPreferences
-) {
+    private val searchParameterDataSource: SearchParameterDataSource
+) : SearchParameterRepository {
 
-    val behaviorSubject: BehaviorSubject<String> = BehaviorSubject.create()
+    override fun getCategories(): Single<String> =
+        searchParameterDataSource.getCategories()
 
-    init {
-        sharedPreferences.registerOnSharedPreferenceChangeListener { _, key -> behaviorSubject.onNext(key) }
-    }
+    override fun setCategories(category: String): Completable =
+        searchParameterDataSource.setCategories(category)
 
-    var categories: String? = sharedPreferences.getString("categories", null)
-        set(value) {
-            field = value
-            sharedPreferences
-                .edit()
-                .putString("categories", value)
-                .apply()
-        }
+    override fun getEngines(): Single<String> =
+        searchParameterDataSource.getEngines()
 
-    var engines: String? = sharedPreferences.getString("engines", null)
-        set(value) {
-            field = value
-            sharedPreferences
-                .edit()
-                .putString("engines", value)
-                .apply()
-        }
+    override fun setEngines(engines: String): Completable =
+        searchParameterDataSource.setEngines(engines)
 
-    var language: Languages = Languages.DEFAULT
-        get() =
-            when (sharedPreferences.getString("language", null)) {
-                "en" -> ENGLISH
-                "de" -> GERMAN
-                "fr" -> FRENCH
-                "es" -> SPANISH
-                else -> Languages.DEFAULT
-            }
-        set(value) {
-            field = value
-            sharedPreferences
-                .edit()
-                .putString("language", value.languageParameter)
-                .apply()
-        }
+    override fun getLanguage(): Single<Languages> =
+        searchParameterDataSource.getLanguage()
 
-    var timeRange: TimeRanges = TimeRanges.DEFAULT
-        get() =
-            when (sharedPreferences.getString("time_range", null)) {
-                "day" -> DAY
-                "week" -> WEEK
-                "month" -> MONTH
-                "year" -> YEAR
-                else -> TimeRanges.DEFAULT
-            }
-        set(value) {
-            field = value
-            sharedPreferences
-                .edit()
-                .putString("time_range", value.rangeParameter)
-                .apply()
-        }
+    override fun setLanguage(language: Languages): Completable =
+        searchParameterDataSource.setLanguage(language)
 
-    var pageNo: Int? = sharedPreferences.getInt("pageno", 1)
-        set(value) {
-            field = value
-            sharedPreferences
-                .edit()
-                .putInt("pageno", value ?: 1)
-                .apply()
-        }
+    override fun getTimeRange(): Single<TimeRanges> =
+        searchParameterDataSource.getTimeRange()
 
-    var format: String? = sharedPreferences.getString("format", "json")
-        set(value) {
-            field = value
-            sharedPreferences
-                .edit()
-                .putString("format", value)
-                .apply()
-        }
+    override fun setTimeRange(timeRange: TimeRanges): Completable =
+        searchParameterDataSource.setTimeRange(timeRange)
 
-    var imageProxy: String? = sharedPreferences.getString("image_proxy", null)
-        set(value) {
-            field = value
-            sharedPreferences
-                .edit()
-                .putString("image_proxy", value)
-                .apply()
-        }
+    override fun getPageNo(): Single<Int> =
+        searchParameterDataSource.getPageNo()
 
-    var autoComplete: String? = sharedPreferences.getString("autocomplete", null)
-        set(value) {
-            field = value
-            sharedPreferences
-                .edit()
-                .putString("autocomplete", value)
-                .apply()
-        }
+    override fun setPageNo(pageNumber: Int): Completable =
+        searchParameterDataSource.setPageNo(pageNumber)
 
-    var safeSearch: String? = sharedPreferences.getString("safesearch", null)
-        set(value) {
-            field = value
-            sharedPreferences
-                .edit()
-                .putString("safesearch", value)
-                .apply()
-        }
+    override fun getFormat(): Single<String> =
+        searchParameterDataSource.getFormat()
+
+    override fun setFormat(format: String): Completable =
+        searchParameterDataSource.setFormat(format)
+
+    override fun getImageProxy(): Single<String> =
+        searchParameterDataSource.getImageProxy()
+
+    override fun setImageProxy(imageProxy: String): Completable =
+        searchParameterDataSource.setImageProxy(imageProxy)
+
+    override fun getAutoComplete(): Single<String> =
+        searchParameterDataSource.getAutoComplete()
+
+    override fun setAutocomplete(autoComplete: String): Completable =
+        searchParameterDataSource.setAutocomplete(autoComplete)
+
+    override fun getSafeSearch(): Single<String> =
+        searchParameterDataSource.getSafeSearch()
+
+    override fun setSafeSearch(safeSearch: String): Completable =
+        searchParameterDataSource.setSafeSearch(safeSearch)
 
 }

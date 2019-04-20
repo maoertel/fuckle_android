@@ -16,7 +16,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Inject
 
 class SearchResultRepositoryImpl @Inject constructor(
-    private val searchParameter: SearchParameterRepositoryImpl,
+    private val searchParameterTemp: SearchParameterRepositoryImplTemp,
     private val searxInstanceRepository: SearxInstanceRepository,
     private val retrofitBuilder: Retrofit.Builder,
     private val compositeDisposable: CompositeDisposable,
@@ -48,22 +48,22 @@ class SearchResultRepositoryImpl @Inject constructor(
     override fun requestSearchResults(query: String): Observable<SearchResponse> =
         retrofitService.requestSearchResults(
             query = query,
-            categories = searchParameter.categories,
-            engines = searchParameter.engines,
-            language = searchParameter.language.languageParameter,
-            pageNo = searchParameter.pageNo,
-            timeRange = searchParameter.timeRange.rangeParameter,
-            format = searchParameter.format,
-            imageProxy = searchParameter.imageProxy,
-            autoComplete = searchParameter.autoComplete,
-            safeSearch = searchParameter.safeSearch
+            categories = searchParameterTemp.categories,
+            engines = searchParameterTemp.engines,
+            language = searchParameterTemp.language.languageParameter,
+            pageNo = searchParameterTemp.pageNo,
+            timeRange = searchParameterTemp.timeRange.rangeParameter,
+            format = searchParameterTemp.format,
+            imageProxy = searchParameterTemp.imageProxy,
+            autoComplete = searchParameterTemp.autoComplete,
+            safeSearch = searchParameterTemp.safeSearch
         )
 
     override fun requestSearchAutoComplete(query: String): Single<List<String>> =
         retrofitService.requestSearchAutocomplete(query)
 
     /*    private fun buildSearchRequest(query: String): SearchRequest {
-        val searchParams = searchParameter.searchParams
+        val searchParams = searchParameterTemp.searchParams
         return SearchRequest(
             query = query,
             categories = searchParams.categories,

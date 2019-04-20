@@ -1,10 +1,10 @@
 package mort.ar.searxme.presentation.model
 
 enum class TimeRanges(
-    val rangeName: String,
-    val rangeParameter: String?
+    private val rangeName: String,
+    val rangeParameter: String
 ) {
-    DEFAULT("none (default)", null),
+    DEFAULT("none (default)", "default"),
     DAY("Last day", "day"),
     WEEK("Last week", "week"),
     MONTH("Last month", "month"),

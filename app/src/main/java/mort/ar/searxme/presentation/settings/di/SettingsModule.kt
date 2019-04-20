@@ -5,7 +5,7 @@ import android.widget.ArrayAdapter
 import dagger.Module
 import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
-import mort.ar.searxme.data.repositories.SearchParameterRepositoryImpl
+import mort.ar.searxme.data.repositories.SearchParameterRepositoryImplTemp
 import mort.ar.searxme.data.repositories.SearxInstanceRepositoryImpl
 import mort.ar.searxme.di.ActivityScope
 import mort.ar.searxme.presentation.model.Languages
@@ -25,7 +25,7 @@ internal class ActivitySettingsModule {
     @Provides
     fun provideSettingsPresenter(
         settingsView: SettingsContract.SettingsView,
-        searchParameter: SearchParameterRepositoryImpl,
+        searchParameterTemp: SearchParameterRepositoryImplTemp,
         searxInstanceRepositoryImpl: SearxInstanceRepositoryImpl,
         engines: HashSet<Engines>,
         categories: HashSet<Categories>,
@@ -33,7 +33,7 @@ internal class ActivitySettingsModule {
     ): SettingsContract.SettingsPresenter =
         SettingsPresenter(
             settingsView,
-            searchParameter,
+            searchParameterTemp,
             searxInstanceRepositoryImpl,
             engines,
             categories,

@@ -6,7 +6,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
 import mort.ar.searxme.data.localdata.model.SearxInstanceEntity
-import mort.ar.searxme.data.repositories.SearchParameterRepositoryImpl
+import mort.ar.searxme.data.repositories.SearchParameterRepositoryImplTemp
 import mort.ar.searxme.data.repositories.SearxInstanceRepositoryImpl
 import mort.ar.searxme.presentation.model.Languages
 import mort.ar.searxme.presentation.model.TimeRanges
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 class SettingsPresenter @Inject constructor(
     private val settingsView: SettingsContract.SettingsView,
-    private val searchParameter: SearchParameterRepositoryImpl,
+    private val searchParameterTemp: SearchParameterRepositoryImplTemp,
     private val searxInstanceRepositoryImpl: SearxInstanceRepositoryImpl,
     private val engines: HashSet<Engines>,
     private val categories: HashSet<Categories>,
@@ -31,8 +31,8 @@ class SettingsPresenter @Inject constructor(
         initializeEngines()
         initializeCategories()
         with(settingsView) {
-            initializeTimeRangeSpinner(searchParameter.timeRange.ordinal)
-            initializeLanguageSpinner(searchParameter.language.ordinal)
+            initializeTimeRangeSpinner(searchParameterTemp.timeRange.ordinal)
+            initializeLanguageSpinner(searchParameterTemp.language.ordinal)
         }
     }
 
@@ -46,8 +46,8 @@ class SettingsPresenter @Inject constructor(
         persistTimeRange(timeRange)
 //        assignSearchParameterEngines()
 //        assignSearchParameterCategories()
-        assignSearchParameter { run { searchParameter.engines } }
-        assignSearchParameter { run { searchParameter.categories } }
+        assignSearchParameter { run { searchParameterTemp.engines } }
+        assignSearchParameter { run { searchParameterTemp.categories } }
     }
 
     override fun stop() = compositeDisposable.clear()
@@ -87,7 +87,7 @@ class SettingsPresenter @Inject constructor(
 
     private fun initializeEnginesSet() {
         engines.clear()
-        searchParameter.engines
+        searchParameterTemp.engines
             ?.split(",")
             ?.map { it.trim() }
             ?.forEach { engines.add(Engines.valueOf(it.toUpperCase())) }
@@ -103,7 +103,7 @@ class SettingsPresenter @Inject constructor(
 
     private fun initializeCategoriesSet() {
         categories.clear()
-        searchParameter.categories
+        searchParameterTemp.categories
             ?.split(",")
             ?.map { it.trim() }
             ?.forEach { categories.add(Categories.valueOf(it.toUpperCase())) }
@@ -124,11 +124,11 @@ class SettingsPresenter @Inject constructor(
     }
 
     private fun persistTimeRange(selectedTimeRange: TimeRanges) {
-        searchParameter.timeRange = selectedTimeRange
+        searchParameterTemp.timeRange = selectedTimeRange
     }
 
     private fun persistLanguage(selectedLanguage: Languages) {
-        searchParameter.language = selectedLanguage
+        searchParameterTemp.language = selectedLanguage
     }
 
     override fun onEnginesDefaultCheckboxClick() {
@@ -189,7 +189,7 @@ class SettingsPresenter @Inject constructor(
     private fun assignSearchParameterEngines() {
         val engineList = arrayListOf<String>()
         engines.forEach { engineList.add(it.urlParameter) }
-        searchParameter.engines =
+        searchParameterTemp.engines =
                 when {
                     engineList.isNullOrEmpty() -> null
                     else -> engineList.joinToString(separator = ",", prefix = "")
@@ -199,7 +199,7 @@ class SettingsPresenter @Inject constructor(
     private fun assignSearchParameterCategories() {
         val categoriesList = arrayListOf<String>()
         categories.forEach { categoriesList.add(it.urlParameter) }
-        searchParameter.categories =
+        searchParameterTemp.categories =
                 when {
                     categoriesList.isNullOrEmpty() -> null
                     else -> categoriesList.joinToString(separator = ",", prefix = "")
