@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.Module
 import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
+import mort.ar.searxme.data.SearchParameterRepository
 import mort.ar.searxme.data.SearchResultRepository
 import mort.ar.searxme.di.ActivityScope
 import mort.ar.searxme.domain.SearchRequestUseCase
@@ -67,8 +68,11 @@ class ActivitySearchModule {
         Intent(searchActivity, SettingsActivity::class.java)
 
     @Provides
-    fun provideSearchRequestUseCase(searchResultRepository: SearchResultRepository): SearchRequestUseCase =
-        SearchRequestUseCaseImpl(searchResultRepository)
+    fun provideSearchRequestUseCase(
+        searchResultRepository: SearchResultRepository,
+        searchParameterRepository: SearchParameterRepository
+    ): SearchRequestUseCase =
+        SearchRequestUseCaseImpl(searchResultRepository, searchParameterRepository)
 
     @Provides
     fun provideSearchSuggestionsUseCase(searchResultRepository: SearchResultRepository): SearchSuggestionsUseCase =
