@@ -5,7 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:context=".settings.SettingsActivity">
+        tools:context=".presentation.settings.SettingsActivity">
 
     <include android:id="@+id/toolbarSettings"
              layout="@layout/toolbar_settings"/>

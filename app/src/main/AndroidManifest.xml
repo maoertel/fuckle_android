@@ -16,7 +16,7 @@
             android:usesCleartextTraffic="true"
             tools:ignore="GoogleAppIndexingWarning">
         <activity
-                android:name=".search.SearchActivity"
+                android:name="mort.ar.searxme.presentation.search.SearchActivity"
                 android:windowSoftInputMode="stateVisible|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -24,7 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".settings.SettingsActivity">
+        <activity android:name="mort.ar.searxme.presentation.settings.SettingsActivity">
         </activity>
     </application>
 
