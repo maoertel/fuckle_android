@@ -1,10 +1,10 @@
 package mort.ar.searxme.domain
 
-import io.reactivex.Observable
+import io.reactivex.Single
 import mort.ar.searxme.data.remotedata.model.SearchResponse
 
 interface SearchRequestUseCase {
 
-    fun requestSearchResults(query: String): Observable<SearchResponse>
+    fun requestSearchResults(query: String): Single<SearchResponse>
 
 }

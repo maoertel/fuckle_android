@@ -71,11 +71,12 @@ class ActivitySearchModule {
     fun provideSearchRequestUseCase(
         searchResultRepository: SearchResultRepository,
         searchParameterRepository: SearchParameterRepository
-    ): SearchRequestUseCase =
-        SearchRequestUseCaseImpl(searchResultRepository, searchParameterRepository)
+    ): SearchRequestUseCase = SearchRequestUseCaseImpl(searchResultRepository, searchParameterRepository)
 
     @Provides
-    fun provideSearchSuggestionsUseCase(searchResultRepository: SearchResultRepository): SearchSuggestionsUseCase =
-        SearchSuggestionsUseCaseImpl(searchResultRepository)
+    fun provideSearchSuggestionsUseCase(
+        searchResultRepository: SearchResultRepository,
+        searchParameterRepository: SearchParameterRepository
+    ): SearchSuggestionsUseCase = SearchSuggestionsUseCaseImpl(searchResultRepository, searchParameterRepository)
 
 }

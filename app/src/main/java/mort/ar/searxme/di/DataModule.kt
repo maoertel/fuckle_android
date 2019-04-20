@@ -16,7 +16,6 @@ import mort.ar.searxme.data.localdata.localdatasources.SearxInstanceDataSourceIm
 import mort.ar.searxme.data.remotedata.SearchRemoteDataSource
 import mort.ar.searxme.data.remotedata.remotedatasources.SearchRemoteDataSourceImpl
 import mort.ar.searxme.data.repositories.SearchParameterRepositoryImpl
-import mort.ar.searxme.data.repositories.SearchParameterRepositoryImplTemp
 import mort.ar.searxme.data.repositories.SearchResultRepositoryImpl
 import mort.ar.searxme.data.repositories.SearxInstanceRepositoryImpl
 import mort.ar.searxme.database.Database
@@ -86,10 +85,8 @@ class DataModule {
 
     @Singleton
     @Provides
-    fun provideSearchResultRepository(
-        searchParameterTemp: SearchParameterRepositoryImplTemp,
-        searchService: SearchService
-    ): SearchResultRepository = SearchResultRepositoryImpl(searchParameterTemp, searchService)
+    fun provideSearchResultRepository(searchRemoteDataSource: SearchRemoteDataSource): SearchResultRepository =
+        SearchResultRepositoryImpl(searchRemoteDataSource)
 
     @Singleton
     @Provides

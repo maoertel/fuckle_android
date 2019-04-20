@@ -1,6 +1,5 @@
 package mort.ar.searxme.network
 
-import io.reactivex.Observable
 import io.reactivex.Single
 import mort.ar.searxme.data.remotedata.model.SearchResponse
 import retrofit2.http.GET
@@ -20,7 +19,7 @@ interface SearchService {
         @Query("image_proxy") imageProxy: String? = null,
         @Query("autocomplete") autoComplete: String? = null,
         @Query("safesearch") safeSearch: String? = null
-    ): Observable<SearchResponse>
+    ): Single<SearchResponse>
 
     @GET("/autocompleter")
     fun requestSearchAutocomplete(
