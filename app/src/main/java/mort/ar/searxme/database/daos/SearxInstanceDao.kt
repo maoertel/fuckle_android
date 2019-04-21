@@ -15,7 +15,7 @@ abstract class SearxInstanceDao {
     abstract fun observeAllSearxInstances(): Observable<List<SearxInstanceEntity>>
 
     @Query("SELECT * FROM searx_instances")
-    abstract fun getAllSearxInstancesSingle(): Single<List<SearxInstanceEntity>>
+    abstract fun getAllSearxInstances(): Single<List<SearxInstanceEntity>>
 
     @Query("SELECT * FROM searx_instances WHERE name IS :name")
     abstract fun getSearxInstance(name: String): Single<SearxInstanceEntity>

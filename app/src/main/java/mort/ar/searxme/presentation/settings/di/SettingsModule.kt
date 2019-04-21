@@ -5,9 +5,11 @@ import android.widget.ArrayAdapter
 import dagger.Module
 import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
-import mort.ar.searxme.data.repositories.SearchParameterRepositoryImplTemp
-import mort.ar.searxme.data.repositories.SearxInstanceRepositoryImpl
+import mort.ar.searxme.data.SearchParameterRepository
+import mort.ar.searxme.data.SearxInstanceRepository
 import mort.ar.searxme.di.ActivityScope
+import mort.ar.searxme.domain.GetSettingsParameterUseCase
+import mort.ar.searxme.domain.usecases.GetSettingsParameterUseCaseImpl
 import mort.ar.searxme.presentation.model.Languages
 import mort.ar.searxme.presentation.model.TimeRanges
 import mort.ar.searxme.presentation.settings.*
@@ -25,18 +27,12 @@ internal class ActivitySettingsModule {
     @Provides
     fun provideSettingsPresenter(
         settingsView: SettingsContract.SettingsView,
-        searchParameterTemp: SearchParameterRepositoryImplTemp,
-        searxInstanceRepositoryImpl: SearxInstanceRepositoryImpl,
-        engines: HashSet<Engines>,
-        categories: HashSet<Categories>,
+        getSettingsParameterUseCase: GetSettingsParameterUseCase,
         compositeDisposable: CompositeDisposable
     ): SettingsContract.SettingsPresenter =
         SettingsPresenter(
             settingsView,
-            searchParameterTemp,
-            searxInstanceRepositoryImpl,
-            engines,
-            categories,
+            getSettingsParameterUseCase,
             compositeDisposable
         )
 
@@ -69,5 +65,12 @@ internal class ActivitySettingsModule {
             R.layout.simple_spinner_dropdown_item,
             arrayListOf<String>()
         )
+
+    @Provides
+    fun provideGetSettingsParameterUseCase(
+        searxInstanceRepository: SearxInstanceRepository,
+        searchParameterRepository: SearchParameterRepository
+    ): GetSettingsParameterUseCase =
+        GetSettingsParameterUseCaseImpl(searxInstanceRepository, searchParameterRepository)
 
 }

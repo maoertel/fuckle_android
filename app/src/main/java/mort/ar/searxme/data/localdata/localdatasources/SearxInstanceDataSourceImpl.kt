@@ -2,6 +2,7 @@ package mort.ar.searxme.data.localdata.localdatasources
 
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import mort.ar.searxme.data.localdata.SearxInstanceDataSource
 import mort.ar.searxme.data.localdata.model.SearxInstanceEntity
@@ -40,6 +41,9 @@ class SearxInstanceDataSourceImpl @Inject constructor(
     override fun setPrimaryInstance(instance: String): Completable =
         instanceDao.changeFavoriteInstance(instance)
 
+    override fun getAllInstances(): Single<List<SearxInstanceEntity>> =
+        instanceDao.getAllSearxInstances()
+
     /*fun getPrimaryInstance(): Single<SearxInstanceEntity> =
         instanceDao.getFavoriteInstance()*/
 
@@ -64,7 +68,7 @@ class SearxInstanceDataSourceImpl @Inject constructor(
             .ignoreElement()*/
 
     /*private fun insertInitialInstance(): Completable =
-        instanceDao.getAllSearxInstancesSingle()
+        instanceDao.getAllSearxInstances()
             .flatMap { instances ->
                 when (instances.isNullOrEmpty()) {
                     true ->
