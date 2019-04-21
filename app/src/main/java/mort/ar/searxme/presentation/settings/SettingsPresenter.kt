@@ -66,6 +66,7 @@ class SettingsPresenter @Inject constructor(
     private fun buildSpinnerInstanceList(spinnerSearxInstanceEntities: List<SearxInstanceEntity>): Observable<ArrayList<String>>? {
         val instances = arrayListOf<String>()
         val secondaryInstances = arrayListOf<String>()
+//        spinnerSearxInstanceEntities.sortedBy { it.favorite }
         spinnerSearxInstanceEntities.forEach { searxInstance ->
             when {
                 searxInstance.favorite -> instances.add(searxInstance.url)
@@ -190,20 +191,20 @@ class SettingsPresenter @Inject constructor(
         val engineList = arrayListOf<String>()
         engines.forEach { engineList.add(it.urlParameter) }
         searchParameterTemp.engines =
-                when {
-                    engineList.isNullOrEmpty() -> null
-                    else -> engineList.joinToString(separator = ",", prefix = "")
-                }
+            when {
+                engineList.isNullOrEmpty() -> null
+                else -> engineList.joinToString(separator = ",", prefix = "")
+            }
     }
 
     private fun assignSearchParameterCategories() {
         val categoriesList = arrayListOf<String>()
         categories.forEach { categoriesList.add(it.urlParameter) }
         searchParameterTemp.categories =
-                when {
-                    categoriesList.isNullOrEmpty() -> null
-                    else -> categoriesList.joinToString(separator = ",", prefix = "")
-                }
+            when {
+                categoriesList.isNullOrEmpty() -> null
+                else -> categoriesList.joinToString(separator = ",", prefix = "")
+            }
     }
 
 }

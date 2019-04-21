@@ -1,8 +1,8 @@
 package mort.ar.searxme.data
 
 import io.reactivex.Single
+import mort.ar.searxme.data.model.SearchRequest
 import mort.ar.searxme.data.remotedata.model.SearchResponse
-import mort.ar.searxme.presentation.model.SearchRequest
 
 interface SearchResultRepository {
 

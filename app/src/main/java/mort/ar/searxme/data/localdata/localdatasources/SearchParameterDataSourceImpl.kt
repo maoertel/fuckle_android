@@ -24,11 +24,11 @@ class SearchParameterDataSourceImpl @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) : SearchParameterDataSource {
 
-    override fun getCategories(): Single<String> = Single.just(sharedPreferences.getString(CATEGORIES, null))
+    override fun getCategories(): Single<String> = Single.just(sharedPreferences.getString(CATEGORIES, ""))
 
     override fun setCategories(category: String): Completable = category.saveWithKey(CATEGORIES)
 
-    override fun getEngines(): Single<String> = Single.just(sharedPreferences.getString(ENGINES, null))
+    override fun getEngines(): Single<String> = Single.just(sharedPreferences.getString(ENGINES, ""))
 
     override fun setEngines(engines: String): Completable = engines.saveWithKey(ENGINES)
 
@@ -66,15 +66,15 @@ class SearchParameterDataSourceImpl @Inject constructor(
 
     override fun setFormat(format: String): Completable = format.saveWithKey(FORMAT)
 
-    override fun getImageProxy(): Single<String> = Single.just(sharedPreferences.getString(IMAGE_PROXY, null))
+    override fun getImageProxy(): Single<String> = Single.just(sharedPreferences.getString(IMAGE_PROXY, ""))
 
     override fun setImageProxy(imageProxy: String): Completable = imageProxy.saveWithKey(IMAGE_PROXY)
 
-    override fun getAutoComplete(): Single<String> = Single.just(sharedPreferences.getString(AUTOCOMPLETE, null))
+    override fun getAutoComplete(): Single<String> = Single.just(sharedPreferences.getString(AUTOCOMPLETE, ""))
 
     override fun setAutocomplete(autoComplete: String): Completable = autoComplete.saveWithKey(AUTOCOMPLETE)
 
-    override fun getSafeSearch(): Single<String> = Single.just(sharedPreferences.getString(SAFE_SEARCH, null))
+    override fun getSafeSearch(): Single<String> = Single.just(sharedPreferences.getString(SAFE_SEARCH, ""))
 
     override fun setSafeSearch(safeSearch: String): Completable = safeSearch.saveWithKey(SAFE_SEARCH)
 

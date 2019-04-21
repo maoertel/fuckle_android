@@ -14,6 +14,7 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.settings_categories.*
 import kotlinx.android.synthetic.main.settings_engines.*
+import kotlinx.android.synthetic.main.settings_engines.view.*
 import kotlinx.android.synthetic.main.settings_languages.*
 import kotlinx.android.synthetic.main.settings_searx_instances.*
 import kotlinx.android.synthetic.main.settings_time_ranges.*
@@ -22,7 +23,6 @@ import mort.ar.searxme.R
 import mort.ar.searxme.presentation.model.Languages
 import mort.ar.searxme.presentation.model.TimeRanges
 import javax.inject.Inject
-
 
 class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
 
@@ -47,9 +47,8 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
         backButton.setOnClickListener { onBackPressed() }
         spinnerSearxInstances.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) =
                     settingsPresenter.onInstanceSpinnerItemSelected(spinnerSearxInstances.selectedItem.toString())
-                }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
@@ -82,46 +81,49 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
         spinnerLanguage.adapter = languageAdapter
     }
 
-    override fun initializeSearxInstanceSpinner(searxInstances: List<String>) {
+    override fun initializeSearxInstanceSpinner(searxInstances: List<String>) =
         with(instanceAdapter) {
             clear()
             addAll(searxInstances)
             notifyDataSetChanged()
         }
-    }
 
     override fun initializeLanguageSpinner(position: Int) = spinnerLanguage.setSelection(position)
 
     override fun initializeTimeRangeSpinner(position: Int) = spinnerTimeRange.setSelection(position)
 
-    override fun initializeEnginesDefaultCheckbox(isActivated: Boolean) {
-        checkBoxDefault.activate(isActivated)
-        checkBoxDefault.setOnClickListener {
-            if (checkBoxDefault.isChecked) {
-                settingsPresenter.onEnginesDefaultCheckboxClick()
+    override fun initializeEnginesDefaultCheckbox(isActivated: Boolean) =
+        with(checkBoxDefault) {
+            this.activate(isActivated)
+            this.setOnClickListener {
+                if (checkBoxDefault.isChecked) {
+                    settingsPresenter.onEnginesDefaultCheckboxClick()
+                }
             }
         }
-    }
 
     override fun initializeEngineCheckBox(engine: Engines, containsEngine: Boolean) {
-        val checkbox = findViewById<CheckBox>(engine.checkBox)
-        checkbox.isChecked = containsEngine
-        checkbox.setOnClickListener { settingsPresenter.onEngineCheckBoxClick(engine, checkbox.isChecked) }
-    }
-
-    override fun initializeCategoriesDefaultCheckbox(isActivated: Boolean) {
-        checkBoxCategoriesDefault.activate(isActivated)
-        checkBoxCategoriesDefault.setOnClickListener {
-            if (checkBoxCategoriesDefault.isChecked) {
-                settingsPresenter.onCategoriesDefaultCheckboxClick()
-            }
+        findViewById<CheckBox>(engine.checkBox).let { checkbox ->
+            checkbox.isChecked = containsEngine
+            checkbox.setOnClickListener { settingsPresenter.onEngineCheckBoxClick(engine, checkbox.isChecked) }
         }
     }
 
+    override fun initializeCategoriesDefaultCheckbox(isActivated: Boolean) =
+        with(checkBoxCategoriesDefault) {
+            this.activate(isActivated)
+            this.setOnClickListener {
+                if (checkBoxCategoriesDefault.isChecked) {
+                    settingsPresenter.onCategoriesDefaultCheckboxClick()
+                }
+            }
+        }
+
     override fun initializeCategoryCheckBox(category: Categories, containsCategory: Boolean) {
-        val checkbox = findViewById<CheckBox>(category.checkBox)
-        checkbox.isChecked = containsCategory
-        checkbox.setOnClickListener { settingsPresenter.onCategoryCheckBoxClick(category, checkbox.isChecked) }
+        findViewById<CheckBox>(category.checkBox).let { checkbox ->
+            checkbox.isChecked = containsCategory
+            checkbox.setOnClickListener { settingsPresenter.onCategoryCheckBoxClick(category, checkbox.isChecked) }
+        }
     }
 
     override fun setEnginesDefaultCheckBoxActive(shouldBeActivated: Boolean) =
@@ -150,7 +152,7 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
 
 }
 
-internal fun CheckBox.activate(activate: Boolean) {
+private fun CheckBox.activate(activate: Boolean) {
     isChecked = activate
     isClickable = !activate
 }

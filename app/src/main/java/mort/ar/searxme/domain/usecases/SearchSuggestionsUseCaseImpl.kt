@@ -4,8 +4,8 @@ import io.reactivex.Single
 import io.reactivex.rxkotlin.zipWith
 import mort.ar.searxme.data.SearchParameterRepository
 import mort.ar.searxme.data.SearchResultRepository
+import mort.ar.searxme.data.model.SearchRequest
 import mort.ar.searxme.domain.SearchSuggestionsUseCase
-import mort.ar.searxme.presentation.model.SearchRequest
 import javax.inject.Inject
 
 class SearchSuggestionsUseCaseImpl @Inject constructor(

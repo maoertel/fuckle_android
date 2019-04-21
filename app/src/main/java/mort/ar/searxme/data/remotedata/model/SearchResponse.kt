@@ -11,7 +11,7 @@ data class SearchResponse(
     @field:Json(name = "suggestions") val suggestions: List<String>,
     @field:Json(name = "results") val results: List<SearxResult>,
     @field:Json(name = "answers") val answers: List<String>,
-    @field:Json(name = "unresponsive_engines") val unresponsiveEngines: Array<Array<String>>
+    @field:Json(name = "unresponsive_engines") val unresponsiveEngines: List<Array<String>>
 ) : Serializable
 
 data class SearxResult(

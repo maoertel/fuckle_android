@@ -1,10 +1,10 @@
 package mort.ar.searxme.data.remotedata.remotedatasources
 
 import io.reactivex.Single
+import mort.ar.searxme.data.model.SearchRequest
 import mort.ar.searxme.data.remotedata.SearchRemoteDataSource
 import mort.ar.searxme.data.remotedata.model.SearchResponse
 import mort.ar.searxme.network.SearchService
-import mort.ar.searxme.presentation.model.SearchRequest
 import javax.inject.Inject
 
 class SearchRemoteDataSourceImpl @Inject constructor(

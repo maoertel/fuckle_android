@@ -4,9 +4,10 @@ import io.reactivex.Single
 import io.reactivex.rxkotlin.Singles
 import mort.ar.searxme.data.SearchParameterRepository
 import mort.ar.searxme.data.SearchResultRepository
+import mort.ar.searxme.data.mapper.SearchRequestMapper
+import mort.ar.searxme.data.model.SearchRequest
 import mort.ar.searxme.data.remotedata.model.SearchResponse
 import mort.ar.searxme.domain.SearchRequestUseCase
-import mort.ar.searxme.presentation.model.SearchRequest
 import javax.inject.Inject
 
 class SearchRequestUseCaseImpl @Inject constructor(
@@ -30,18 +31,8 @@ class SearchRequestUseCaseImpl @Inject constructor(
             searchParameterRepository.getAutoComplete(),
             searchParameterRepository.getSafeSearch()
         ) { cat, eng, lang, pageNo, time, format, imgProxy, auto, safe ->
-            SearchRequest(
-                query = query,
-                categories = cat,
-                engines = eng,
-                language = lang.languageParameter,
-                pageNo = pageNo,
-                timeRange = time.rangeParameter,
-                format = format,
-                imageProxy = imgProxy,
-                autoComplete = auto,
-                safeSearch = safe
-            )
+            SearchRequestMapper(query, cat, eng, lang, pageNo, time, format, imgProxy, auto, safe)
+                .mapToSearchRequest()
         }
 
 }

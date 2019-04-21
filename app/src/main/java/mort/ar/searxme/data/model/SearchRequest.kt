@@ -1,4 +1,4 @@
-package mort.ar.searxme.presentation.model
+package mort.ar.searxme.data.model
 
 data class SearchRequest(
     val query: String,

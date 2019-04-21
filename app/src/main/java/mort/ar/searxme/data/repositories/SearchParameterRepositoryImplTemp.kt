@@ -29,14 +29,14 @@ class SearchParameterRepositoryImplTemp @Inject constructor(
                 .apply()
         }
 
-    var language: Languages = Languages.DEFAULT_LANGUAGE
+    var language: Languages = DEFAULT_LANGUAGE
         get() =
             when (sharedPreferences.getString("language", null)) {
                 "en" -> ENGLISH
                 "de" -> GERMAN
                 "fr" -> FRENCH
                 "es" -> SPANISH
-                else -> Languages.DEFAULT_LANGUAGE
+                else -> DEFAULT_LANGUAGE
             }
         set(value) {
             field = value
@@ -46,14 +46,14 @@ class SearchParameterRepositoryImplTemp @Inject constructor(
                 .apply()
         }
 
-    var timeRange: TimeRanges = TimeRanges.DEFAULT
+    var timeRange: TimeRanges = DEFAULT
         get() =
             when (sharedPreferences.getString("time_range", null)) {
                 "day" -> DAY
                 "week" -> WEEK
                 "month" -> MONTH
                 "year" -> YEAR
-                else -> TimeRanges.DEFAULT
+                else -> DEFAULT
             }
         set(value) {
             field = value
