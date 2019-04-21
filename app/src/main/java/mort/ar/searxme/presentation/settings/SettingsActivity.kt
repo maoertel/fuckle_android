@@ -2,9 +2,7 @@ package mort.ar.searxme.presentation.settings
 
 import android.content.Context
 import android.os.Bundle
-import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.Toast
@@ -45,13 +43,6 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
         setSupportActionBar(toolbarSettings as Toolbar)
 
         backButton.setOnClickListener { onBackPressed() }
-        spinnerSearxInstances.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) =
-                    settingsPresenter.onInstanceSpinnerItemSelected(spinnerSearxInstances.selectedItem.toString())
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-            }
 
         settingsPresenter.start()
     }

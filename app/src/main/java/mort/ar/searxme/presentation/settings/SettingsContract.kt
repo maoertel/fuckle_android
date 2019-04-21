@@ -81,8 +81,6 @@ interface SettingsContract {
             shouldAdd: Boolean
         )
 
-        fun onInstanceSpinnerItemSelected(selectedItem: String)
-
     }
 
 }

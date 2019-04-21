@@ -35,54 +35,16 @@ class SearxInstanceDataSourceImpl @Inject constructor(
     override fun observeAllInstances(): Observable<List<SearxInstanceEntity>> =
         instanceDao.observeAllSearxInstances()
 
+    override fun getAllInstances(): Single<List<SearxInstanceEntity>> =
+        instanceDao.getAllSearxInstances()
+
     override fun observePrimaryInstance(): Observable<SearxInstanceEntity> =
         instanceDao.observeFavoriteInstance()
 
     override fun setPrimaryInstance(instance: String): Completable =
         instanceDao.changeFavoriteInstance(instance)
 
-    override fun getAllInstances(): Single<List<SearxInstanceEntity>> =
-        instanceDao.getAllSearxInstances()
-
-    /*fun getPrimaryInstance(): Single<SearxInstanceEntity> =
-        instanceDao.getFavoriteInstance()*/
-
-    /*Completable.concat(
-        listOf(
-            setInstanceToFavorite(false) { getPrimaryInstance() },
-            setInstanceToFavorite(true) { instanceDao.getSearxInstance(instance) }
-        )
-    )*/
-
-    /*private fun setInstanceToFavorite(
-        markAsFavorite: Boolean,
-        instance: () -> Single<SearxInstanceEntity>
-    ): Completable =
-        instance()
-            .flatMap { searxInstance ->
-                searxInstance.favorite = markAsFavorite
-                instanceDao
-                    .updateInstance(searxInstance)
-                    .toSingle { }
-            }
-            .ignoreElement()*/
-
-    /*private fun insertInitialInstance(): Completable =
-        instanceDao.getAllSearxInstances()
-            .flatMap { instances ->
-                when (instances.isNullOrEmpty()) {
-                    true ->
-                        Completable
-                            .merge(
-                                listOf(
-                                    instanceDao.insert(initialInstance),
-                                    instanceDao.insert(secondaryInstance)
-                                )
-                            )
-                            .toSingle { }
-                    else -> Single.just(true)
-                }
-            }
-            .ignoreElement()*/
+    fun getPrimaryInstance(): Single<SearxInstanceEntity> =
+        instanceDao.getFavoriteInstance()
 
 }

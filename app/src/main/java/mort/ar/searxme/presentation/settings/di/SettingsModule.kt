@@ -9,7 +9,9 @@ import mort.ar.searxme.data.SearchParameterRepository
 import mort.ar.searxme.data.SearxInstanceRepository
 import mort.ar.searxme.di.ActivityScope
 import mort.ar.searxme.domain.GetSettingsParameterUseCase
+import mort.ar.searxme.domain.SaveSettingsParameterUseCase
 import mort.ar.searxme.domain.usecases.GetSettingsParameterUseCaseImpl
+import mort.ar.searxme.domain.usecases.SaveSettingsParameterUseCaseImpl
 import mort.ar.searxme.presentation.model.Languages
 import mort.ar.searxme.presentation.model.TimeRanges
 import mort.ar.searxme.presentation.settings.*
@@ -72,5 +74,12 @@ internal class ActivitySettingsModule {
         searchParameterRepository: SearchParameterRepository
     ): GetSettingsParameterUseCase =
         GetSettingsParameterUseCaseImpl(searxInstanceRepository, searchParameterRepository)
+
+    @Provides
+    fun provideSaveSettingsParameterUseCase(
+        searxInstanceRepository: SearxInstanceRepository,
+        searchParameterRepository: SearchParameterRepository
+    ): SaveSettingsParameterUseCase =
+        SaveSettingsParameterUseCaseImpl(searxInstanceRepository, searchParameterRepository)
 
 }

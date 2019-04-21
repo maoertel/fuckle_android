@@ -73,35 +73,7 @@ class SettingsPresenter @Inject constructor(
         language: Languages,
         timeRange: TimeRanges
     ) {
-//        persistInstance(instance)
-//        persistLanguage(language)
-//        persistTimeRange(timeRange)
-//        assignSearchParameterEngines()
-//        assignSearchParameterCategories()
-//        assignSearchParameter { run { searchParameterTemp.engines } }
-//        assignSearchParameter { run { searchParameterTemp.categories } }
-    }
 
-    private fun persistInstance(searxInstance: String) {
-//        compositeDisposable += searxInstanceRepositoryImpl.setPrimaryInstance(searxInstance)
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe(
-//                { /* do nothing so far */ },
-//                { throwable -> settingsView.showMessage(throwable.message) }
-//            )
-    }
-
-    override fun onInstanceSpinnerItemSelected(selectedItem: String) {
-
-    }
-
-    private fun persistTimeRange(selectedTimeRange: TimeRanges) {
-//        searchParameterTemp.timeRange = selectedTimeRange
-    }
-
-    private fun persistLanguage(selectedLanguage: Languages) {
-//        searchParameterTemp.language = selectedLanguage
     }
 
     override fun onEngineCheckBoxClick(engine: Engines, shouldAdd: Boolean) {
