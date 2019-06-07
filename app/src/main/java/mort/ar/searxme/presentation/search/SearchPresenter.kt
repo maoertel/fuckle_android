@@ -90,10 +90,10 @@ class SearchPresenter @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribeBy(
-                onSuccess = { response ->
+                onSuccess = { results ->
                     with(searchView) {
                         hideProgress()
-                        updateSearchResults(response)
+                        updateSearchResults(results)
                     }
                 },
                 onError = { throwable ->

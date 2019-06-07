@@ -18,7 +18,7 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.fragment_web_view.*
 import mort.ar.searxme.R
-import mort.ar.searxme.data.remotedata.model.SearchResponse
+import mort.ar.searxme.presentation.model.SearchResults
 import javax.inject.Inject
 
 class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
@@ -134,8 +134,9 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
             clearFocus()
         }
 
-    override fun updateSearchResults(response: SearchResponse) =
-        searchResultAdapter.updateSearchResults(response)
+    override fun updateSearchResults(results: SearchResults) {
+        searchResultAdapter.search = results
+    }
 
     override fun showSearchResults() {
         searchResultList.visibility = View.VISIBLE
@@ -145,11 +146,13 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
         searchResultList.visibility = View.GONE
     }
 
-    override fun updateSearchSuggestions(searchSuggestions: List<String>) =
-        searchSuggestionsAdapter.updateSuggestions(searchSuggestions)
+    override fun updateSearchSuggestions(searchSuggestions: List<String>) {
+        searchSuggestionsAdapter.searchSuggestions = searchSuggestions
+    }
 
-    override fun hideSearchSuggestions() =
-        searchSuggestionsAdapter.clearSuggestions()
+    override fun hideSearchSuggestions() {
+        searchSuggestionsAdapter.searchSuggestions = emptyList()
+    }
 
     override fun loadUrl(url: String) = webView.loadUrl(url)
 

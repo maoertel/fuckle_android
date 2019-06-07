@@ -8,19 +8,17 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.suggestions_list_entry.view.*
 import mort.ar.searxme.R
 import javax.inject.Inject
+import kotlin.properties.Delegates
 
 class SearchSuggestionsAdapter @Inject constructor(
     private val searchPresenter: SearchContract.SearchSuggestionPresenter
 ) : RecyclerView.Adapter<SearchSuggestionsAdapter.SearchSuggestionViewHolder>() {
 
-    private val onClickListener: View.OnClickListener
-    private val emptySuggestions = listOf<String>()
-    private var searchSuggestions = emptySuggestions
+    internal var searchSuggestions: List<String>
+            by Delegates.observable(emptyList()) { _, _, _ -> notifyDataSetChanged() }
 
-    init {
-        onClickListener = View.OnClickListener { view ->
-            searchPresenter.onSearchSuggestionClick(view.tag as String)
-        }
+    private val onClickListener: View.OnClickListener by lazy {
+        View.OnClickListener { view -> searchPresenter.onSearchSuggestionClick(view.tag as String) }
     }
 
     inner class SearchSuggestionViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
@@ -28,11 +26,10 @@ class SearchSuggestionsAdapter @Inject constructor(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        SearchSuggestionViewHolder(
-            LayoutInflater
-                .from(parent.context)
-                .inflate(R.layout.suggestions_list_entry, parent, false)
-        )
+        LayoutInflater
+            .from(parent.context)
+            .inflate(R.layout.suggestions_list_entry, parent, false)
+            .let { SearchSuggestionViewHolder(it) }
 
     override fun onBindViewHolder(holder: SearchSuggestionViewHolder, position: Int) {
         val item = searchSuggestions[position]
@@ -42,16 +39,6 @@ class SearchSuggestionsAdapter @Inject constructor(
             tag = item
             setOnClickListener(onClickListener)
         }
-    }
-
-    fun updateSuggestions(searchSuggestions: List<String>) {
-        this.searchSuggestions = searchSuggestions
-        notifyDataSetChanged()
-    }
-
-    fun clearSuggestions() {
-        this.searchSuggestions = emptySuggestions
-        notifyDataSetChanged()
     }
 
     override fun getItemCount() = searchSuggestions.size

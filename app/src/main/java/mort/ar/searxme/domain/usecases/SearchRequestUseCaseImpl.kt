@@ -6,8 +6,8 @@ import mort.ar.searxme.data.SearchParameterRepository
 import mort.ar.searxme.data.SearchResultRepository
 import mort.ar.searxme.data.mapper.SearchRequestMapper
 import mort.ar.searxme.data.model.SearchRequest
-import mort.ar.searxme.data.remotedata.model.SearchResponse
 import mort.ar.searxme.domain.SearchRequestUseCase
+import mort.ar.searxme.presentation.model.SearchResults
 import javax.inject.Inject
 
 class SearchRequestUseCaseImpl @Inject constructor(
@@ -16,7 +16,7 @@ class SearchRequestUseCaseImpl @Inject constructor(
     private val mapper: SearchRequestMapper
 ) : SearchRequestUseCase {
 
-    override fun requestSearchResults(query: String): Single<SearchResponse> =
+    override fun requestSearchResults(query: String): Single<SearchResults> =
         buildSearchRequest(query).flatMap { searchResultRepository.requestSearchResults(it) }
 
     private fun buildSearchRequest(query: String): Single<SearchRequest> =

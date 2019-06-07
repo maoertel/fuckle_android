@@ -1,7 +1,7 @@
 package mort.ar.searxme.presentation.search
 
-import mort.ar.searxme.data.remotedata.model.SearchResponse
 import mort.ar.searxme.data.remotedata.model.SearxResult
+import mort.ar.searxme.presentation.model.SearchResults
 
 interface SearchContract {
 
@@ -30,7 +30,7 @@ interface SearchContract {
 
         fun setSearchQuery(query: String)
 
-        fun updateSearchResults(response: SearchResponse)
+        fun updateSearchResults(results: SearchResults)
 
         fun showSearchResults()
 
