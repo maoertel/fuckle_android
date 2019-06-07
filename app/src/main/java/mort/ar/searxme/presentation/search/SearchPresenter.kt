@@ -106,22 +106,17 @@ class SearchPresenter @Inject constructor(
             .addTo(compositeDisposable)
     }
 
-    override fun handleOnBackPress(): Boolean {
-        var isHandled = true
-
+    override fun handleOnBackPress(): Boolean =
         when (currentPage) {
-            SEARCH_RESULTS -> showPage(START)
-            WEBVIEW -> if (!searchView.onBackPressedHandledByWebView()) showPage(SEARCH_RESULTS)
+            SEARCH_RESULTS -> true.also { showPage(START) }
+            WEBVIEW -> true.also { if (!searchView.onBackPressedHandledByWebView()) showPage(SEARCH_RESULTS) }
             START ->
-                if (isLastClickBeforeQuitApp) isHandled = false
-                else {
+                if (isLastClickBeforeQuitApp) false
+                else true.also {
                     isLastClickBeforeQuitApp = true
                     searchView.showMessage("Next click finishes the app")
                 }
         }
-
-        return isHandled
-    }
 
     private fun showPage(page: Pages) {
         currentPage = page
