@@ -11,7 +11,8 @@ import javax.inject.Inject
 
 class GetSettingsParameterUseCaseImpl @Inject constructor(
     private val searxInstanceRepository: SearxInstanceRepository,
-    private val searchParameterRepository: SearchParameterRepository
+    private val searchParameterRepository: SearchParameterRepository,
+    private val mapper: SettingsParameterMapper
 ) : GetSettingsParameterUseCase {
 
     override fun getSettingsParameter(): Single<SettingsParameter> =
@@ -21,9 +22,14 @@ class GetSettingsParameterUseCaseImpl @Inject constructor(
             searchParameterRepository.getCategories(),
             searchParameterRepository.getLanguage(),
             searchParameterRepository.getTimeRange()
-        ) { instances, engines, categories, languages, timeRanges ->
-            SettingsParameterMapper(instances, engines, categories, languages, timeRanges)
-                .mapToSettingsParameter()
+        ) { instances, engines, categories, languages, timeRange ->
+            mapper.mapToSettingsParameter(
+                searxInstances = instances,
+                engines = engines,
+                categories = categories,
+                language = languages,
+                timeRange = timeRange
+            )
         }
 
 }

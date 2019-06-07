@@ -7,6 +7,7 @@ import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
 import mort.ar.searxme.data.SearchParameterRepository
 import mort.ar.searxme.data.SearchResultRepository
+import mort.ar.searxme.data.mapper.SearchRequestMapper
 import mort.ar.searxme.di.ActivityScope
 import mort.ar.searxme.domain.SearchRequestUseCase
 import mort.ar.searxme.domain.SearchSuggestionsUseCase
@@ -70,8 +71,10 @@ class ActivitySearchModule {
     @Provides
     fun provideSearchRequestUseCase(
         searchResultRepository: SearchResultRepository,
-        searchParameterRepository: SearchParameterRepository
-    ): SearchRequestUseCase = SearchRequestUseCaseImpl(searchResultRepository, searchParameterRepository)
+        searchParameterRepository: SearchParameterRepository,
+        searchRequestMapper: SearchRequestMapper
+    ): SearchRequestUseCase =
+        SearchRequestUseCaseImpl(searchResultRepository, searchParameterRepository, searchRequestMapper)
 
     @Provides
     fun provideSearchSuggestionsUseCase(

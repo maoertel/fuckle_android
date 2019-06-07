@@ -13,6 +13,7 @@ import mort.ar.searxme.data.localdata.SearchParameterDataSource
 import mort.ar.searxme.data.localdata.SearxInstanceDataSource
 import mort.ar.searxme.data.localdata.localdatasources.SearchParameterDataSourceImpl
 import mort.ar.searxme.data.localdata.localdatasources.SearxInstanceDataSourceImpl
+import mort.ar.searxme.data.mapper.SearchRequestMapper
 import mort.ar.searxme.data.remotedata.SearchRemoteDataSource
 import mort.ar.searxme.data.remotedata.remotedatasources.SearchRemoteDataSourceImpl
 import mort.ar.searxme.data.repositories.SearchParameterRepositoryImpl
@@ -20,6 +21,7 @@ import mort.ar.searxme.data.repositories.SearchResultRepositoryImpl
 import mort.ar.searxme.data.repositories.SearxInstanceRepositoryImpl
 import mort.ar.searxme.database.Database
 import mort.ar.searxme.database.daos.SearxInstanceDao
+import mort.ar.searxme.domain.mapper.SettingsParameterMapper
 import mort.ar.searxme.network.SearchService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -107,5 +109,13 @@ class DataModule {
     @Provides
     fun provideSearchRemoteDataSource(searchService: SearchService): SearchRemoteDataSource =
         SearchRemoteDataSourceImpl(searchService)
+
+    @Singleton
+    @Provides
+    fun provideSearchRequestMapper(): SearchRequestMapper = SearchRequestMapper()
+
+    @Singleton
+    @Provides
+    fun provideSettingsParameterMapper(): SettingsParameterMapper = SettingsParameterMapper()
 
 }

@@ -3,7 +3,6 @@ package mort.ar.searxme.presentation.search
 import mort.ar.searxme.data.remotedata.model.SearchResponse
 import mort.ar.searxme.data.remotedata.model.SearxResult
 
-
 interface SearchContract {
 
     interface BaseView {

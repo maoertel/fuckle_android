@@ -12,12 +12,12 @@ import javax.inject.Inject
 
 class SearchRequestUseCaseImpl @Inject constructor(
     private val searchResultRepository: SearchResultRepository,
-    private val searchParameterRepository: SearchParameterRepository
+    private val searchParameterRepository: SearchParameterRepository,
+    private val mapper: SearchRequestMapper
 ) : SearchRequestUseCase {
 
     override fun requestSearchResults(query: String): Single<SearchResponse> =
-        buildSearchRequest(query)
-            .flatMap { searchResultRepository.requestSearchResults(it) }
+        buildSearchRequest(query).flatMap { searchResultRepository.requestSearchResults(it) }
 
     private fun buildSearchRequest(query: String): Single<SearchRequest> =
         Singles.zip(
@@ -31,8 +31,18 @@ class SearchRequestUseCaseImpl @Inject constructor(
             searchParameterRepository.getAutoComplete(),
             searchParameterRepository.getSafeSearch()
         ) { cat, eng, lang, pageNo, time, format, imgProxy, auto, safe ->
-            SearchRequestMapper(query, cat, eng, lang, pageNo, time, format, imgProxy, auto, safe)
-                .mapToSearchRequest()
+            mapper.mapToSearchRequest(
+                query = query,
+                categories = cat,
+                engines = eng,
+                language = lang,
+                pageNo = pageNo,
+                timeRange = time,
+                format = format,
+                imageProxy = imgProxy,
+                autoComplete = auto,
+                safeSearch = safe
+            )
         }
 
 }

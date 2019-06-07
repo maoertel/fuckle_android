@@ -9,7 +9,6 @@ import kotlinx.android.synthetic.main.suggestions_list_entry.view.*
 import mort.ar.searxme.R
 import javax.inject.Inject
 
-
 class SearchSuggestionsAdapter @Inject constructor(
     private val searchPresenter: SearchContract.SearchSuggestionPresenter
 ) : RecyclerView.Adapter<SearchSuggestionsAdapter.SearchSuggestionViewHolder>() {

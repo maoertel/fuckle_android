@@ -21,7 +21,6 @@ import mort.ar.searxme.R
 import mort.ar.searxme.data.remotedata.model.SearchResponse
 import javax.inject.Inject
 
-
 class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
 
     @Inject
@@ -46,7 +45,6 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
     lateinit var settingsIntent: Intent
 
     private lateinit var searchView: SearchView
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -190,8 +188,6 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
 
     override fun onBackPressedHandledByWebView() = webViewFragment.onBackPressed()
 
-    override fun onBackPressed() {
-        if (!searchPresenter.handleOnBackPress()) super.onBackPressed()
-    }
+    override fun onBackPressed() = if (!searchPresenter.handleOnBackPress()) super.onBackPressed() else Unit
 
 }

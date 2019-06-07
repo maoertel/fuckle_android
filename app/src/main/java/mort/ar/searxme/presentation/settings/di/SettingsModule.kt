@@ -10,6 +10,7 @@ import mort.ar.searxme.data.SearxInstanceRepository
 import mort.ar.searxme.di.ActivityScope
 import mort.ar.searxme.domain.GetSettingsParameterUseCase
 import mort.ar.searxme.domain.SaveSettingsParameterUseCase
+import mort.ar.searxme.domain.mapper.SettingsParameterMapper
 import mort.ar.searxme.domain.usecases.GetSettingsParameterUseCaseImpl
 import mort.ar.searxme.domain.usecases.SaveSettingsParameterUseCaseImpl
 import mort.ar.searxme.presentation.model.Languages
@@ -71,9 +72,10 @@ internal class ActivitySettingsModule {
     @Provides
     fun provideGetSettingsParameterUseCase(
         searxInstanceRepository: SearxInstanceRepository,
-        searchParameterRepository: SearchParameterRepository
+        searchParameterRepository: SearchParameterRepository,
+        settingsParameterMapper: SettingsParameterMapper
     ): GetSettingsParameterUseCase =
-        GetSettingsParameterUseCaseImpl(searxInstanceRepository, searchParameterRepository)
+        GetSettingsParameterUseCaseImpl(searxInstanceRepository, searchParameterRepository, settingsParameterMapper)
 
     @Provides
     fun provideSaveSettingsParameterUseCase(

@@ -3,6 +3,7 @@ package mort.ar.searxme.presentation.search
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import mort.ar.searxme.data.remotedata.model.SearxResult
 import mort.ar.searxme.domain.SearchRequestUseCase
@@ -10,11 +11,9 @@ import mort.ar.searxme.domain.SearchSuggestionsUseCase
 import mort.ar.searxme.presentation.search.Pages.*
 import javax.inject.Inject
 
-
 private enum class Pages { START, SEARCH_RESULTS, WEBVIEW }
 
 private const val EMPTY = ""
-
 
 class SearchPresenter @Inject constructor(
     private val searchView: SearchContract.SearchView,
@@ -75,9 +74,9 @@ class SearchPresenter @Inject constructor(
                 searchSuggestionsUseCase.requestSearchAutoComplete(query)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                        { suggestions -> searchView.updateSearchSuggestions(suggestions.toList()) },
-                        { throwable -> searchView.showMessage(throwable.message) }
+                    .subscribeBy(
+                        onSuccess = { suggestions -> searchView.updateSearchSuggestions(suggestions.toList()) },
+                        onError = { throwable -> searchView.showMessage(throwable.message) }
                     )
                     .addTo(compositeDisposable)
         }
@@ -90,14 +89,14 @@ class SearchPresenter @Inject constructor(
         searchRequestUseCase.requestSearchResults(searchTerm)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
-            .subscribe(
-                { response ->
+            .subscribeBy(
+                onSuccess = { response ->
                     with(searchView) {
                         hideProgress()
                         updateSearchResults(response)
                     }
                 },
-                { throwable ->
+                onError = { throwable ->
                     with(searchView) {
                         hideProgress()
                         showMessage(throwable.message)
@@ -113,13 +112,12 @@ class SearchPresenter @Inject constructor(
         when (currentPage) {
             SEARCH_RESULTS -> showPage(START)
             WEBVIEW -> if (!searchView.onBackPressedHandledByWebView()) showPage(SEARCH_RESULTS)
-            START -> when {
-                isLastClickBeforeQuitApp -> isHandled = false
-                else -> {
+            START ->
+                if (isLastClickBeforeQuitApp) isHandled = false
+                else {
                     isLastClickBeforeQuitApp = true
                     searchView.showMessage("Next click finishes the app")
                 }
-            }
         }
 
         return isHandled

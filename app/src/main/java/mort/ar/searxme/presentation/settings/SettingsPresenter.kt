@@ -4,6 +4,7 @@ import android.util.Log
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import mort.ar.searxme.domain.GetSettingsParameterUseCase
 import mort.ar.searxme.presentation.model.Languages
@@ -23,9 +24,9 @@ class SettingsPresenter @Inject constructor(
         getSettingsParameterUseCase.getSettingsParameter()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { initializeSettingsParameter(it) },
-                { throwable -> Log.d(SettingsPresenter::class.simpleName, throwable.message) }
+            .subscribeBy(
+                onSuccess = { initializeSettingsParameter(it) },
+                onError = { throwable -> Log.d(SettingsPresenter::class.simpleName, throwable.message) }
             )
             .addTo(compositeDisposable)
     }
@@ -73,65 +74,55 @@ class SettingsPresenter @Inject constructor(
         language: Languages,
         timeRange: TimeRanges
     ) {
-
+        TODO("Not implemented yet...")
     }
 
-    override fun onEngineCheckBoxClick(engine: Engines, shouldAdd: Boolean) {
-//        when {
-//            shouldAdd -> {
-//                engines.add(engine)
-//                settingsView.setEnginesDefaultCheckBoxActive(!shouldAdd)
-//            }
-//            else -> {
-//                engines.remove(engine)
-//                if (engines.isEmpty())
-//                    settingsView.setEnginesDefaultCheckBoxActive(!shouldAdd)
-//            }
-//        }
-    }
+    override fun onEngineCheckBoxClick(engine: Engines, shouldAdd: Boolean) =
+        when {
+            shouldAdd -> settingsView.setEnginesDefaultCheckBoxActive(!shouldAdd)
+            else -> /*if (engines.isEmpty())*/ settingsView.setEnginesDefaultCheckBoxActive(!shouldAdd)
+        }
 
-    override fun onCategoryCheckBoxClick(category: Categories, shouldAdd: Boolean) {
-//        when {
-//            shouldAdd -> {
-//                categories.add(category)
-//                settingsView.setCategoriesDefaultCheckBoxActive(!shouldAdd)
-//            }
-//            else -> {
-//                categories.remove(category)
-//                if (categories.isEmpty())
-//                    settingsView.setCategoriesDefaultCheckBoxActive(!shouldAdd)
-//            }
-//        }
-    }
+    override fun onCategoryCheckBoxClick(category: Categories, shouldAdd: Boolean) =
+        when {
+            shouldAdd -> settingsView.setCategoriesDefaultCheckBoxActive(!shouldAdd)
+            else -> /*if (categories.isEmpty())*/ settingsView.setCategoriesDefaultCheckBoxActive(!shouldAdd)
+        }
 
 //    private fun assignSearchParameter(parameter: (String?) -> Unit) {
-//        val engineList = arrayListOf<String>()
-//        this.engines.forEach { engineList.add(it.urlParameter) }
-//        parameter(
-//            when {
-//                engineList.isNullOrEmpty() -> null
-//                else -> engineList.joinToString(separator = ",", prefix = "")
+//        engines
+//            .map { it.urlParameter }
+//            .let { engineList ->
+//                parameter(
+//                    when {
+//                        engineList.isNullOrEmpty() -> null
+//                        else -> engineList.joinToString(separator = ",", prefix = "")
+//                    }
+//                )
 //            }
-//        )
 //    }
 //
 //    private fun assignSearchParameterEngines() {
-//        val engineList = arrayListOf<String>()
-//        engines.forEach { engineList.add(it.urlParameter) }
-//        searchParameterTemp.engines =
-//            when {
-//                engineList.isNullOrEmpty() -> null
-//                else -> engineList.joinToString(separator = ",", prefix = "")
+//        engines
+//            .map { it.urlParameter }
+//            .let { engineList ->
+//                searchParameterTemp.engines =
+//                    when {
+//                        engineList.isNullOrEmpty() -> null
+//                        else -> engineList.joinToString(separator = ",", prefix = "")
+//                    }
 //            }
 //    }
 //
 //    private fun assignSearchParameterCategories() {
-//        val categoriesList = arrayListOf<String>()
-//        categories.forEach { categoriesList.add(it.urlParameter) }
-//        searchParameterTemp.categories =
-//            when {
-//                categoriesList.isNullOrEmpty() -> null
-//                else -> categoriesList.joinToString(separator = ",", prefix = "")
+//        categories
+//            .map { it.urlParameter }
+//            .let { categoriesList ->
+//                searchParameterTemp.categories =
+//                    when {
+//                        categoriesList.isNullOrEmpty() -> null
+//                        else -> categoriesList.joinToString(separator = ",", prefix = "")
+//                    }
 //            }
 //    }
 

@@ -9,4 +9,5 @@ interface SearchRemoteDataSource {
     fun requestSearchResults(searchRequest: SearchRequest): Single<SearchResponse>
 
     fun requestSearchAutocomplete(searchRequest: SearchRequest): Single<List<String>>
+
 }

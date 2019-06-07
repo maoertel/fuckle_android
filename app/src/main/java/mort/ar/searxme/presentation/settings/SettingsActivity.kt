@@ -12,7 +12,6 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.settings_categories.*
 import kotlinx.android.synthetic.main.settings_engines.*
-import kotlinx.android.synthetic.main.settings_engines.view.*
 import kotlinx.android.synthetic.main.settings_languages.*
 import kotlinx.android.synthetic.main.settings_searx_instances.*
 import kotlinx.android.synthetic.main.settings_time_ranges.*
@@ -26,7 +25,6 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
 
     @Inject
     lateinit var settingsPresenter: SettingsContract.SettingsPresenter
-
     @Inject
     lateinit var instanceAdapter: ArrayAdapter<String>
     @Inject
@@ -45,20 +43,7 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
         backButton.setOnClickListener { onBackPressed() }
 
         settingsPresenter.start()
-    }
-
-    override fun onResume() {
-        super.onResume()
         settingsPresenter.loadSettings()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        settingsPresenter.persistSettings(
-            spinnerSearxInstances.selectedItem.toString(),
-            spinnerLanguage.selectedItem as Languages,
-            spinnerTimeRange.selectedItem as TimeRanges
-        )
     }
 
     override fun onDestroy() {
@@ -84,21 +69,20 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
     override fun initializeTimeRangeSpinner(position: Int) = spinnerTimeRange.setSelection(position)
 
     override fun initializeEnginesDefaultCheckbox(isActivated: Boolean) =
-        with(checkBoxDefault) {
+        with(checkBoxEnginesDefault) {
             this.activate(isActivated)
             this.setOnClickListener {
-                if (checkBoxDefault.isChecked) {
+                if (checkBoxEnginesDefault.isChecked) {
                     settingsPresenter.onEnginesDefaultCheckboxClick()
                 }
             }
         }
 
-    override fun initializeEngineCheckBox(engine: Engines, containsEngine: Boolean) {
+    override fun initializeEngineCheckBox(engine: Engines, containsEngine: Boolean) =
         findViewById<CheckBox>(engine.checkBox).let { checkbox ->
             checkbox.isChecked = containsEngine
             checkbox.setOnClickListener { settingsPresenter.onEngineCheckBoxClick(engine, checkbox.isChecked) }
         }
-    }
 
     override fun initializeCategoriesDefaultCheckbox(isActivated: Boolean) =
         with(checkBoxCategoriesDefault) {
@@ -110,15 +94,14 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
             }
         }
 
-    override fun initializeCategoryCheckBox(category: Categories, containsCategory: Boolean) {
+    override fun initializeCategoryCheckBox(category: Categories, containsCategory: Boolean) =
         findViewById<CheckBox>(category.checkBox).let { checkbox ->
             checkbox.isChecked = containsCategory
             checkbox.setOnClickListener { settingsPresenter.onCategoryCheckBoxClick(category, checkbox.isChecked) }
         }
-    }
 
     override fun setEnginesDefaultCheckBoxActive(shouldBeActivated: Boolean) =
-        checkBoxDefault.activate(shouldBeActivated)
+        checkBoxEnginesDefault.activate(shouldBeActivated)
 
     override fun setCategoriesDefaultCheckBoxActive(shouldBeActivated: Boolean) =
         checkBoxCategoriesDefault.activate(shouldBeActivated)

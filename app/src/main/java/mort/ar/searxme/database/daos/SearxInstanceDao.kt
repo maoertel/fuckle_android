@@ -1,7 +1,10 @@
 package mort.ar.searxme.database.daos
 
-import androidx.room.*
-import androidx.room.OnConflictStrategy.FAIL
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy.REPLACE
+import androidx.room.Query
+import androidx.room.Update
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -29,7 +32,7 @@ abstract class SearxInstanceDao {
     @Query("SELECT * FROM searx_instances WHERE name IN (:names)")
     abstract fun getSearxInstances(names: List<String>): Single<List<SearxInstanceEntity>>
 
-    @Insert(onConflict = FAIL)
+    @Insert(onConflict = REPLACE)
     abstract fun insert(searxInstanceEntity: SearxInstanceEntity): Completable
 
     @Update
@@ -38,8 +41,7 @@ abstract class SearxInstanceDao {
     @Query("DELETE FROM searx_instances")
     abstract fun deleteAll()
 
-    @Transaction
-    open fun changeFavoriteInstance(newFavoriteInstance: String): Completable =
+    fun changeFavoriteInstance(newFavoriteInstance: String): Completable =
         Completable.concat(
             listOf(
                 setInstanceToFavorite(false) { getFavoriteInstance() },
@@ -57,7 +59,7 @@ abstract class SearxInstanceDao {
                 searxInstance.favorite = markAsFavorite
                 updateInstance(searxInstance)
                     .subscribeOn(Schedulers.io())
-                    .toSingle { true }
+                    .toSingleDefault(true)
             }
             .subscribeOn(Schedulers.io())
             .ignoreElement()
