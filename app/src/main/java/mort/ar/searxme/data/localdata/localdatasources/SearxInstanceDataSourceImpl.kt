@@ -1,7 +1,6 @@
 package mort.ar.searxme.data.localdata.localdatasources
 
 import io.reactivex.Completable
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -49,25 +48,14 @@ class SearxInstanceDataSourceImpl @Inject constructor(
         }
     }
 
-    override fun observeAllInstances(): Observable<List<SearxInstanceEntity>> =
-        instanceDao.observeAllSearxInstances()
-            .flatMap { list -> Observable.just(list.sortedByDescending { it.favorite }) }
-
     override fun getAllInstances(): Single<List<SearxInstanceEntity>> =
         instanceDao.getAllSearxInstances()
             .flatMap { list -> Single.just(list.sortedByDescending { it.favorite }) }
-
-    override fun observePrimaryInstance(): Observable<SearxInstanceEntity> =
-        instanceDao.observeFavoriteInstance()
 
     override fun setPrimaryInstance(instance: String): Completable =
         Completable.create {
             (instanceDao.changeFavoriteInstanceSync(instance))
             it.onComplete()
         }
-
-    // TODO not in use for now, probably take that out in the future -> but most likely in use when add, edit, delete instances
-    fun getPrimaryInstance(): Single<SearxInstanceEntity> =
-        instanceDao.getFavoriteInstance()
 
 }

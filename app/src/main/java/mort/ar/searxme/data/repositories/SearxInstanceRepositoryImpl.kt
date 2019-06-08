@@ -10,10 +10,6 @@ class SearxInstanceRepositoryImpl @Inject constructor(
     private val searxInstanceDataSource: SearxInstanceDataSource
 ) : SearxInstanceRepository {
 
-    override fun observeAllInstances() = searxInstanceDataSource.observeAllInstances()
-
-    override fun observePrimaryInstance() = searxInstanceDataSource.observePrimaryInstance()
-
     override fun setPrimaryInstance(instance: String) = searxInstanceDataSource.setPrimaryInstance(instance)
 
     override fun getAllInstances(): Single<List<SearxInstanceEntity>> = searxInstanceDataSource.getAllInstances()
