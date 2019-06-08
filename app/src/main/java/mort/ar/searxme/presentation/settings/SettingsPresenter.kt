@@ -20,7 +20,7 @@ class SettingsPresenter @Inject constructor(
 
     override fun start() = settingsView.setSpinnerAdapters()
 
-    override fun stop() = compositeDisposable.clear()
+    override fun stop() = compositeDisposable.dispose()
 
     override fun loadSettings() {
         getSettingsParameterUseCase.getSettingsParameter()
