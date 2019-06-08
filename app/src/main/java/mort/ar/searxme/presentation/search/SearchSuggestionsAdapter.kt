@@ -14,8 +14,7 @@ class SearchSuggestionsAdapter @Inject constructor(
     private val searchPresenter: SearchContract.SearchSuggestionPresenter
 ) : RecyclerView.Adapter<SearchSuggestionsAdapter.SearchSuggestionViewHolder>() {
 
-    internal var searchSuggestions: List<String>
-            by Delegates.observable(emptyList()) { _, _, _ -> notifyDataSetChanged() }
+    internal var searchSuggestions by Delegates.observable(emptyList<String>()) { _, _, _ -> notifyDataSetChanged() }
 
     private val onClickListener: View.OnClickListener by lazy {
         View.OnClickListener { view -> searchPresenter.onSearchSuggestionClick(view.tag as String) }

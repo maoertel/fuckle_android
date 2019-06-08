@@ -17,8 +17,7 @@ class SearchResultAdapter @Inject constructor(
     private val searchResultPresenter: SearchContract.SearchResultPresenter
 ) : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>() {
 
-    internal var search: SearchResults
-            by Delegates.observable(SearchResults(emptyList())) { _, _, _ -> notifyDataSetChanged() }
+    internal var search by Delegates.observable(SearchResults(emptyList())) { _, _, _ -> notifyDataSetChanged() }
 
     private val onClickListener: View.OnClickListener by lazy {
         View.OnClickListener { view -> searchResultPresenter.onSearchResultClick(view.tag as SearxResult) }
