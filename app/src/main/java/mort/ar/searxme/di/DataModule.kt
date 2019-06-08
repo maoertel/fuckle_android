@@ -38,7 +38,8 @@ class DataModule {
     @Provides
     fun provideSearchService(loggingHttpClient: OkHttpClient): SearchService =
         Retrofit.Builder()
-            .baseUrl("https://anonyk.com/")
+//            .baseUrl("https://anonyk.com/")
+            .baseUrl("https://searx.0x1b.de/")
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(MoshiConverterFactory.create())
             .client(loggingHttpClient)

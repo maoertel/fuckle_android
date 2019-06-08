@@ -46,15 +46,22 @@ class SearxInstanceDataSourceImpl @Inject constructor(
 
     override fun observeAllInstances(): Observable<List<SearxInstanceEntity>> =
         instanceDao.observeAllSearxInstances()
+            .flatMap { list -> Observable.just(list.sortedByDescending { it.favorite }) }
 
     override fun getAllInstances(): Single<List<SearxInstanceEntity>> =
         instanceDao.getAllSearxInstances()
+            .flatMap { list -> Single.just(list.sortedByDescending { it.favorite }) }
 
     override fun observePrimaryInstance(): Observable<SearxInstanceEntity> =
         instanceDao.observeFavoriteInstance()
 
     override fun setPrimaryInstance(instance: String): Completable =
-        instanceDao.changeFavoriteInstance(instance)
+        Completable.create {
+            (instanceDao.changeFavoriteInstanceSync(instance))
+            it.onComplete()
+        }
+
+    // instanceDao.changeFavoriteInstance(instance)
 
     fun getPrimaryInstance(): Single<SearxInstanceEntity> =
         instanceDao.getFavoriteInstance()

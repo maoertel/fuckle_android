@@ -1,14 +1,10 @@
 package mort.ar.searxme.database.daos
 
-import androidx.room.Dao
-import androidx.room.Insert
+import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
-import androidx.room.Query
-import androidx.room.Update
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 import mort.ar.searxme.data.localdata.model.SearxInstanceEntity
 
 @Dao
@@ -41,27 +37,22 @@ abstract class SearxInstanceDao {
     @Query("DELETE FROM searx_instances")
     abstract fun deleteAll()
 
-    fun changeFavoriteInstance(newFavoriteInstance: String): Completable =
-        Completable.concat(
-            listOf(
-                setInstanceToFavorite(false) { getFavoriteInstance() },
-                setInstanceToFavorite(true) { getSearxInstance(newFavoriteInstance) }
-            )
-        )
+    @Query("SELECT * FROM searx_instances WHERE favorite")
+    abstract fun getFavoriteInstanceSync(): SearxInstanceEntity
 
-    private fun setInstanceToFavorite(
-        markAsFavorite: Boolean,
-        instanceEntity: () -> Single<SearxInstanceEntity>
-    ): Completable =
-        instanceEntity()
-            .subscribeOn(Schedulers.io())
-            .flatMap { searxInstance ->
-                searxInstance.favorite = markAsFavorite
-                updateInstance(searxInstance)
-                    .subscribeOn(Schedulers.io())
-                    .toSingleDefault(true)
-            }
-            .subscribeOn(Schedulers.io())
-            .ignoreElement()
+    @Query("SELECT * FROM searx_instances WHERE name IS :name")
+    abstract fun getSearxInstanceSync(name: String): SearxInstanceEntity
+
+    @Update
+    abstract fun updateInstanceSync(instanceEntity: SearxInstanceEntity)
+
+    @Transaction
+    open fun changeFavoriteInstanceSync(newFavoriteInstance: String) {
+        val fav = getFavoriteInstanceSync()
+        val newFav = getSearxInstanceSync(newFavoriteInstance)
+
+        updateInstanceSync(fav.copy(favorite = false))
+        updateInstanceSync(newFav.copy(favorite = true))
+    }
 
 }

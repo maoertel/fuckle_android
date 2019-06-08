@@ -1,7 +1,6 @@
 package mort.ar.searxme.presentation.settings
 
-import mort.ar.searxme.presentation.model.Languages
-import mort.ar.searxme.presentation.model.TimeRanges
+import mort.ar.searxme.presentation.model.SettingsParameter
 
 interface SettingsContract {
     interface BaseView {
@@ -50,11 +49,7 @@ interface SettingsContract {
 
         fun loadSettings()
 
-        fun persistSettings(
-            instance: String,
-            language: Languages,
-            timeRange: TimeRanges
-        )
+        fun persistSettings(settingsParameter: SettingsParameter)
 
         fun stop()
     }
@@ -63,15 +58,15 @@ interface SettingsContract {
         fun onEnginesDefaultCheckboxClick()
 
         fun onEngineCheckBoxClick(
-            engine: Engines,
-            shouldAdd: Boolean
+            shouldAdd: Boolean,
+            enginesEmpty: Boolean
         )
 
         fun onCategoriesDefaultCheckboxClick()
 
         fun onCategoryCheckBoxClick(
-            category: Categories,
-            shouldAdd: Boolean
+            shouldAdd: Boolean,
+            categoriesEmpty: Boolean
         )
     }
 

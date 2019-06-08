@@ -31,11 +31,13 @@ internal class ActivitySettingsModule {
     fun provideSettingsPresenter(
         settingsView: SettingsContract.SettingsView,
         getSettingsParameterUseCase: GetSettingsParameterUseCase,
+        saveSettingsParameterUseCase: SaveSettingsParameterUseCase,
         compositeDisposable: CompositeDisposable
     ): SettingsContract.SettingsPresenter =
         SettingsPresenter(
             settingsView,
             getSettingsParameterUseCase,
+            saveSettingsParameterUseCase,
             compositeDisposable
         )
 

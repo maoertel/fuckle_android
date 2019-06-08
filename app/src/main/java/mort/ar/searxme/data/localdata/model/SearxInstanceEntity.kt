@@ -18,7 +18,7 @@ data class SearxInstanceEntity(
     val priority: Int = 0,
 
     @ColumnInfo
-    var favorite: Boolean = false,
+    val favorite: Boolean = false,
 
     @ColumnInfo(name = "times_failed")
     val timesFailed: Long = 0

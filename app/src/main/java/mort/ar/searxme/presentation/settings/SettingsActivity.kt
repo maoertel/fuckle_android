@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.settings_time_ranges.*
 import kotlinx.android.synthetic.main.toolbar_settings.*
 import mort.ar.searxme.R
 import mort.ar.searxme.presentation.model.Languages
+import mort.ar.searxme.presentation.model.SettingsParameter
 import mort.ar.searxme.presentation.model.TimeRanges
 import javax.inject.Inject
 
@@ -81,7 +82,12 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
     override fun initializeEngineCheckBox(engine: Engines, containsEngine: Boolean) =
         findViewById<CheckBox>(engine.checkBox).let { checkbox ->
             checkbox.isChecked = containsEngine
-            checkbox.setOnClickListener { settingsPresenter.onEngineCheckBoxClick(engine, checkbox.isChecked) }
+            checkbox.setOnClickListener {
+                settingsPresenter.onEngineCheckBoxClick(
+                    checkbox.isChecked,
+                    Engines.values().none { findViewById<CheckBox>(it.checkBox).isChecked }
+                )
+            }
         }
 
     override fun initializeCategoriesDefaultCheckbox(isActivated: Boolean) =
@@ -97,7 +103,12 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
     override fun initializeCategoryCheckBox(category: Categories, containsCategory: Boolean) =
         findViewById<CheckBox>(category.checkBox).let { checkbox ->
             checkbox.isChecked = containsCategory
-            checkbox.setOnClickListener { settingsPresenter.onCategoryCheckBoxClick(category, checkbox.isChecked) }
+            checkbox.setOnClickListener {
+                settingsPresenter.onCategoryCheckBoxClick(
+                    checkbox.isChecked,
+                    Categories.values().none { findViewById<CheckBox>(it.checkBox).isChecked }
+                )
+            }
         }
 
     override fun setEnginesDefaultCheckBoxActive(shouldBeActivated: Boolean) =
@@ -115,6 +126,21 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
 
     override fun hideProgress() {
     }
+
+    override fun onBackPressed() {
+        settingsPresenter.persistSettings(buildSettingsParameter())
+
+        super.onBackPressed()
+    }
+
+    private fun buildSettingsParameter(): SettingsParameter =
+        SettingsParameter(
+            searxInstances = listOf(spinnerSearxInstances.selectedItem.toString()),
+            engines = Engines.values().filter { findViewById<CheckBox>(it.checkBox).isChecked },
+            categories = Categories.values().filter { findViewById<CheckBox>(it.checkBox).isChecked },
+            timeRange = spinnerTimeRange.selectedItem as TimeRanges,
+            language = spinnerLanguage.selectedItem as Languages
+        )
 
     override fun showMessage(message: String?) =
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()

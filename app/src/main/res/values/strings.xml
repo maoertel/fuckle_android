@@ -13,5 +13,7 @@
     <string name="activity_search_searchresult_card_engine_text">Gefunden bei:</string>
 
     <string name="activity_settings_toolbar_title">Einstellungen</string>
+    <string name="activity_settings_settings_saved">Settings successfully saved</string>
+    <string name="activity_settings_error_setting_not_saved">Something went wrong</string>
 
 </resources>

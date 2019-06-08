@@ -17,21 +17,17 @@ class SettingsParameterMapper @Inject constructor() {
         language: Languages,
         timeRange: TimeRanges
     ) = SettingsParameter(
-        searxInstances = searxInstances.sort(),
+        searxInstances = searxInstances.map { it.url },
         engines = engines.getListOf { engine -> Engines.valueOf(engine.toUpperCase()) },
         categories = categories.getListOf { category -> Categories.valueOf(category.toUpperCase()) },
         language = language,
         timeRange = timeRange
     )
 
-    private fun List<SearxInstanceEntity>.sort(): List<String> =
-        this.sortedBy { it.favorite }
-            .map { it.url }
-
-
     private fun <T> String.getListOf(transformer: (String) -> T): List<T> =
         this.split(",")
             .map { it.trim() }
+            .filterNot { it.isBlank() }
             .map { transformer(it) }
 
 }
