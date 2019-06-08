@@ -4,7 +4,6 @@ import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.exceptions.CompositeException
 import mort.ar.searxme.TestSchedulerManager
 import mort.ar.searxme.domain.GetSettingsParameterUseCase
 import mort.ar.searxme.domain.SaveSettingsParameterUseCase
@@ -68,7 +67,7 @@ class SettingsPresenterTest {
         verify(settingsView, times(Categories.values().size)).initializeCategoryCheckBox(any(), any())
     }
 
-    @Test(expected = CompositeException::class)
+    @Test
     fun `GIVEN api call fails WHEN loadSettings() called THEN throws`() {
         whenever(getSettingsParameterUseCase.getSettingsParameter()).thenReturn(Single.error(Throwable("error")))
 
