@@ -23,6 +23,7 @@ import mort.ar.searxme.database.Database
 import mort.ar.searxme.database.daos.SearxInstanceDao
 import mort.ar.searxme.domain.mapper.SettingsParameterMapper
 import mort.ar.searxme.network.SearchService
+import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -34,12 +35,16 @@ import javax.inject.Singleton
 @Module
 class DataModule {
 
+    companion object HostSettings {
+        private const val SCHEME = "https"
+        var currentHost = "https://searx.0x1b.de"
+    }
+
     @Singleton
     @Provides
     fun provideSearchService(loggingHttpClient: OkHttpClient): SearchService =
         Retrofit.Builder()
-//            .baseUrl("https://anonyk.com/")
-            .baseUrl("https://searx.0x1b.de/")
+            .baseUrl("https://localhost()")
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(MoshiConverterFactory.create())
             .client(loggingHttpClient)
@@ -51,6 +56,19 @@ class DataModule {
     fun provideHttpClient(): OkHttpClient {
         val httpClient =
             OkHttpClient.Builder()
+                .addInterceptor {
+                    val request = it.request()
+                    val url: HttpUrl = request.url()
+                        .newBuilder()
+                        .scheme(SCHEME)
+                        .host(currentHost.drop(8)) // TODO come back alter and care about a safe handling of currentHost edge cases
+                        .build()
+                    it.proceed(
+                        request.newBuilder()
+                            .url(url)
+                            .build()
+                    )
+                }
                 .readTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)
 

@@ -3,6 +3,7 @@ package mort.ar.searxme.domain.usecases
 import io.reactivex.Completable
 import mort.ar.searxme.data.SearchParameterRepository
 import mort.ar.searxme.data.SearxInstanceRepository
+import mort.ar.searxme.di.DataModule
 import mort.ar.searxme.domain.SaveSettingsParameterUseCase
 import mort.ar.searxme.presentation.model.SettingsParameter
 import mort.ar.searxme.presentation.settings.Categories
@@ -23,7 +24,7 @@ class SaveSettingsParameterUseCaseImpl @Inject constructor(
                 searchParameterRepository.setLanguage(settingsParameter.language),
                 searchParameterRepository.setTimeRange(settingsParameter.timeRange)
             )
-        )
+        ).also { DataModule.currentHost = settingsParameter.searxInstances.first() }
 
     private fun saveEngines(engines: List<Engines>) =
         searchParameterRepository.setEngines(engines.joinToString(separator = ",") { it.urlParameter })

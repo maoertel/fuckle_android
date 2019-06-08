@@ -58,14 +58,14 @@ interface SettingsContract {
         fun onEnginesDefaultCheckboxClick()
 
         fun onEngineCheckBoxClick(
-            shouldAdd: Boolean,
+            shouldCheck: Boolean,
             enginesEmpty: Boolean
         )
 
         fun onCategoriesDefaultCheckboxClick()
 
         fun onCategoryCheckBoxClick(
-            shouldAdd: Boolean,
+            shouldCheck: Boolean,
             categoriesEmpty: Boolean
         )
     }

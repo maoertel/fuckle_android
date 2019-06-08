@@ -10,21 +10,22 @@ import io.reactivex.schedulers.Schedulers
 import mort.ar.searxme.data.localdata.SearxInstanceDataSource
 import mort.ar.searxme.data.localdata.model.SearxInstanceEntity
 import mort.ar.searxme.database.daos.SearxInstanceDao
+import mort.ar.searxme.di.DataModule
 import javax.inject.Inject
 
 // TODO Following two instances are just for test reasons. Later on their will be an edit mode to add, edit and delete instances
 private val initialInstance =
     SearxInstanceEntity(
-        name = "https://searx.0x1b.de/",
-        url = "https://searx.0x1b.de/",
-        favorite = false
+        name = "https://searx.0x1b.de",
+        url = "https://searx.0x1b.de",
+        favorite = true
     )
 
 private val secondaryInstance =
     SearxInstanceEntity(
-        name = "https://anonyk.com/",
-        url = "https://anonyk.com/",
-        favorite = true
+        name = "https://anonyk.com",
+        url = "https://anonyk.com",
+        favorite = false
     )
 
 class SearxInstanceDataSourceImpl @Inject constructor(
@@ -32,12 +33,16 @@ class SearxInstanceDataSourceImpl @Inject constructor(
 ) : SearxInstanceDataSource {
 
     init {
+        // TODO just a temporary workaround until add, edit, delete instances
         CompositeDisposable().apply {
             Completable
                 .merge(listOf(instanceDao.insert(initialInstance), instanceDao.insert(secondaryInstance)))
                 .subscribeOn(Schedulers.io())
                 .subscribeBy(
-                    onComplete = { this.dispose() },
+                    onComplete = {
+                        DataModule.currentHost = initialInstance.url
+                        this.dispose()
+                    },
                     onError = { this.dispose() }
                 )
                 .addTo(this)
@@ -61,8 +66,7 @@ class SearxInstanceDataSourceImpl @Inject constructor(
             it.onComplete()
         }
 
-    // instanceDao.changeFavoriteInstance(instance)
-
+    // TODO not in use for now, probably take that out in the future -> but most likely in use when add, edit, delete instances
     fun getPrimaryInstance(): Single<SearxInstanceEntity> =
         instanceDao.getFavoriteInstance()
 
