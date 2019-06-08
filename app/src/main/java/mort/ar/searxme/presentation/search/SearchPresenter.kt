@@ -11,7 +11,7 @@ import mort.ar.searxme.domain.SearchSuggestionsUseCase
 import mort.ar.searxme.presentation.search.Pages.*
 import javax.inject.Inject
 
-private enum class Pages { START, SEARCH_RESULTS, WEBVIEW }
+enum class Pages { START, SEARCH_RESULTS, WEBVIEW }
 
 private const val EMPTY = ""
 
@@ -27,7 +27,6 @@ class SearchPresenter @Inject constructor(
     private var isSuggestionListSubmit = false
     private var isLastClickBeforeQuitApp = false
 
-
     override fun start() =
         with(searchView) {
             initializeWebViewFragment()
@@ -35,7 +34,7 @@ class SearchPresenter @Inject constructor(
             initializeSearchResultsAdapter()
         }
 
-    override fun stop() = compositeDisposable.clear()
+    override fun stop() = compositeDisposable.dispose()
 
     override fun onSearchResultClick(searchResult: SearxResult) {
         searchView.loadUrl(searchResult.prettyUrl)
