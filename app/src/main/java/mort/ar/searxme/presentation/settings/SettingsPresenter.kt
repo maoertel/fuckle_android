@@ -69,14 +69,20 @@ class SettingsPresenter @Inject constructor(
         }
     }
 
-    override fun persistSettings(settingsParameter: SettingsParameter) {
+    override fun persistSettings(settingsParameter: SettingsParameter, onFinished: () -> Unit) {
         saveSettingsParameterUseCase
             .saveSettingsParameter(settingsParameter)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
-                onComplete = { settingsView.showMessage("Settings successfully saved") },
-                onError = { settingsView.showMessage("Something went wrong") }
+                onComplete = {
+                    onFinished()
+                    settingsView.showMessage("Settings successfully saved")
+                },
+                onError = {
+                    onFinished()
+                    settingsView.showMessage("Something went wrong")
+                }
             )
             .addTo(compositeDisposable)
     }

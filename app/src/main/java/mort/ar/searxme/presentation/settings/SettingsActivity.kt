@@ -33,7 +33,6 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
     @Inject
     lateinit var timeRangeAdapter: ArrayAdapter<TimeRanges>
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
@@ -121,17 +120,7 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.SettingsView {
         findViewById<CheckBox>(checkBoxId).isChecked = shouldBeActivated
     }
 
-    override fun showProgress() {
-    }
-
-    override fun hideProgress() {
-    }
-
-    override fun onBackPressed() {
-        settingsPresenter.persistSettings(buildSettingsParameter())
-
-        super.onBackPressed()
-    }
+    override fun onBackPressed() = settingsPresenter.persistSettings(buildSettingsParameter()) { super.onBackPressed() }
 
     private fun buildSettingsParameter(): SettingsParameter =
         SettingsParameter(

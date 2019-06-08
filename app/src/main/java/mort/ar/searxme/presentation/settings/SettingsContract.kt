@@ -5,10 +5,6 @@ import mort.ar.searxme.presentation.model.SettingsParameter
 interface SettingsContract {
     interface BaseView {
 
-        fun showProgress()
-
-        fun hideProgress()
-
         fun showMessage(message: String?)
 
         fun hideKeyboard()
@@ -49,7 +45,7 @@ interface SettingsContract {
 
         fun loadSettings()
 
-        fun persistSettings(settingsParameter: SettingsParameter)
+        fun persistSettings(settingsParameter: SettingsParameter, onFinished: () -> Unit)
 
         fun stop()
     }
