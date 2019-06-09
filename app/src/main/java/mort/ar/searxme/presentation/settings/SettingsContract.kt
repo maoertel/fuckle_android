@@ -1,6 +1,8 @@
 package mort.ar.searxme.presentation.settings
 
 import mort.ar.searxme.data.model.SettingsParameter
+import mort.ar.searxme.presentation.model.Categories
+import mort.ar.searxme.presentation.model.Engines
 
 interface SettingsContract {
     interface BaseView {

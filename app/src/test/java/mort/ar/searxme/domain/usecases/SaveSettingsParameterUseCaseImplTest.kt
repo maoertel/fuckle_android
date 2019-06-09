@@ -9,10 +9,10 @@ import mort.ar.searxme.data.SearxInstanceRepository
 import mort.ar.searxme.presentation.model.Languages
 import mort.ar.searxme.data.model.SettingsParameter
 import mort.ar.searxme.presentation.model.TimeRanges
-import mort.ar.searxme.presentation.settings.Categories.FILES
-import mort.ar.searxme.presentation.settings.Categories.IMAGES
-import mort.ar.searxme.presentation.settings.Engines.BING
-import mort.ar.searxme.presentation.settings.Engines.DUCKDUCKGO
+import mort.ar.searxme.presentation.model.Categories.FILES
+import mort.ar.searxme.presentation.model.Categories.IMAGES
+import mort.ar.searxme.presentation.model.Engines.BING
+import mort.ar.searxme.presentation.model.Engines.DUCKDUCKGO
 import org.junit.Before
 import org.junit.Test
 

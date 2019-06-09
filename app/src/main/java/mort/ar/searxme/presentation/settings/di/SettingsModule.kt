@@ -13,6 +13,8 @@ import mort.ar.searxme.domain.SaveSettingsParameterUseCase
 import mort.ar.searxme.domain.mapper.SettingsParameterMapper
 import mort.ar.searxme.domain.usecases.GetSettingsParameterUseCaseImpl
 import mort.ar.searxme.domain.usecases.SaveSettingsParameterUseCaseImpl
+import mort.ar.searxme.presentation.model.Categories
+import mort.ar.searxme.presentation.model.Engines
 import mort.ar.searxme.presentation.model.Languages
 import mort.ar.searxme.presentation.model.TimeRanges
 import mort.ar.searxme.presentation.settings.*

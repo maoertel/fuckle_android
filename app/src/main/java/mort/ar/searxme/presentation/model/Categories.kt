@@ -1,4 +1,4 @@
-package mort.ar.searxme.presentation.settings
+package mort.ar.searxme.presentation.model
 
 import mort.ar.searxme.R
 

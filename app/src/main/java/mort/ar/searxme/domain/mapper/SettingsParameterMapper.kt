@@ -4,8 +4,8 @@ import mort.ar.searxme.data.model.SearchInstance
 import mort.ar.searxme.data.model.SettingsParameter
 import mort.ar.searxme.presentation.model.Languages
 import mort.ar.searxme.presentation.model.TimeRanges
-import mort.ar.searxme.presentation.settings.Categories
-import mort.ar.searxme.presentation.settings.Engines
+import mort.ar.searxme.presentation.model.Categories
+import mort.ar.searxme.presentation.model.Engines
 import javax.inject.Inject
 
 class SettingsParameterMapper @Inject constructor() {

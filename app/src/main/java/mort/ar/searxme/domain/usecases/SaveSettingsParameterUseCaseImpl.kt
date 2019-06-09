@@ -6,8 +6,8 @@ import mort.ar.searxme.data.SearxInstanceRepository
 import mort.ar.searxme.di.DataModule
 import mort.ar.searxme.domain.SaveSettingsParameterUseCase
 import mort.ar.searxme.data.model.SettingsParameter
-import mort.ar.searxme.presentation.settings.Categories
-import mort.ar.searxme.presentation.settings.Engines
+import mort.ar.searxme.presentation.model.Categories
+import mort.ar.searxme.presentation.model.Engines
 import javax.inject.Inject
 
 class SaveSettingsParameterUseCaseImpl @Inject constructor(
