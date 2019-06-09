@@ -1,13 +1,12 @@
 package mort.ar.searxme.data.repositories
 
-import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
 import mort.ar.searxme.TestSchedulerManager
 import mort.ar.searxme.data.model.SearchRequest
+import mort.ar.searxme.data.model.SearchResult
 import mort.ar.searxme.data.remotedata.SearchRemoteDataSource
-import mort.ar.searxme.data.remotedata.model.SearchResponse
 import mort.ar.searxme.data.remotedata.model.SearxResult
 import org.junit.Before
 import org.junit.Test
@@ -29,26 +28,25 @@ class SearchResultRepositoryImplTest {
 
     @Test
     fun `GIVEN call to api successful WHEN requestSearchResults() THEN search results returned`() {
-        val searchResponse = mock<SearchResponse> { on { results } doReturn listOf() }
-        whenever(searchRemoteDataSource.requestSearchResults(searchRequest)).thenReturn(Single.just(searchResponse))
+        val searchResult = mock<SearchResult>()
+        whenever(searchRemoteDataSource.requestSearchResults(searchRequest)).thenReturn(Single.just(listOf(searchResult)))
 
         val testSingle = repository.requestSearchResults(searchRequest).test()
 
         testSingle
-            .assertValue { it.isEmpty() }
+            .assertValue { it == listOf(searchResult) }
             .assertNoErrors()
             .dispose()
     }
 
     @Test
     fun `GIVEN call to api successful and results not empty WHEN requestSearchResults() THEN empty search results returned`() {
-        val searchResponse = mock<SearchResponse> { on { results } doReturn listOf(searxResult) }
-        whenever(searchRemoteDataSource.requestSearchResults(searchRequest)).thenReturn(Single.just(searchResponse))
+        whenever(searchRemoteDataSource.requestSearchResults(searchRequest)).thenReturn(Single.just(emptyList()))
 
         val testSingle = repository.requestSearchResults(searchRequest).test()
 
         testSingle
-            .assertValue { it.isNotEmpty() && it.first() == searxResult }
+            .assertValue { it.isEmpty() }
             .assertNoErrors()
             .dispose()
     }

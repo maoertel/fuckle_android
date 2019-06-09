@@ -7,6 +7,7 @@ import mort.ar.searxme.TestSchedulerManager
 import mort.ar.searxme.data.SearchParameterRepository
 import mort.ar.searxme.data.SearxInstanceRepository
 import mort.ar.searxme.data.localdata.model.SearxInstanceEntity
+import mort.ar.searxme.data.model.SearchInstance
 import mort.ar.searxme.domain.mapper.SettingsParameterMapper
 import mort.ar.searxme.presentation.model.Languages
 import mort.ar.searxme.presentation.model.TimeRanges
@@ -38,7 +39,7 @@ class GetSettingsParameterUseCaseImplTest {
 
     @Test
     fun `GIVEN all repo queries succeed WHEN getSettingsParameter() THEN SettingsParameter returned`() {
-        whenever(searxInstanceRepository.getAllInstances()).thenReturn(Single.just(searxInstances))
+        whenever(searxInstanceRepository.getAllInstances()).thenReturn(Single.just(searchInstances))
         whenever(searchParameterRepository.getEngines()).thenReturn(Single.just(engines))
         whenever(searchParameterRepository.getCategories()).thenReturn(Single.just(categories))
         whenever(searchParameterRepository.getLanguage()).thenReturn(Single.just(language))
@@ -100,7 +101,13 @@ class GetSettingsParameterUseCaseImplTest {
             favorite = true
         )
 
-        private val searxInstances = listOf(favoriteSearxInstanceEntity)
+        private val favoriteSearchInstance = SearchInstance(
+            name = "searx",
+            url = url,
+            favorite = true
+        )
+
+        private val searchInstances = listOf(favoriteSearchInstance)
         private const val engines = "duckduckgo,bing"
         private const val categories = "files,images"
         private val language = Languages.GERMAN

@@ -7,9 +7,9 @@ import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import mort.ar.searxme.TestSchedulerManager
+import mort.ar.searxme.data.model.SearchResult
 import mort.ar.searxme.domain.SearchRequestUseCase
 import mort.ar.searxme.domain.SearchSuggestionsUseCase
-import mort.ar.searxme.data.model.SearchResult
 import mort.ar.searxme.presentation.search.Pages.*
 import org.junit.Assert.*
 import org.junit.Before
@@ -55,11 +55,6 @@ class SearchPresenterTest {
         }
 
     @Test
-    fun `GIVEN WHEN THEN`() {
-
-    }
-
-    @Test
     fun `GIVEN nothing WHEN start() called THEN WebView and adapters have been initialized`() {
         presenter.start()
 
@@ -78,7 +73,7 @@ class SearchPresenterTest {
     @Test
     fun `GIVEN query WHEN onSearchSuggestionClick() THEN query fired, search box updated with query text, suggestionList to true`() {
         val query = "Hallo"
-        val suggestionsList = mock<SearchResult>()
+        val suggestionsList = listOf(mock<SearchResult>())
         whenever(searchRequestUseCase.requestSearchResults(query)).thenReturn(Single.just(suggestionsList))
 
         presenter.onSearchSuggestionClick(query)

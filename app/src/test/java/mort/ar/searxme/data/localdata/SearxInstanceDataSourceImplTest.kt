@@ -6,6 +6,7 @@ import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
 import mort.ar.searxme.TestSchedulerManager
 import mort.ar.searxme.data.localdata.localdatasources.SearxInstanceDataSourceImpl
+import mort.ar.searxme.data.localdata.mapper.SearchInstanceMapper
 import mort.ar.searxme.data.localdata.model.SearxInstanceEntity
 import mort.ar.searxme.database.daos.SearxInstanceDao
 import org.junit.Before
@@ -16,6 +17,7 @@ class SearxInstanceDataSourceImplTest {
     private lateinit var dataSource: SearxInstanceDataSourceImpl
 
     private lateinit var instanceDao: SearxInstanceDao
+    private val mapper = SearchInstanceMapper()
 
     @Before
     fun setUp() {
@@ -23,7 +25,7 @@ class SearxInstanceDataSourceImplTest {
 
         instanceDao = mock()
 
-        dataSource = SearxInstanceDataSourceImpl(instanceDao)
+        dataSource = SearxInstanceDataSourceImpl(instanceDao, mapper)
     }
 
     @Test
@@ -65,11 +67,6 @@ class SearxInstanceDataSourceImplTest {
             .dispose()
 
         verify(instanceDao).changeFavoriteInstanceSync(instance)
-    }
-
-    @Test
-    fun `GIVEN WHEN THEN`() {
-
     }
 
     companion object {
