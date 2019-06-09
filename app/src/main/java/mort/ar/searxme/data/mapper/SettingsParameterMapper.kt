@@ -1,4 +1,4 @@
-package mort.ar.searxme.domain.mapper
+package mort.ar.searxme.data.mapper
 
 import mort.ar.searxme.data.model.SearchInstance
 import mort.ar.searxme.data.model.SettingsParameter

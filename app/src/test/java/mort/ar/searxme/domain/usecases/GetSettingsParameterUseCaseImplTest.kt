@@ -8,7 +8,7 @@ import mort.ar.searxme.data.SearchParameterRepository
 import mort.ar.searxme.data.SearxInstanceRepository
 import mort.ar.searxme.data.localdata.model.SearxInstanceEntity
 import mort.ar.searxme.data.model.SearchInstance
-import mort.ar.searxme.domain.mapper.SettingsParameterMapper
+import mort.ar.searxme.data.mapper.SettingsParameterMapper
 import mort.ar.searxme.presentation.model.Languages
 import mort.ar.searxme.presentation.model.TimeRanges
 import mort.ar.searxme.presentation.model.Categories.FILES

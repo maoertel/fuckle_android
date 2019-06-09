@@ -23,7 +23,7 @@ import mort.ar.searxme.data.repositories.SearchResultRepositoryImpl
 import mort.ar.searxme.data.repositories.SearxInstanceRepositoryImpl
 import mort.ar.searxme.database.Database
 import mort.ar.searxme.database.daos.SearxInstanceDao
-import mort.ar.searxme.domain.mapper.SettingsParameterMapper
+import mort.ar.searxme.data.mapper.SettingsParameterMapper
 import mort.ar.searxme.network.SearchService
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
@@ -148,6 +148,7 @@ class DataModule {
 
     @Singleton
     @Provides
-    fun provideSettingsParameterMapper(): SettingsParameterMapper = SettingsParameterMapper()
+    fun provideSettingsParameterMapper(): SettingsParameterMapper =
+        SettingsParameterMapper()
 
 }

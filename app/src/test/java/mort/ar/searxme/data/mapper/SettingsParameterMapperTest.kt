@@ -1,4 +1,4 @@
-package mort.ar.searxme.domain.mapper
+package mort.ar.searxme.data.mapper
 
 import mort.ar.searxme.data.model.SearchInstance
 import mort.ar.searxme.data.model.SettingsParameter
@@ -18,7 +18,10 @@ class SettingsParameterMapperTest {
     @Test
     fun `GIVEN WHEN mapToSettingsParameter() THEN`() {
         val testedSettingsParameter = mapper.mapToSettingsParameter(
-            searchInstances = listOf(favoriteSearchInstance, secondarySearchInstance),
+            searchInstances = listOf(
+                favoriteSearchInstance,
+                secondarySearchInstance
+            ),
             engines = engines,
             categories = categories,
             language = language,
@@ -49,7 +52,10 @@ class SettingsParameterMapperTest {
         private val timeRange = TimeRanges.MONTH
 
         private val expectedSettingsParameter = SettingsParameter(
-            searxInstances = listOf(favUrl, secUrl),
+            searxInstances = listOf(
+                favUrl,
+                secUrl
+            ),
             engines = listOf(DUCKDUCKGO, BING),
             categories = listOf(FILES, IMAGES),
             language = language,
