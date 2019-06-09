@@ -1,12 +1,15 @@
 package mort.ar.searxme.domain.usecases
 
 import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
 import mort.ar.searxme.TestSchedulerManager
 import mort.ar.searxme.data.SearchParameterRepository
 import mort.ar.searxme.data.SearchResultRepository
+import mort.ar.searxme.data.model.SearchRequest
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
@@ -29,15 +32,15 @@ class SearchSuggestionsUseCaseTest {
 
     @Test
     fun `GIVEN api call and repo call successful WHEN requestSearchAutoComplete() THEN list of suggestions`() {
-        val query = "hello"
-        val autoComplete = "ddg"
         val suggestionsList = listOf("one", "two")
+        val captor = argumentCaptor<SearchRequest>()
         whenever(searchParameterRepository.getAutoComplete()).thenReturn(Single.just(autoComplete))
-        whenever(searchResultRepository.requestSearchAutoComplete(any()))
+        whenever(searchResultRepository.requestSearchAutoComplete(captor.capture()))
             .thenReturn(Single.just(suggestionsList))
 
         val testSingle = useCase.requestSearchAutoComplete(query).test()
 
+        assertEquals(expectedSearchRequest, captor.firstValue)
         testSingle
             .assertValue(suggestionsList)
             .assertNoErrors()
@@ -46,8 +49,6 @@ class SearchSuggestionsUseCaseTest {
 
     @Test
     fun `GIVEN api call fails WHEN requestSearchAutoComplete() THEN throws`() {
-        val query = "hello"
-        val autoComplete = "ddg"
         val throwable = Throwable("error")
         whenever(searchParameterRepository.getAutoComplete()).thenReturn(Single.just(autoComplete))
         whenever(searchResultRepository.requestSearchAutoComplete(any()))
@@ -63,7 +64,6 @@ class SearchSuggestionsUseCaseTest {
 
     @Test
     fun `GIVEN repo query fails WHEN requestSearchAutoComplete() THEN throws`() {
-        val query = "hello"
         val throwable = Throwable("error")
         whenever(searchParameterRepository.getAutoComplete()).thenReturn(Single.error(throwable))
 
@@ -73,6 +73,15 @@ class SearchSuggestionsUseCaseTest {
             .assertError(throwable)
             .assertNoValues()
             .dispose()
+    }
+
+    companion object {
+        private const val query = "hello"
+        private const val autoComplete = "duckduckgo"
+        private val expectedSearchRequest = SearchRequest(
+            query = query,
+            autoComplete = autoComplete
+        )
     }
 
 }

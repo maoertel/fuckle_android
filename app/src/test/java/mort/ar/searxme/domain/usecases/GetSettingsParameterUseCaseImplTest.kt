@@ -6,15 +6,14 @@ import io.reactivex.Single
 import mort.ar.searxme.TestSchedulerManager
 import mort.ar.searxme.data.SearchParameterRepository
 import mort.ar.searxme.data.SearxInstanceRepository
-import mort.ar.searxme.data.localdata.model.SearxInstanceEntity
-import mort.ar.searxme.data.model.SearchInstance
 import mort.ar.searxme.data.mapper.SettingsParameterMapper
-import mort.ar.searxme.presentation.model.Languages
-import mort.ar.searxme.presentation.model.TimeRanges
+import mort.ar.searxme.data.model.SearchInstance
 import mort.ar.searxme.presentation.model.Categories.FILES
 import mort.ar.searxme.presentation.model.Categories.IMAGES
 import mort.ar.searxme.presentation.model.Engines.BING
 import mort.ar.searxme.presentation.model.Engines.DUCKDUCKGO
+import mort.ar.searxme.presentation.model.Languages
+import mort.ar.searxme.presentation.model.TimeRanges
 import org.junit.Before
 import org.junit.Test
 
@@ -95,11 +94,6 @@ class GetSettingsParameterUseCaseImplTest {
 
     companion object {
         private const val url = "https://searx.0x1b.de"
-        private val favoriteSearxInstanceEntity = SearxInstanceEntity(
-            name = "searx",
-            url = url,
-            favorite = true
-        )
 
         private val favoriteSearchInstance = SearchInstance(
             name = "searx",
