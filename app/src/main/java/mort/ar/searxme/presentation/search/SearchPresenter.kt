@@ -1,13 +1,17 @@
 package mort.ar.searxme.presentation.search
 
+import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import mort.ar.searxme.data.DataModule
+import mort.ar.searxme.data.model.SearchInstance
+import mort.ar.searxme.data.model.SearchResult
+import mort.ar.searxme.domain.InsertInstanceUseCase
 import mort.ar.searxme.domain.SearchRequestUseCase
 import mort.ar.searxme.domain.SearchSuggestionsUseCase
-import mort.ar.searxme.data.model.SearchResult
 import mort.ar.searxme.presentation.search.Pages.*
 import javax.inject.Inject
 
@@ -19,6 +23,7 @@ class SearchPresenter @Inject constructor(
     private val searchView: SearchContract.SearchView,
     private val searchRequestUseCase: SearchRequestUseCase,
     private val searchSuggestionsUseCase: SearchSuggestionsUseCase,
+    private val insertInstanceUseCase: InsertInstanceUseCase,
     private val compositeDisposable: CompositeDisposable
 ) : SearchContract.SearchPresenter {
 
@@ -153,4 +158,38 @@ class SearchPresenter @Inject constructor(
             showWebView()
         }
 
+    init {
+        // TODO following stuff is just a temporary workaround until it is possible to add, edit, delete instances
+        Completable.merge(instanceList.map { insertInstanceUseCase.insert(it) })
+            .subscribeOn(Schedulers.io())
+            .subscribeBy(
+                onComplete = { DataModule.currentHost = instanceList.filter { it.favorite }.first().url },
+                onError = { /* probable inform about it, but than... this is temporary */ }
+            )
+            .addTo(compositeDisposable)
+    }
 }
+
+private val instanceList =
+    listOf(
+        SearchInstance(
+            name = "https://searx.0x1b.de",
+            url = "https://searx.0x1b.de",
+            favorite = false
+        ),
+        SearchInstance(
+            name = "https://searx.be",
+            url = "https://searx.be",
+            favorite = false
+        ),
+        SearchInstance(
+            name = "https://anonyk.com",
+            url = "https://anonyk.com",
+            favorite = false
+        ),
+        SearchInstance(
+            name = "https://search.gibberfish.org",
+            url = "https://search.gibberfish.org",
+            favorite = true
+        )
+    )

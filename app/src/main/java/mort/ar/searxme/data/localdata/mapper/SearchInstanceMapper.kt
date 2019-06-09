@@ -11,4 +11,12 @@ class SearchInstanceMapper {
             url = entity.url,
             favorite = entity.favorite
         )
+
+    fun mapToSearxInstanceEntity(instance: SearchInstance) =
+        SearxInstanceEntity(
+            name = instance.name,
+            url = instance.url,
+            favorite = instance.favorite
+        )
+
 }

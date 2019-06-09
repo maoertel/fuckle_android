@@ -38,7 +38,7 @@ class DataModule {
         private const val SCHEME_HTTP = "http"
         private const val SCHEME_HTTPS = "https"
 
-        var currentHost: String = "search.gibberfish.org"
+        var currentHost: String = "should not matter"
             set(value) {
                 field = when {
                     value.startsWith(SCHEME_HTTPS) -> value.drop(8)
@@ -154,7 +154,6 @@ class DataModule {
 
     @Singleton
     @Provides
-    fun provideSettingsParameterMapper(): SettingsParameterMapper =
-        SettingsParameterMapper()
+    fun provideSettingsParameterMapper(): SettingsParameterMapper = SettingsParameterMapper()
 
 }

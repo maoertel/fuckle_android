@@ -10,4 +10,6 @@ interface SearxInstanceRepository {
 
     fun getAllInstances(): Single<List<SearchInstance>>
 
+    fun insert(instance: SearchInstance): Completable
+
 }

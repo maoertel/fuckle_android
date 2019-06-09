@@ -7,10 +7,13 @@ import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
 import mort.ar.searxme.data.SearchParameterRepository
 import mort.ar.searxme.data.SearchResultRepository
+import mort.ar.searxme.data.SearxInstanceRepository
 import mort.ar.searxme.data.mapper.SearchRequestMapper
 import mort.ar.searxme.di.ActivityScope
+import mort.ar.searxme.domain.InsertInstanceUseCase
 import mort.ar.searxme.domain.SearchRequestUseCase
 import mort.ar.searxme.domain.SearchSuggestionsUseCase
+import mort.ar.searxme.domain.usecases.InsertInstanceUseCaseImpl
 import mort.ar.searxme.domain.usecases.SearchRequestUseCaseImpl
 import mort.ar.searxme.domain.usecases.SearchSuggestionsUseCaseImpl
 import mort.ar.searxme.presentation.search.*
@@ -31,12 +34,14 @@ class ActivitySearchModule {
         searchView: SearchContract.SearchView,
         searchRequestUseCase: SearchRequestUseCase,
         searchSuggestionsUseCase: SearchSuggestionsUseCase,
+        insertInstanceUseCase: InsertInstanceUseCase,
         compositeDisposable: CompositeDisposable
     ): SearchContract.SearchPresenter =
         SearchPresenter(
             searchView,
             searchRequestUseCase,
             searchSuggestionsUseCase,
+            insertInstanceUseCase,
             compositeDisposable
         )
 
@@ -81,5 +86,10 @@ class ActivitySearchModule {
         searchResultRepository: SearchResultRepository,
         searchParameterRepository: SearchParameterRepository
     ): SearchSuggestionsUseCase = SearchSuggestionsUseCaseImpl(searchResultRepository, searchParameterRepository)
+
+    @Provides
+    fun provideInsertInstanceUseCase(
+        searxInstanceRepository: SearxInstanceRepository
+    ): InsertInstanceUseCase = InsertInstanceUseCaseImpl(searxInstanceRepository)
 
 }
