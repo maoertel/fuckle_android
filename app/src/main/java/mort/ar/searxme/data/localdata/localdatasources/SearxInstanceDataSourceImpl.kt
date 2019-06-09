@@ -11,7 +11,7 @@ import mort.ar.searxme.data.localdata.mapper.SearchInstanceMapper
 import mort.ar.searxme.data.localdata.model.SearxInstanceEntity
 import mort.ar.searxme.data.model.SearchInstance
 import mort.ar.searxme.database.daos.SearxInstanceDao
-import mort.ar.searxme.di.DataModule
+import mort.ar.searxme.data.DataModule
 import javax.inject.Inject
 
 // TODO Following instances are just for test reasons. Later on their will be an edit mode to add, edit and delete instances

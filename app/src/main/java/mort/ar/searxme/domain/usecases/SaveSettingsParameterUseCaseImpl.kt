@@ -3,7 +3,7 @@ package mort.ar.searxme.domain.usecases
 import io.reactivex.Completable
 import mort.ar.searxme.data.SearchParameterRepository
 import mort.ar.searxme.data.SearxInstanceRepository
-import mort.ar.searxme.di.DataModule
+import mort.ar.searxme.data.DataModule
 import mort.ar.searxme.domain.SaveSettingsParameterUseCase
 import mort.ar.searxme.data.model.SettingsParameter
 import mort.ar.searxme.presentation.model.Categories

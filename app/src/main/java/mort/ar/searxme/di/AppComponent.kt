@@ -5,6 +5,7 @@ import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 import mort.ar.searxme.MyApplication
+import mort.ar.searxme.data.DataModule
 import javax.inject.Singleton
 
 @Singleton

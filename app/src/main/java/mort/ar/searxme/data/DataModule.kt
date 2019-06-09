@@ -1,4 +1,4 @@
-package mort.ar.searxme.di
+package mort.ar.searxme.data
 
 import android.app.Application
 import android.content.Context
@@ -6,9 +6,6 @@ import android.content.SharedPreferences
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
-import mort.ar.searxme.data.SearchParameterRepository
-import mort.ar.searxme.data.SearchResultRepository
-import mort.ar.searxme.data.SearxInstanceRepository
 import mort.ar.searxme.data.localdata.SearchParameterDataSource
 import mort.ar.searxme.data.localdata.SearxInstanceDataSource
 import mort.ar.searxme.data.localdata.localdatasources.SearchParameterDataSourceImpl
