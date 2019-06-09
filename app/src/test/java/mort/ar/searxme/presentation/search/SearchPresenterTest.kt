@@ -8,6 +8,7 @@ import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import mort.ar.searxme.TestSchedulerManager
 import mort.ar.searxme.data.model.SearchResult
+import mort.ar.searxme.domain.InsertInstanceUseCase
 import mort.ar.searxme.domain.SearchRequestUseCase
 import mort.ar.searxme.domain.SearchSuggestionsUseCase
 import mort.ar.searxme.presentation.search.Pages.*
@@ -25,8 +26,9 @@ class SearchPresenterTest {
     private lateinit var searchView: SearchContract.SearchView
     private lateinit var searchRequestUseCase: SearchRequestUseCase
     private lateinit var searchSuggestionsUseCase: SearchSuggestionsUseCase
-    private lateinit var compositeDisposable: CompositeDisposable
+    private lateinit var insertInstanceUseCase: InsertInstanceUseCase
 
+    private lateinit var compositeDisposable: CompositeDisposable
 
     @Before
     fun setUp() {
@@ -35,9 +37,16 @@ class SearchPresenterTest {
         searchView = mock()
         searchRequestUseCase = mock()
         searchSuggestionsUseCase = mock()
+        insertInstanceUseCase = mock()
         compositeDisposable = mock()
 
-        presenter = SearchPresenter(searchView, searchRequestUseCase, searchSuggestionsUseCase, compositeDisposable)
+        presenter = SearchPresenter(
+            searchView,
+            searchRequestUseCase,
+            searchSuggestionsUseCase,
+            insertInstanceUseCase,
+            compositeDisposable
+        )
     }
 
     @Suppress("UNCHECKED_CAST")
