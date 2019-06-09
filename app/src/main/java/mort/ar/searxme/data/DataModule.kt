@@ -12,6 +12,7 @@ import mort.ar.searxme.data.localdata.localdatasources.SearchParameterDataSource
 import mort.ar.searxme.data.localdata.localdatasources.SearxInstanceDataSourceImpl
 import mort.ar.searxme.data.localdata.mapper.SearchInstanceMapper
 import mort.ar.searxme.data.mapper.SearchRequestMapper
+import mort.ar.searxme.data.mapper.SettingsParameterMapper
 import mort.ar.searxme.data.remotedata.SearchRemoteDataSource
 import mort.ar.searxme.data.remotedata.mapper.SearchResultMapper
 import mort.ar.searxme.data.remotedata.remotedatasources.SearchRemoteDataSourceImpl
@@ -20,7 +21,6 @@ import mort.ar.searxme.data.repositories.SearchResultRepositoryImpl
 import mort.ar.searxme.data.repositories.SearxInstanceRepositoryImpl
 import mort.ar.searxme.database.Database
 import mort.ar.searxme.database.daos.SearxInstanceDao
-import mort.ar.searxme.data.mapper.SettingsParameterMapper
 import mort.ar.searxme.network.SearchService
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
@@ -35,8 +35,17 @@ import javax.inject.Singleton
 class DataModule {
 
     companion object HostSettings {
-        private const val SCHEME = "https"
-        var currentHost = "https://searx.0x1b.de"
+        private const val SCHEME_HTTP = "http"
+        private const val SCHEME_HTTPS = "https"
+
+        var currentHost: String = "search.gibberfish.org"
+            set(value) {
+                field = when {
+                    value.startsWith(SCHEME_HTTPS) -> value.drop(8)
+                    value.startsWith(SCHEME_HTTP) -> value.drop(7)
+                    else -> value
+                }
+            }
     }
 
     @Singleton
@@ -59,8 +68,8 @@ class DataModule {
                     val request = it.request()
                     val url: HttpUrl = request.url()
                         .newBuilder()
-                        .scheme(SCHEME)
-                        .host(currentHost.drop(8)) // TODO come back later and take care of a safer handling of currentHost
+                        .scheme(SCHEME_HTTPS)
+                        .host(currentHost)
                         .build()
                     it.proceed(
                         request.newBuilder()
