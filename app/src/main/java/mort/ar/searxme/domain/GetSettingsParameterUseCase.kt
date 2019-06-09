@@ -1,7 +1,7 @@
 package mort.ar.searxme.domain
 
 import io.reactivex.Single
-import mort.ar.searxme.presentation.model.SettingsParameter
+import mort.ar.searxme.data.model.SettingsParameter
 
 interface GetSettingsParameterUseCase {
 

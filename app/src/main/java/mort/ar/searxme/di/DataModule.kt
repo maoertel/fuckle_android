@@ -13,8 +13,10 @@ import mort.ar.searxme.data.localdata.SearchParameterDataSource
 import mort.ar.searxme.data.localdata.SearxInstanceDataSource
 import mort.ar.searxme.data.localdata.localdatasources.SearchParameterDataSourceImpl
 import mort.ar.searxme.data.localdata.localdatasources.SearxInstanceDataSourceImpl
+import mort.ar.searxme.data.localdata.mapper.SearchInstanceMapper
 import mort.ar.searxme.data.mapper.SearchRequestMapper
 import mort.ar.searxme.data.remotedata.SearchRemoteDataSource
+import mort.ar.searxme.data.remotedata.mapper.SearchResultMapper
 import mort.ar.searxme.data.remotedata.remotedatasources.SearchRemoteDataSourceImpl
 import mort.ar.searxme.data.repositories.SearchParameterRepositoryImpl
 import mort.ar.searxme.data.repositories.SearchResultRepositoryImpl
@@ -61,7 +63,7 @@ class DataModule {
                     val url: HttpUrl = request.url()
                         .newBuilder()
                         .scheme(SCHEME)
-                        .host(currentHost.drop(8)) // TODO come back alter and care about a safe handling of currentHost edge cases
+                        .host(currentHost.drop(8)) // TODO come back later and take care of a safer handling of currentHost
                         .build()
                     it.proceed(
                         request.newBuilder()
@@ -86,14 +88,13 @@ class DataModule {
 
     @Singleton
     @Provides
-    fun provideDatabase(application: Application): Database =
-        Room
-            .databaseBuilder(
-                application,
-                Database::class.java,
-                "searx.db"
-            )
-            .build()
+    fun provideDatabase(application: Application): Database = Room
+        .databaseBuilder(
+            application,
+            Database::class.java,
+            "searx.db"
+        )
+        .build()
 
     @Singleton
     @Provides
@@ -116,8 +117,10 @@ class DataModule {
 
     @Singleton
     @Provides
-    fun provideSearxInstanceDataSource(searxInstanceDao: SearxInstanceDao): SearxInstanceDataSource =
-        SearxInstanceDataSourceImpl(searxInstanceDao)
+    fun provideSearxInstanceDataSource(
+        searxInstanceDao: SearxInstanceDao,
+        searchInstanceMapper: SearchInstanceMapper
+    ): SearxInstanceDataSource = SearxInstanceDataSourceImpl(searxInstanceDao, searchInstanceMapper)
 
     @Singleton
     @Provides
@@ -126,12 +129,22 @@ class DataModule {
 
     @Singleton
     @Provides
-    fun provideSearchRemoteDataSource(searchService: SearchService): SearchRemoteDataSource =
-        SearchRemoteDataSourceImpl(searchService)
+    fun provideSearchRemoteDataSource(
+        searchService: SearchService,
+        searchResultMapper: SearchResultMapper
+    ): SearchRemoteDataSource = SearchRemoteDataSourceImpl(searchService, searchResultMapper)
 
     @Singleton
     @Provides
     fun provideSearchRequestMapper(): SearchRequestMapper = SearchRequestMapper()
+
+    @Singleton
+    @Provides
+    fun provideSearchResultMapper(): SearchResultMapper = SearchResultMapper()
+
+    @Singleton
+    @Provides
+    fun provideSearchInstanceMapper(): SearchInstanceMapper = SearchInstanceMapper()
 
     @Singleton
     @Provides

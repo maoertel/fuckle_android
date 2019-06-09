@@ -8,7 +8,7 @@ import mort.ar.searxme.TestSchedulerManager
 import mort.ar.searxme.domain.GetSettingsParameterUseCase
 import mort.ar.searxme.domain.SaveSettingsParameterUseCase
 import mort.ar.searxme.presentation.model.Languages
-import mort.ar.searxme.presentation.model.SettingsParameter
+import mort.ar.searxme.data.model.SettingsParameter
 import mort.ar.searxme.presentation.model.TimeRanges
 import org.junit.Before
 import org.junit.Test

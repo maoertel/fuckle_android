@@ -35,7 +35,7 @@ class SearchResultRepositoryImplTest {
         val testSingle = repository.requestSearchResults(searchRequest).test()
 
         testSingle
-            .assertValue { it.results.isEmpty() }
+            .assertValue { it.isEmpty() }
             .assertNoErrors()
             .dispose()
     }
@@ -48,7 +48,7 @@ class SearchResultRepositoryImplTest {
         val testSingle = repository.requestSearchResults(searchRequest).test()
 
         testSingle
-            .assertValue { it.results.isNotEmpty() && it.results.first() == searxResult }
+            .assertValue { it.isNotEmpty() && it.first() == searxResult }
             .assertNoErrors()
             .dispose()
     }

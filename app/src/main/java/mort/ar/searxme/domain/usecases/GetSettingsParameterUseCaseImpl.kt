@@ -6,7 +6,7 @@ import mort.ar.searxme.data.SearchParameterRepository
 import mort.ar.searxme.data.SearxInstanceRepository
 import mort.ar.searxme.domain.GetSettingsParameterUseCase
 import mort.ar.searxme.domain.mapper.SettingsParameterMapper
-import mort.ar.searxme.presentation.model.SettingsParameter
+import mort.ar.searxme.data.model.SettingsParameter
 import javax.inject.Inject
 
 class GetSettingsParameterUseCaseImpl @Inject constructor(

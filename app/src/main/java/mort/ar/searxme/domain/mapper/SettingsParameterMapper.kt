@@ -1,8 +1,9 @@
 package mort.ar.searxme.domain.mapper
 
 import mort.ar.searxme.data.localdata.model.SearxInstanceEntity
+import mort.ar.searxme.data.model.SearchInstance
 import mort.ar.searxme.presentation.model.Languages
-import mort.ar.searxme.presentation.model.SettingsParameter
+import mort.ar.searxme.data.model.SettingsParameter
 import mort.ar.searxme.presentation.model.TimeRanges
 import mort.ar.searxme.presentation.settings.Categories
 import mort.ar.searxme.presentation.settings.Engines
@@ -11,7 +12,7 @@ import javax.inject.Inject
 class SettingsParameterMapper @Inject constructor() {
 
     fun mapToSettingsParameter(
-        searxInstances: List<SearxInstanceEntity>,
+        searxInstances: List<SearchInstance>,
         engines: String,
         categories: String,
         language: Languages,

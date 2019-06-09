@@ -4,6 +4,7 @@ import io.reactivex.Single
 import mort.ar.searxme.data.SearxInstanceRepository
 import mort.ar.searxme.data.localdata.SearxInstanceDataSource
 import mort.ar.searxme.data.localdata.model.SearxInstanceEntity
+import mort.ar.searxme.data.model.SearchInstance
 import javax.inject.Inject
 
 class SearxInstanceRepositoryImpl @Inject constructor(
@@ -12,6 +13,6 @@ class SearxInstanceRepositoryImpl @Inject constructor(
 
     override fun setPrimaryInstance(instance: String) = searxInstanceDataSource.setPrimaryInstance(instance)
 
-    override fun getAllInstances(): Single<List<SearxInstanceEntity>> = searxInstanceDataSource.getAllInstances()
+    override fun getAllInstances(): Single<List<SearchInstance>> = searxInstanceDataSource.getAllInstances()
 
 }

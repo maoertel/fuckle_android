@@ -8,8 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.searchresult_entry.view.*
 import mort.ar.searxme.R
-import mort.ar.searxme.data.remotedata.model.SearxResult
-import mort.ar.searxme.presentation.model.SearchResults
+import mort.ar.searxme.data.model.SearchResult
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
@@ -17,10 +16,10 @@ class SearchResultAdapter @Inject constructor(
     private val searchResultPresenter: SearchContract.SearchResultPresenter
 ) : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>() {
 
-    internal var search by Delegates.observable(SearchResults(emptyList())) { _, _, _ -> notifyDataSetChanged() }
+    internal var searchResults by Delegates.observable(emptyList<SearchResult>()) { _, _, _ -> notifyDataSetChanged() }
 
     private val onClickListener: View.OnClickListener by lazy {
-        View.OnClickListener { view -> searchResultPresenter.onSearchResultClick(view.tag as SearxResult) }
+        View.OnClickListener { view -> searchResultPresenter.onSearchResultClick(view.tag as SearchResult) }
     }
 
     inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
@@ -42,14 +41,14 @@ class SearchResultAdapter @Inject constructor(
             .let { ViewHolder(it) }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int): Unit =
-        search.results[position].let { item ->
+        searchResults[position].let { searchResult ->
             with(holder) {
-                text.text = item.title
-                description.text = item.content
-                url.text = item.url
+                text.text = searchResult.title
+                description.text = searchResult.content
+                url.text = searchResult.url
             }
 
-            with(item.engines) {
+            with(searchResult.engines) {
                 if (contains("google")) holder.iconGoogle.visibility = View.VISIBLE
                 if (contains("duckduckgo")) holder.iconDuckDuckGo.visibility = View.VISIBLE
                 if (contains("bing")) holder.iconBing.visibility = View.VISIBLE
@@ -58,11 +57,11 @@ class SearchResultAdapter @Inject constructor(
             }
 
             with(holder.view) {
-                tag = item
+                tag = searchResult
                 setOnClickListener(onClickListener)
             }
         }
 
-    override fun getItemCount() = search.results.size
+    override fun getItemCount() = searchResults.size
 
 }

@@ -7,7 +7,7 @@ import mort.ar.searxme.TestSchedulerManager
 import mort.ar.searxme.data.SearchParameterRepository
 import mort.ar.searxme.data.SearxInstanceRepository
 import mort.ar.searxme.presentation.model.Languages
-import mort.ar.searxme.presentation.model.SettingsParameter
+import mort.ar.searxme.data.model.SettingsParameter
 import mort.ar.searxme.presentation.model.TimeRanges
 import mort.ar.searxme.presentation.settings.Categories.FILES
 import mort.ar.searxme.presentation.settings.Categories.IMAGES

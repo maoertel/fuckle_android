@@ -1,5 +1,7 @@
-package mort.ar.searxme.presentation.model
+package mort.ar.searxme.data.model
 
+import mort.ar.searxme.presentation.model.Languages
+import mort.ar.searxme.presentation.model.TimeRanges
 import mort.ar.searxme.presentation.settings.Categories
 import mort.ar.searxme.presentation.settings.Engines
 

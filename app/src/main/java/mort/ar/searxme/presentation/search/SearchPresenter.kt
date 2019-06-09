@@ -5,9 +5,9 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import mort.ar.searxme.data.remotedata.model.SearxResult
 import mort.ar.searxme.domain.SearchRequestUseCase
 import mort.ar.searxme.domain.SearchSuggestionsUseCase
+import mort.ar.searxme.data.model.SearchResult
 import mort.ar.searxme.presentation.search.Pages.*
 import javax.inject.Inject
 
@@ -36,7 +36,7 @@ class SearchPresenter @Inject constructor(
 
     override fun stop() = compositeDisposable.dispose()
 
-    override fun onSearchResultClick(searchResult: SearxResult) {
+    override fun onSearchResultClick(searchResult: SearchResult) {
         searchView.loadUrl(searchResult.prettyUrl)
         showPage(WEBVIEW)
     }
@@ -89,10 +89,10 @@ class SearchPresenter @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribeBy(
-                onSuccess = { results ->
+                onSuccess = { searchResults ->
                     with(searchView) {
                         hideProgress()
-                        updateSearchResults(results)
+                        updateSearchResults(searchResults)
                     }
                 },
                 onError = { throwable ->

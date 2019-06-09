@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.settings_time_ranges.*
 import kotlinx.android.synthetic.main.toolbar_settings.*
 import mort.ar.searxme.R
 import mort.ar.searxme.presentation.model.Languages
-import mort.ar.searxme.presentation.model.SettingsParameter
+import mort.ar.searxme.data.model.SettingsParameter
 import mort.ar.searxme.presentation.model.TimeRanges
 import javax.inject.Inject
 

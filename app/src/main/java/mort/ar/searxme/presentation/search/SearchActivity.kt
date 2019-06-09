@@ -18,7 +18,7 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.fragment_web_view.*
 import mort.ar.searxme.R
-import mort.ar.searxme.presentation.model.SearchResults
+import mort.ar.searxme.data.model.SearchResult
 import javax.inject.Inject
 
 class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
@@ -134,8 +134,8 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
             clearFocus()
         }
 
-    override fun updateSearchResults(results: SearchResults) {
-        searchResultAdapter.search = results
+    override fun updateSearchResults(searchResult: List<SearchResult>) {
+        searchResultAdapter.searchResults = searchResult
     }
 
     override fun showSearchResults() {

@@ -22,7 +22,7 @@ data class SearxResult(
     @field:Json(name = "url") val url: String,
     @field:Json(name = "positions") val positions: List<Int>,
     @field:Json(name = "parsed_url") val parsed_url: List<String>,
-    @field:Json(name = "content") val content: String,
+    @field:Json(name = "content") val content: String?,
     @field:Json(name = "pretty_url") val prettyUrl: String,
     @field:Json(name = "score") val score: Double
 ) : Serializable

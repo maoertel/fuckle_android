@@ -9,7 +9,7 @@ import io.reactivex.disposables.CompositeDisposable
 import mort.ar.searxme.TestSchedulerManager
 import mort.ar.searxme.domain.SearchRequestUseCase
 import mort.ar.searxme.domain.SearchSuggestionsUseCase
-import mort.ar.searxme.presentation.model.SearchResults
+import mort.ar.searxme.data.model.SearchResult
 import mort.ar.searxme.presentation.search.Pages.*
 import org.junit.Assert.*
 import org.junit.Before
@@ -78,7 +78,7 @@ class SearchPresenterTest {
     @Test
     fun `GIVEN query WHEN onSearchSuggestionClick() THEN query fired, search box updated with query text, suggestionList to true`() {
         val query = "Hallo"
-        val suggestionsList = mock<SearchResults>()
+        val suggestionsList = mock<SearchResult>()
         whenever(searchRequestUseCase.requestSearchResults(query)).thenReturn(Single.just(suggestionsList))
 
         presenter.onSearchSuggestionClick(query)

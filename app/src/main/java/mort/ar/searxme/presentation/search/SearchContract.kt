@@ -1,7 +1,6 @@
 package mort.ar.searxme.presentation.search
 
-import mort.ar.searxme.data.remotedata.model.SearxResult
-import mort.ar.searxme.presentation.model.SearchResults
+import mort.ar.searxme.data.model.SearchResult
 
 interface SearchContract {
 
@@ -30,7 +29,7 @@ interface SearchContract {
 
         fun setSearchQuery(query: String)
 
-        fun updateSearchResults(results: SearchResults)
+        fun updateSearchResults(searchResult: List<SearchResult>)
 
         fun showSearchResults()
 
@@ -54,7 +53,7 @@ interface SearchContract {
     }
 
     interface SearchResultPresenter {
-        fun onSearchResultClick(searchResult: SearxResult)
+        fun onSearchResultClick(searchResult: SearchResult)
     }
 
     interface SearchSuggestionPresenter {
