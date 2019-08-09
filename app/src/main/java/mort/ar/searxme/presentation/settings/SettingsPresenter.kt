@@ -6,9 +6,9 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import mort.ar.searxme.data.model.SettingsParameter
 import mort.ar.searxme.domain.GetSettingsParameterUseCase
 import mort.ar.searxme.domain.SaveSettingsParameterUseCase
-import mort.ar.searxme.data.model.SettingsParameter
 import mort.ar.searxme.presentation.model.Categories
 import mort.ar.searxme.presentation.model.Engines
 import javax.inject.Inject
