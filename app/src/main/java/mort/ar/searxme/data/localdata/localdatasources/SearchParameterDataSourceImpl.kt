@@ -3,6 +3,7 @@ package mort.ar.searxme.data.localdata.localdatasources
 import android.content.SharedPreferences
 import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.exceptions.Exceptions
 import mort.ar.searxme.data.localdata.SearchParameterDataSource
 import mort.ar.searxme.presentation.model.Languages
 import mort.ar.searxme.presentation.model.Languages.*
@@ -78,22 +79,14 @@ class SearchParameterDataSourceImpl @Inject constructor(
 
     override fun setSafeSearch(safeSearch: String): Completable = safeSearch.saveWithKey(SAFE_SEARCH)
 
-    private fun String.saveWithKey(prefKey: String): Completable =
-        Completable.create { emitter ->
-            sharedPreferences
-                .edit()
-                .putString(prefKey, this)
-                .apply()
-            emitter.onComplete()
+    private fun <T> T.saveWithKey(prefKey: String): Completable = Completable.fromRunnable {
+        sharedPreferences.edit().let { editor ->
+            when (this) {
+                is String -> editor.putString(prefKey, this).apply()
+                is Int -> editor.putInt(prefKey, this).apply()
+                else -> Exceptions.propagate(IllegalArgumentException())
+            }
         }
-
-    private fun Int.saveWithKey(prefKey: String): Completable =
-        Completable.create { emitter ->
-            sharedPreferences
-                .edit()
-                .putInt(prefKey, this)
-                .apply()
-            emitter.onComplete()
-        }
+    }
 
 }

@@ -15,14 +15,11 @@ class SearxInstanceDataSourceImpl @Inject constructor(
 
     override fun getAllInstances(): Single<List<SearchInstance>> =
         instanceDao.getAllSearxInstances()
-            .map { list -> list.map { searchInstanceMapper.mapFromSearxInstanceEntity(it) } }
-            .flatMap { list -> Single.just(list.sortedByDescending { it.favorite }) }
+            .map { entities -> entities.map { searchInstanceMapper.mapFromSearxInstanceEntity(it) } }
+            .map { instances -> instances.sortedByDescending { it.favorite } }
 
     override fun setPrimaryInstance(instance: String): Completable =
-        Completable.create {
-            (instanceDao.changeFavoriteInstanceSync(instance))
-            it.onComplete()
-        }
+        Completable.fromRunnable { instanceDao.changeFavoriteInstanceSync(instance) }
 
     override fun insert(instance: SearchInstance): Completable =
         instanceDao.insert(searchInstanceMapper.mapToSearxInstanceEntity(instance))
