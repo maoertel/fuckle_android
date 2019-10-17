@@ -30,7 +30,7 @@ class SettingsPresenter @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = { initializeSettingsParameter(it) },
-                onError = { throwable -> Log.d(SettingsPresenter::class.simpleName, throwable.message) }
+                onError = { throwable -> Log.d(SettingsPresenter::class.simpleName, throwable.message ?: "Settings problem") }
             )
             .addTo(compositeDisposable)
     }

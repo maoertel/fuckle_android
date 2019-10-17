@@ -62,17 +62,15 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
     searchPresenter.stop()
   }
 
-  override fun initializeSearchResultsAdapter() =
-    with(searchResultList) {
-      layoutManager = searchResultLinearLayoutManager
-      adapter = searchResultAdapter
-    }
+  override fun initializeSearchResultsAdapter() = with(searchResultList) {
+    layoutManager = searchResultLinearLayoutManager
+    adapter = searchResultAdapter
+  }
 
-  override fun initializeSearchSuggestionsAdapter() =
-    with(searchSuggestionsList) {
-      layoutManager = suggestionsLinearLayoutManager
-      adapter = searchSuggestionsAdapter
-    }
+  override fun initializeSearchSuggestionsAdapter() = with(searchSuggestionsList) {
+    layoutManager = suggestionsLinearLayoutManager
+    adapter = searchSuggestionsAdapter
+  }
 
   override fun initializeWebViewFragment() = replaceFragment(webViewFragment)
 
@@ -194,7 +192,6 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
 
   override fun onBackPressedHandledByWebView() = webViewFragment.onBackPressed()
 
-  override fun onBackPressed() =
-    if (!searchPresenter.handleOnBackPress()) super.onBackPressed() else Unit
+  override fun onBackPressed() = if (!searchPresenter.handleOnBackPress()) super.onBackPressed() else Unit
 
 }

@@ -66,7 +66,7 @@ class DataModule {
             OkHttpClient.Builder()
                 .addInterceptor {
                     val request = it.request()
-                    val url: HttpUrl = request.url()
+                    val url: HttpUrl = request.url
                         .newBuilder()
                         .scheme(SCHEME_HTTPS)
                         .host(currentHost)
