@@ -13,6 +13,7 @@ import mort.ar.searxme.domain.InsertInstanceUseCase
 import mort.ar.searxme.domain.SearchRequestUseCase
 import mort.ar.searxme.domain.SearchSuggestionsUseCase
 import mort.ar.searxme.presentation.search.Pages.*
+import timber.log.Timber
 import javax.inject.Inject
 
 enum class Pages { START, SEARCH_RESULTS, WEBVIEW }
@@ -163,7 +164,7 @@ class SearchPresenter @Inject constructor(
       .subscribeOn(Schedulers.io())
       .subscribeBy(
         onComplete = { DataModule.currentHost = instanceList.filter { it.favorite }.first().url },
-        onError = { /* probable inform about it, but than... this is temporary */ }
+        onError = { Timber.d(it) }
       )
       .addTo(compositeDisposable)
   }

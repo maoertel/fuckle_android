@@ -3,6 +3,7 @@ buildscript {
     ext.dagger_version = '2.24'
     ext.room_version = '2.2.0'
     ext.retrofit_version = '2.6.2'
+    ext.arrow_version = '0.10.1-SNAPSHOT'
     repositories {
         google()
         jcenter()
@@ -20,6 +21,8 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url "https://dl.bintray.com/arrow-kt/arrow-kt/" }
+        maven { url 'https://oss.jfrog.org/artifactory/oss-snapshot-local/' } // for SNAPSHOT builds
     }
 }
 
