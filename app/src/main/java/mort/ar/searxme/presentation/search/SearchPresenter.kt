@@ -163,8 +163,8 @@ class SearchPresenter @Inject constructor(
     Completable.merge(instanceList.map { insertInstanceUseCase.insert(it) })
       .subscribeOn(Schedulers.io())
       .subscribeBy(
-        onComplete = { DataModule.currentHost = instanceList.filter { it.favorite }.first().url },
-        onError = { Timber.d(it) }
+        onComplete = { DataModule.currentHost = instanceList.first { it.favorite }.url },
+        onError = Timber::d
       )
       .addTo(compositeDisposable)
   }
@@ -173,8 +173,8 @@ class SearchPresenter @Inject constructor(
 private val instanceList =
   listOf(
     SearchInstance(
-      name = "https://searx.0x1b.de",
-      url = "https://searx.0x1b.de",
+      name = "https://suche.honigdachse.de",
+      url = "https://suche.honigdachse.de",
       favorite = false
     ),
     SearchInstance(

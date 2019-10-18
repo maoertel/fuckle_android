@@ -173,8 +173,7 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
     indeterminateBar.visibility = View.GONE
   }
 
-  override fun showMessage(message: String?) =
-    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+  override fun showMessage(message: String?) = Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 
   override fun hideKeyboard() {
     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
