@@ -9,19 +9,17 @@ import mort.ar.searxme.domain.SearchSuggestionsUseCase
 import javax.inject.Inject
 
 class SearchSuggestionsUseCaseImpl @Inject constructor(
-    private val searchResultRepository: SearchResultRepository,
-    private val searchParameterRepository: SearchParameterRepository
+  private val searchResultRepository: SearchResultRepository,
+  private val searchParameterRepository: SearchParameterRepository
 
 ) : SearchSuggestionsUseCase {
 
-    override fun requestSearchAutoComplete(query: String): Single<List<String>> =
-        buildAutoCompleteSearchRequest(query)
-            .flatMap { searchResultRepository.requestSearchAutoComplete(it) }
+  override fun requestSearchAutoComplete(query: String): Single<List<String>> =
+    buildAutoCompleteSearchRequest(query).flatMap { searchResultRepository.requestSearchAutoComplete(it) }
 
-    private fun buildAutoCompleteSearchRequest(query: String): Single<SearchRequest> =
-        searchParameterRepository
-            .getAutoComplete()
-            .zipWith(Single.just(query))
-            .map { SearchRequest(query = it.second, autoComplete = it.first) }
+  private fun buildAutoCompleteSearchRequest(query: String): Single<SearchRequest> =
+    searchParameterRepository.getAutoComplete()
+      .zipWith(Single.just(query))
+      .map { (autoComplete, query) -> SearchRequest(query, autoComplete) }
 
 }

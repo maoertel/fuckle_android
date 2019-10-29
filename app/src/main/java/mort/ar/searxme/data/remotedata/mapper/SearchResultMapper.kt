@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class SearchResultMapper @Inject constructor() {
 
-    fun mapFromSearxResult(searxResult: SearxResult): SearchResult =
+  infix fun mapFromSearxResult(searxResult: SearxResult): SearchResult =
         SearchResult(
             title = searxResult.title,
             url = searxResult.url,

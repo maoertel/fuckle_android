@@ -36,32 +36,30 @@ class SettingsPresenter @Inject constructor(
   }
 
   private fun initializeSettingsParameter(settingsParameter: SettingsParameter) {
-    with(settingsView) {
-      initializeSearxInstanceSpinner(settingsParameter.searxInstances)
-      initializeLanguageSpinner(settingsParameter.language.ordinal)
-      initializeTimeRangeSpinner(settingsParameter.timeRange.ordinal)
-    }
+    settingsView initializeSearxInstanceSpinner settingsParameter.searxInstances
+    settingsView initializeLanguageSpinner settingsParameter.language.ordinal
+    settingsView initializeTimeRangeSpinner settingsParameter.timeRange.ordinal
     initializeEngines(settingsParameter.engines)
     initializeCategories(settingsParameter.categories)
   }
 
   private fun initializeEngines(engines: List<Engines>) {
-    settingsView.initializeEnginesDefaultCheckbox(engines.isEmpty())
+    settingsView initializeEnginesDefaultCheckbox engines.isEmpty()
     Engines.values().forEach { engine -> settingsView.initializeEngineCheckBox(engine, engines.contains(engine)) }
   }
 
   private fun initializeCategories(categories: List<Categories>) {
-    settingsView.initializeCategoriesDefaultCheckbox(categories.isEmpty())
+    settingsView initializeCategoriesDefaultCheckbox categories.isEmpty()
     Categories.values().forEach { cat -> settingsView.initializeCategoryCheckBox(cat, categories.contains(cat)) }
   }
 
   override fun onEnginesDefaultCheckboxClick() {
-    settingsView.setEnginesDefaultCheckBoxActive(true)
+    settingsView setEnginesDefaultCheckBoxActive true
     Engines.values().forEach { engine -> settingsView.setCheckBoxActive(engine.checkBox, false) }
   }
 
   override fun onCategoriesDefaultCheckboxClick() {
-    settingsView.setCategoriesDefaultCheckBoxActive(true)
+    settingsView setCategoriesDefaultCheckBoxActive true
     Categories.values().forEach { category -> settingsView.setCheckBoxActive(category.checkBox, false) }
   }
 
@@ -73,29 +71,27 @@ class SettingsPresenter @Inject constructor(
       .subscribeBy(
         onComplete = {
           onFinished()
-          settingsView.showMessage("Settings successfully saved")
+          settingsView showMessage "Settings successfully saved"
         },
         onError = {
           onFinished()
-          settingsView.showMessage("Something went wrong")
+          settingsView showMessage "Something went wrong"
           Timber.d(it)
         }
       )
       .addTo(compositeDisposable)
   }
 
-  override fun onEngineCheckBoxClick(shouldCheck: Boolean, enginesEmpty: Boolean) =
-    when {
-      shouldCheck -> settingsView.setEnginesDefaultCheckBoxActive(false)
-      enginesEmpty -> settingsView.setEnginesDefaultCheckBoxActive(true)
-      else -> Unit
-    }
+  override fun onEngineCheckBoxClick(shouldCheck: Boolean, enginesEmpty: Boolean) = when {
+    shouldCheck -> settingsView setEnginesDefaultCheckBoxActive false
+    enginesEmpty -> settingsView setEnginesDefaultCheckBoxActive true
+    else -> Unit
+  }
 
-  override fun onCategoryCheckBoxClick(shouldCheck: Boolean, categoriesEmpty: Boolean) =
-    when {
-      shouldCheck -> settingsView.setCategoriesDefaultCheckBoxActive(false)
-      categoriesEmpty -> settingsView.setCategoriesDefaultCheckBoxActive(true)
-      else -> Unit
-    }
+  override fun onCategoryCheckBoxClick(shouldCheck: Boolean, categoriesEmpty: Boolean) = when {
+    shouldCheck -> settingsView setCategoriesDefaultCheckBoxActive false
+    categoriesEmpty -> settingsView setCategoriesDefaultCheckBoxActive true
+    else -> Unit
+  }
 
 }

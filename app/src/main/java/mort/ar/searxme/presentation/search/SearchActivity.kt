@@ -121,21 +121,21 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
 
     searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
       override fun onQueryTextSubmit(query: String?): Boolean =
-        searchPresenter.onQueryTextSubmit(query)
+        searchPresenter onQueryTextSubmit query
 
       override fun onQueryTextChange(query: String?): Boolean =
-        searchPresenter.onQueryTextChange(query)
+        searchPresenter onQueryTextChange query
     })
 
     searchView.clearFocus()
   }
 
-  override fun setSearchQuery(query: String) = with(searchView) {
+  override infix fun setSearchQuery(query: String) = with(searchView) {
     setQuery(query, false)
     clearFocus()
   }
 
-  override fun updateSearchResults(searchResult: List<SearchResult>) {
+  override infix fun updateSearchResults(searchResult: List<SearchResult>) {
     searchResultAdapter.searchResults = searchResult
   }
 
@@ -147,7 +147,7 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
     searchResultList.visibility = View.GONE
   }
 
-  override fun updateSearchSuggestions(searchSuggestions: List<String>) {
+  override infix fun updateSearchSuggestions(searchSuggestions: List<String>) {
     searchSuggestionsAdapter.searchSuggestions = searchSuggestions
   }
 
@@ -155,7 +155,7 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
     searchSuggestionsAdapter.searchSuggestions = emptyList()
   }
 
-  override fun loadUrl(url: String) = webView.loadUrl(url)
+  override infix fun loadUrl(url: String) = webView.loadUrl(url)
 
   override fun showWebView() {
     webViewFragmentContainer.visibility = View.VISIBLE
@@ -173,7 +173,7 @@ class SearchActivity : AppCompatActivity(), SearchContract.SearchView {
     indeterminateBar.visibility = View.GONE
   }
 
-  override fun showMessage(message: String?) = Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+  override infix fun showMessage(message: String?) = Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 
   override fun hideKeyboard() {
     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

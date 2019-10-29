@@ -13,7 +13,7 @@ abstract class SearxInstanceDao {
   abstract fun getAllSearxInstances(): Single<List<SearxInstanceEntity>>
 
   @Insert(onConflict = REPLACE)
-  abstract fun insert(searxInstanceEntity: SearxInstanceEntity): Completable
+  abstract infix fun insert(searxInstanceEntity: SearxInstanceEntity): Completable
 
   @Query("SELECT * FROM searx_instances WHERE favorite")
   abstract fun getFavoriteInstanceSync(): SearxInstanceEntity
@@ -25,7 +25,7 @@ abstract class SearxInstanceDao {
   abstract fun updateInstanceSync(instanceEntity: SearxInstanceEntity)
 
   @Transaction
-  open fun changeFavoriteInstanceSync(newFavoriteInstance: String) {
+  open infix fun changeFavoriteInstanceSync(newFavoriteInstance: String) {
     val fav = getFavoriteInstanceSync()
     val newFav = getSearxInstanceSync(newFavoriteInstance)
 

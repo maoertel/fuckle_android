@@ -6,8 +6,7 @@ import mort.ar.searxme.presentation.model.Engines
 
 interface SettingsContract {
     interface BaseView {
-
-        fun showMessage(message: String?)
+      infix fun showMessage(message: String?)
 
         fun hideKeyboard()
     }
@@ -15,24 +14,24 @@ interface SettingsContract {
     interface SettingsView : BaseView {
         fun setSpinnerAdapters()
 
-        fun initializeSearxInstanceSpinner(searxInstances: List<String>)
+      infix fun initializeSearxInstanceSpinner(searxInstances: List<String>)
 
-        fun initializeTimeRangeSpinner(position: Int)
+      infix fun initializeTimeRangeSpinner(position: Int)
 
-        fun initializeLanguageSpinner(position: Int)
+      infix fun initializeLanguageSpinner(position: Int)
 
-        fun initializeEnginesDefaultCheckbox(isActivated: Boolean)
+      infix fun initializeEnginesDefaultCheckbox(isActivated: Boolean)
 
-        fun setEnginesDefaultCheckBoxActive(shouldBeActivated: Boolean)
+      infix fun setEnginesDefaultCheckBoxActive(shouldBeActivated: Boolean)
 
         fun initializeEngineCheckBox(
             engine: Engines,
             containsEngine: Boolean
         )
 
-        fun initializeCategoriesDefaultCheckbox(isActivated: Boolean)
+      infix fun initializeCategoriesDefaultCheckbox(isActivated: Boolean)
 
-        fun setCategoriesDefaultCheckBoxActive(shouldBeActivated: Boolean)
+      infix fun setCategoriesDefaultCheckBoxActive(shouldBeActivated: Boolean)
 
         fun initializeCategoryCheckBox(
             category: Categories,

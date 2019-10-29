@@ -5,14 +5,14 @@ import mort.ar.searxme.data.model.SearchInstance
 
 class SearchInstanceMapper {
 
-    fun mapFromSearxInstanceEntity(entity: SearxInstanceEntity) =
+  infix fun mapFromSearxInstanceEntity(entity: SearxInstanceEntity) =
         SearchInstance(
             name = entity.name,
             url = entity.url,
             favorite = entity.favorite
         )
 
-    fun mapToSearxInstanceEntity(instance: SearchInstance) =
+  infix fun mapToSearxInstanceEntity(instance: SearchInstance) =
         SearxInstanceEntity(
             name = instance.name,
             url = instance.url,

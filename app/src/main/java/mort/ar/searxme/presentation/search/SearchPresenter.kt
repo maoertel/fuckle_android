@@ -41,14 +41,14 @@ class SearchPresenter @Inject constructor(
 
   override fun stop() = compositeDisposable.dispose()
 
-  override fun onSearchResultClick(searchResult: SearchResult) {
-    searchView.loadUrl(searchResult.prettyUrl)
+  override infix fun onSearchResultClick(searchResult: SearchResult) {
+    searchView loadUrl searchResult.prettyUrl
     showPage(WEBVIEW)
   }
 
-  override fun onSearchSuggestionClick(query: String) {
+  override infix fun onSearchSuggestionClick(query: String) {
     isSuggestionListSubmit = true
-    searchView.setSearchQuery(query)
+    searchView setSearchQuery query
     showPage(SEARCH_RESULTS)
     executeSearch(query)
   }
@@ -63,14 +63,14 @@ class SearchPresenter @Inject constructor(
     return false
   }
 
-  override fun onQueryTextSubmit(query: String?): Boolean {
+  override infix fun onQueryTextSubmit(query: String?): Boolean {
     showPage(SEARCH_RESULTS)
     query?.let { executeSearch(it) }
 
     return false
   }
 
-  override fun onQueryTextChange(query: String?): Boolean {
+  override infix fun onQueryTextChange(query: String?): Boolean {
     when {
       isSuggestionListSubmit -> isSuggestionListSubmit = !isSuggestionListSubmit
       query.isNullOrEmpty() -> searchView.hideSearchSuggestions()
@@ -79,8 +79,8 @@ class SearchPresenter @Inject constructor(
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
           .subscribeBy(
-            onSuccess = { suggestions -> searchView.updateSearchSuggestions(suggestions.toList()) },
-            onError = { throwable -> searchView.showMessage(throwable.message) }
+            onSuccess = { suggestions -> searchView updateSearchSuggestions suggestions },
+            onError = { throwable -> searchView showMessage throwable.message }
           )
           .addTo(compositeDisposable)
     }
@@ -97,13 +97,13 @@ class SearchPresenter @Inject constructor(
         onSuccess = { searchResults ->
           with(searchView) {
             hideProgress()
-            updateSearchResults(searchResults)
+            this updateSearchResults searchResults
           }
         },
         onError = { throwable ->
           with(searchView) {
             hideProgress()
-            showMessage(throwable.message)
+            this showMessage throwable.message
           }
         }
       )
@@ -120,7 +120,7 @@ class SearchPresenter @Inject constructor(
         if (isLastClickBeforeQuitApp) false
         else true.also {
           isLastClickBeforeQuitApp = true
-          searchView.showMessage("Next click finishes the app")
+          searchView showMessage "Next click finishes the app"
         }
     }
 
@@ -136,7 +136,7 @@ class SearchPresenter @Inject constructor(
   private fun showStartPage() {
     isLastClickBeforeQuitApp = false
     with(searchView) {
-      setSearchQuery(EMPTY)
+      this setSearchQuery EMPTY
       hideKeyboard()
       hideSearchSuggestions()
       hideSearchResults()

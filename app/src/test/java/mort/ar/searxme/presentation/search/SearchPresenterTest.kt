@@ -85,7 +85,7 @@ class SearchPresenterTest {
         val suggestionsList = listOf(mock<SearchResult>())
         whenever(searchRequestUseCase.requestSearchResults(query)).thenReturn(Single.just(suggestionsList))
 
-        presenter.onSearchSuggestionClick(query)
+      presenter onSearchSuggestionClick query
 
         verify(searchView).setSearchQuery(query)
         verify(searchView).hideKeyboard()
@@ -126,7 +126,7 @@ class SearchPresenterTest {
         val query = "Hallo"
         presenter.setValueOfPrivateMutableProperty("isSuggestionListSubmit", true)
 
-        val testValue = presenter.onQueryTextChange(query)
+      val testValue = presenter onQueryTextChange query
 
         assertTrue(testValue)
         assertEquals(false, presenter.getValueFromPrivateProperty("isSuggestionListSubmit"))
@@ -138,7 +138,7 @@ class SearchPresenterTest {
         val suggestions = listOf("one", "two")
         whenever(searchSuggestionsUseCase.requestSearchAutoComplete(query)).thenReturn(Single.just(suggestions))
 
-        val testValue = presenter.onQueryTextChange(query)
+      val testValue = presenter onQueryTextChange query
 
         verify(searchView).updateSearchSuggestions(suggestions)
         assertTrue(testValue)
@@ -152,7 +152,7 @@ class SearchPresenterTest {
         whenever(searchSuggestionsUseCase.requestSearchAutoComplete(query))
             .thenReturn(Single.error(Throwable(errorMessage)))
 
-        val testValue = presenter.onQueryTextChange(query)
+      val testValue = presenter onQueryTextChange query
 
         verify(searchView).showMessage(errorMessage)
         assertTrue(testValue)
@@ -163,7 +163,7 @@ class SearchPresenterTest {
     fun `GIVEN not from suggestions click, query empty WHEN onQueryTextSubmit() THEN hide search suggestions`() {
         val query = ""
 
-        val testValue = presenter.onQueryTextChange(query)
+      val testValue = presenter onQueryTextChange query
 
         verify(searchView).hideSearchSuggestions()
         assertTrue(testValue)
