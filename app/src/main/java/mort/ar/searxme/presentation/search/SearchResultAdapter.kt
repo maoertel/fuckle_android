@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.searchresult_entry.view.*
 import mort.ar.searxme.R
 import mort.ar.searxme.data.model.SearchResult
+import mort.ar.searxme.extensions.show
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
@@ -49,11 +50,11 @@ class SearchResultAdapter @Inject constructor(
       }
 
       with(searchResult.engines) {
-        if (contains("google")) holder.iconGoogle.visibility = View.VISIBLE
-        if (contains("duckduckgo")) holder.iconDuckDuckGo.visibility = View.VISIBLE
-        if (contains("bing")) holder.iconBing.visibility = View.VISIBLE
-        if (contains("wikipedia")) holder.iconWikipedia.visibility = View.VISIBLE
-        if (contains("qwant")) holder.iconQwant.visibility = View.VISIBLE
+        if (contains("google")) holder.iconGoogle.show()
+        if (contains("duckduckgo")) holder.iconDuckDuckGo.show()
+        if (contains("bing")) holder.iconBing.show()
+        if (contains("wikipedia")) holder.iconWikipedia.show()
+        if (contains("qwant")) holder.iconQwant.show()
       }
 
       with(holder.view) {

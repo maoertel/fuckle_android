@@ -113,9 +113,7 @@ class SearchPresenter @Inject constructor(
   override fun handleOnBackPress(): Boolean =
     when (currentPage) {
       SEARCH_RESULTS -> true.also { showPage(START) }
-      WEBVIEW -> true.also {
-        if (!searchView.onBackPressedHandledByWebView()) showPage(SEARCH_RESULTS)
-      }
+      WEBVIEW -> true.also { if (!searchView.onBackPressedHandledByWebView()) showPage(SEARCH_RESULTS) }
       START ->
         if (isLastClickBeforeQuitApp) false
         else true.also {

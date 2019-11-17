@@ -20,6 +20,6 @@ class SearchSuggestionsUseCaseImpl @Inject constructor(
   private fun buildAutoCompleteSearchRequest(query: String): Single<SearchRequest> =
     searchParameterRepository.getAutoComplete()
       .zipWith(Single.just(query))
-      .map { (autoComplete, query) -> SearchRequest(query, autoComplete) }
+      .map { (autoComplete, query) -> SearchRequest(query = query, autoComplete = autoComplete) }
 
 }

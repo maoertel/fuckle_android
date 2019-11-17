@@ -11,16 +11,6 @@ import mort.ar.searxme.presentation.model.TimeRanges
 import mort.ar.searxme.presentation.model.TimeRanges.*
 import javax.inject.Inject
 
-private const val CATEGORIES = "categories"
-private const val ENGINES = "engines"
-private const val LANGUAGE = "language"
-private const val TIME_RANGE = "time_range"
-private const val PAGE_NUMBER = "pageno"
-private const val FORMAT = "format"
-private const val IMAGE_PROXY = "image_proxy"
-private const val AUTOCOMPLETE = "autocomplete"
-private const val SAFE_SEARCH = "safesearch"
-
 class SearchParameterDataSourceImpl @Inject constructor(
   private val sharedPreferences: SharedPreferences
 ) : SearchParameterDataSource {
@@ -85,6 +75,18 @@ class SearchParameterDataSourceImpl @Inject constructor(
         else -> Exceptions.propagate(IllegalArgumentException())
       }
     }
+  }
+
+  companion object {
+    private const val CATEGORIES = "categories"
+    private const val ENGINES = "engines"
+    private const val LANGUAGE = "language"
+    private const val TIME_RANGE = "time_range"
+    private const val PAGE_NUMBER = "pageno"
+    private const val FORMAT = "format"
+    private const val IMAGE_PROXY = "image_proxy"
+    private const val AUTOCOMPLETE = "autocomplete"
+    private const val SAFE_SEARCH = "safesearch"
   }
 
 }
