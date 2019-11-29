@@ -6,8 +6,8 @@ import mort.ar.searxme.data.model.SearchResult
 
 interface SearchResultRepository {
 
-    fun requestSearchResults(searchRequest: SearchRequest): Single<List<SearchResult>>
+  fun requestSearchResults(searchRequest: SearchRequest): Single<List<SearchResult>>
 
-    fun requestSearchAutoComplete(searchRequest: SearchRequest): Single<List<String>>
+  fun requestSearchAutoComplete(searchRequest: SearchRequest): Single<List<String>>
 
 }
